@@ -69,16 +69,16 @@ export default function About() {
   return (
     <section id="about" className="relative isolate overflow-hidden bg-gray-900 py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-12">
       {/* Hero Visual + Intro */}
-      <div ref={ref} className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-16 sm:mb-20">
+      <div ref={ref} className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-16 sm:mb-20 lg:items-stretch">
         <motion.div
-          className="relative w-full max-w-md mx-auto lg:mx-0"
+          className="relative w-full max-w-md mx-auto lg:mx-0 lg:h-full flex flex-col"
           variants={container}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
         >
           {/* Main Innovation Image */}
           <motion.div
-            className="relative rounded-2xl overflow-hidden shadow-2xl"
+            className="relative rounded-2xl overflow-hidden shadow-2xl flex-1 lg:min-h-[600px]"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -86,7 +86,7 @@ export default function About() {
             <img
               src="/Prithvi_coding.jpg"
               alt="AI Innovation Concept"
-              className="w-full h-80 object-cover"
+              className="w-full h-full min-h-[400px] lg:min-h-[600px] object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" />
           </motion.div>
@@ -110,7 +110,7 @@ export default function About() {
         </motion.div>
 
         {/* Text Content */}
-        <motion.div variants={container} className="space-y-6">
+        <motion.div variants={container} className="space-y-6 flex flex-col justify-center lg:h-full">
           <motion.h2
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
             initial={{ opacity: 0, x: -50 }}
@@ -143,7 +143,7 @@ export default function About() {
                 Research Impact
               </h4>
               <p className="text-sm">
-                Co-authored <span className="text-cyan-400 font-medium">"Multi-Feature Fusion for Sleep Stage Classification using EEG and ECG Signals"</span> published in <span className="text-blue-400 font-medium">IEEE Access (Impact Factor: 3.4)</span>. Developed Vision Transformer-based framework achieving <span className="text-green-400 font-semibold">98.34% accuracy</span> improvement over baseline methods.
+                Authored <span className="text-cyan-400 font-medium">"PPG-Based Accurate Insomnia Detection System Using Convolutional Neural Networks With Self-Attention Mechanism and Gated Recurrent Units"</span> published in <span className="text-blue-400 font-medium">IEEE Access (Impact Factor: 3.4)</span>. Developed Vision Transformer-based framework achieving <span className="text-green-400 font-semibold">98.34% accuracy</span> improvement over baseline methods.
               </p>
             </div>
             
