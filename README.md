@@ -168,15 +168,53 @@ frontend/
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Import repository on [Vercel](https://vercel.com)
-3. Add environment variables in Project Settings
-4. Deploy automatically on every push
+### Netlify (Recommended)
+
+#### Method 1: Git Integration (Recommended)
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Ready for Netlify deployment"
+   git push origin main
+   ```
+
+2. **Connect to Netlify**
+   - Go to [Netlify](https://netlify.com) and sign up/login
+   - Click "New site from Git"
+   - Choose GitHub and select your repository
+   - Configure build settings:
+     - **Base directory**: `frontend`
+     - **Build command**: `npm run build`
+     - **Publish directory**: `frontend/dist`
+
+3. **Set Environment Variables**
+   - Go to Site Settings → Environment Variables
+   - Add your EmailJS variables:
+     ```
+     VITE_EMAILJS_SERVICE_ID=your_service_id
+     VITE_EMAILJS_TEMPLATE_ID=your_template_id
+     VITE_EMAILJS_PUBLIC_KEY=your_public_key
+     ```
+
+4. **Deploy**
+   - Click "Deploy site"
+   - Your site will be live at `https://your-site-name.netlify.app`
+
+#### Method 2: Manual Deployment
+1. **Build the project**
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+2. **Deploy to Netlify**
+   - Go to [Netlify](https://netlify.com)
+   - Drag and drop the `frontend/dist` folder to the deploy area
+   - Set environment variables in Site Settings
 
 ### Other Platforms
 This portfolio can be deployed to any static hosting service:
-- **Netlify** - Drag and drop deployment
+- **Vercel** - Zero-config deployment
 - **GitHub Pages** - Free hosting for GitHub repos
 - **AWS S3 + CloudFront** - Scalable cloud hosting
 - **Firebase Hosting** - Google's hosting solution
