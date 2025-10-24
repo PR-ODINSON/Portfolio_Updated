@@ -1,28 +1,68 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#06B6D4;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    <!-- Main gradient for background -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0f23;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#16213e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f3460;stop-opacity:1" />
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+    
+    <!-- Accent gradient for P -->
+    <linearGradient id="pGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8eecf5;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#a8e6cf;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffd3a5;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
       <feMerge> 
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    
+    <!-- Inner shadow -->
+    <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feOffset dx="0" dy="1"/>
+      <feGaussianBlur stdDeviation="1" result="offset-blur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offset-blur" operator="in"/>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
   
-  <!-- Background circle -->
-  <circle cx="16" cy="16" r="15" fill="url(#gradient)" filter="url(#glow)"/>
+  <!-- Background with rounded square -->
+  <rect x="2" y="2" width="28" height="28" rx="8" ry="8" fill="url(#bgGradient)" filter="url(#innerShadow)"/>
   
-  <!-- Letter P -->
-  <path d="M10 8 L10 24 M10 8 L18 8 Q22 8 22 12 Q22 16 18 16 L10 16" 
-        stroke="white" 
-        stroke-width="2.5" 
-        stroke-linecap="round" 
-        stroke-linejoin="round" 
-        fill="none"
-        filter="url(#glow)"/>
+  <!-- Subtle border -->
+  <rect x="2" y="2" width="28" height="28" rx="8" ry="8" fill="none" stroke="url(#pGradient)" stroke-width="0.5" opacity="0.6"/>
+  
+  <!-- Modern P design -->
+  <g filter="url(#glow)">
+    <!-- Vertical line -->
+    <rect x="9" y="7" width="3" height="18" fill="url(#pGradient)" rx="1.5"/>
+    
+    <!-- Top horizontal -->
+    <rect x="9" y="7" width="11" height="3" fill="url(#pGradient)" rx="1.5"/>
+    
+    <!-- Middle horizontal -->
+    <rect x="9" y="14.5" width="8" height="3" fill="url(#pGradient)" rx="1.5"/>
+    
+    <!-- Top right curve -->
+    <path d="M20 7 Q23 7 23 10.5 Q23 14 20 14.5 L17.5 14.5" 
+          stroke="url(#pGradient)" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          fill="none"/>
+  </g>
+  
+  <!-- Accent dots for style -->
+  <circle cx="25" cy="7" r="1" fill="url(#pGradient)" opacity="0.8"/>
+  <circle cx="7" cy="25" r="0.8" fill="url(#pGradient)" opacity="0.6"/>
 </svg>

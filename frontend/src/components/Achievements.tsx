@@ -152,7 +152,7 @@ export default function Achievements() {
     <section 
       id="achievements" 
       ref={ref}
-      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800 py-16 px-6 lg:px-12"
+      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800 py-12 sm:py-16 px-4 sm:px-6 lg:px-12"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">

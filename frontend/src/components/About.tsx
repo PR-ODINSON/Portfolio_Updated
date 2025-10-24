@@ -67,9 +67,9 @@ export default function About() {
   ]
 
   return (
-    <section id="about" className="relative isolate overflow-hidden bg-gray-900 py-28 px-6 lg:px-12">
+    <section id="about" className="relative isolate overflow-hidden bg-gray-900 py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-12">
       {/* Hero Visual + Intro */}
-      <div ref={ref} className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+      <div ref={ref} className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-16 sm:mb-20">
         <motion.div
           className="relative w-full max-w-md mx-auto lg:mx-0"
           variants={container}
@@ -112,7 +112,7 @@ export default function About() {
         {/* Text Content */}
         <motion.div variants={container} className="space-y-6">
           <motion.h2
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.8, delay: 0.2, type: 'spring' }}
@@ -122,15 +122,76 @@ export default function About() {
               Innovation
             </span>
           </motion.h2>
-          <motion.p
-            className="text-gray-300 text-lg"
+          <motion.div
+            className="text-gray-300 text-base sm:text-lg space-y-4"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            I'm a passionate <span className="text-cyan-400 font-semibold">AI/ML Engineer</span> and{' '}
-            <span className="text-cyan-400 font-semibold">Full-Stack Developer</span> dedicated to creating scalable, intelligent systems.
-          </motion.p>
+            <p>
+              I'm a passionate <span className="text-cyan-400 font-semibold">AI/ML Engineer</span> and{' '}
+              <span className="text-cyan-400 font-semibold">Full-Stack Developer</span> with production experience and published research in biomedical signal processing. Currently a <span className="text-cyan-400 font-semibold">pre-final year student</span> building cutting-edge solutions.
+            </p>
+            
+            <p>
+              Currently building <span className="text-cyan-400 font-semibold">LLM-powered automation systems</span> at Garnet AI that streamline vendor onboarding processes, reducing manual workflow time by <span className="text-green-400 font-semibold">28%</span> across 1000s enterprise clients.
+            </p>
+            
+            <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 my-4">
+              <h4 className="text-white font-semibold mb-2 flex items-center">
+                <span className="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>
+                Research Impact
+              </h4>
+              <p className="text-sm">
+                Co-authored <span className="text-cyan-400 font-medium">"Multi-Feature Fusion for Sleep Stage Classification using EEG and ECG Signals"</span> published in <span className="text-blue-400 font-medium">IEEE Access (Impact Factor: 3.4)</span>. Developed Vision Transformer-based framework achieving <span className="text-green-400 font-semibold">98.34% accuracy</span> improvement over baseline methods.
+              </p>
+            </div>
+            
+            <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-4 my-4">
+              <h4 className="text-white font-semibold mb-2 flex items-center">
+                <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
+                Technical Leadership
+              </h4>
+              <p className="text-sm">
+                Led AI/ML initiatives at <span className="text-cyan-400 font-medium">IITRAM's Coding Club</span>, mentoring <span className="text-green-400 font-semibold">50+ students</span> in machine learning fundamentals and organizing technical workshops that increased ML adoption by <span className="text-green-400 font-semibold">65%</span>.
+              </p>
+            </div>
+            
+            <p className="text-sm">
+              Currently exploring: <span className="text-cyan-400 font-medium">Large Language Models, MLOps, and scaling ML systems</span> for production environments. Open to opportunities in AI/ML engineering, full-stack development, and applied research roles where I can contribute to products that impact millions of users.
+            </p>
+          </motion.div>
+
+          {/* Core Expertise */}
+          <motion.div 
+            className="bg-gray-800/30 border border-gray-700 rounded-lg p-4 my-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <h4 className="text-white font-semibold mb-3 flex items-center">
+              <span className="w-2 h-2 bg-cyan-400 rounded-full mr-2"></span>
+              Core Expertise
+            </h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+              <div>
+                <span className="text-cyan-400 font-medium">🔹 Machine Learning:</span>
+                <span className="text-gray-300"> TensorFlow, PyTorch, Scikit-Learn, Computer Vision</span>
+              </div>
+              <div>
+                <span className="text-cyan-400 font-medium">🔹 Full-Stack Development:</span>
+                <span className="text-gray-300"> React, Node.js, MongoDB, RESTful APIs</span>
+              </div>
+              <div>
+                <span className="text-cyan-400 font-medium">🔹 Research:</span>
+                <span className="text-gray-300"> Signal Processing, Deep Learning, Academic Publications</span>
+              </div>
+              <div>
+                <span className="text-cyan-400 font-medium">🔹 Tools:</span>
+                <span className="text-gray-300"> Docker, Git, AWS/GCP, Data Visualization</span>
+              </div>
+            </div>
+          </motion.div>
 
           {/* Tech Badges */}
           <motion.div className="flex flex-wrap gap-3 mb-6">
@@ -175,7 +236,7 @@ export default function About() {
       </div>
 
       {/* Expertise Cards */}
-      <div className="max-w-7xl mx-auto mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="max-w-7xl mx-auto mb-16 sm:mb-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {expertiseAreas.map((area, i) => (
           <motion.div
             key={i}
@@ -196,13 +257,13 @@ export default function About() {
 
       {/* Tech Stack Tabs */}
       <div className="max-w-7xl mx-auto">
-        <h3 className="text-3xl font-bold text-center text-white mb-8">Technology Stack</h3>
-        <div className="flex justify-center gap-3 mb-8 flex-wrap">
+        <h3 className="text-2xl sm:text-3xl font-bold text-center text-white mb-6 sm:mb-8">Technology Stack</h3>
+        <div className="flex justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 flex-wrap">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setActive(tab)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all border ${
+              className={`px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-all border ${
                 active === tab
                   ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-md'
                   : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
@@ -213,11 +274,11 @@ export default function About() {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
           {techStacks[active].map((tech, idx) => (
             <motion.div
               key={tech.name}
-              className="bg-gray-800 border border-gray-700 rounded-xl p-4 text-center shadow hover:scale-105 transition-transform relative"
+              className="bg-gray-800 border border-gray-700 rounded-xl p-3 sm:p-4 text-center shadow hover:scale-105 transition-transform relative"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}

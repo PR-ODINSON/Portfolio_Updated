@@ -88,7 +88,7 @@ export default function Research() {
     <section 
       id="research" 
       ref={ref}
-      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-800 to-gray-900 py-28 px-6 lg:px-12"
+      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-800 to-gray-900 py-16 sm:py-20 lg:py-28 px-4 sm:px-6 lg:px-12"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
@@ -124,24 +124,24 @@ export default function Research() {
           variants={container}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
           <motion.div
-            className="flex items-center justify-center mb-6"
+            className="flex items-center justify-center mb-4 sm:mb-6"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <FaFlask className="text-4xl text-blue-400 mr-4" />
+            <FaFlask className="text-2xl sm:text-3xl lg:text-4xl text-blue-400 mr-2 sm:mr-4" />
             <motion.h2
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-indigo-600"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               Research
             </motion.h2>
-            <FaBookOpen className="text-4xl text-purple-400 ml-4" />
+            <FaBookOpen className="text-2xl sm:text-3xl lg:text-4xl text-purple-400 ml-2 sm:ml-4" />
           </motion.div>
           
           <motion.div
@@ -152,7 +152,7 @@ export default function Research() {
           />
           
           <motion.p
-            className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
+            className="mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-gray-300 max-w-3xl mx-auto px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 0.8 }}
@@ -164,7 +164,7 @@ export default function Research() {
 
         {/* Category Filter */}
         <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 px-4"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, delay: 1.2 }}
@@ -173,7 +173,7 @@ export default function Research() {
             <motion.button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full text-sm font-semibold transition-all border-2 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-semibold transition-all border-2 ${
                 selectedCategory === category
                   ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white border-transparent shadow-lg'
                   : 'bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-gray-700/50 hover:border-gray-500'
@@ -191,20 +191,20 @@ export default function Research() {
           variants={container}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="space-y-8"
+          className="space-y-6 sm:space-y-8"
         >
           {filteredPapers.map((paper) => (
             <motion.div
               key={paper.title}
               variants={paperVariants}
               whileHover="hover"
-              className="group relative rounded-2xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-xl"
+              className="group relative rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-xl"
             >
-              <div className="p-8">
+              <div className="p-4 sm:p-6 lg:p-8">
                 {/* Paper Header */}
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                         paper.category === 'Journal' ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' :
                         paper.category === 'Conference' ? 'bg-gradient-to-r from-blue-400 to-blue-600 text-white' :
@@ -216,11 +216,11 @@ export default function Research() {
                       <span className="text-sm text-gray-400 font-medium">{paper.year}</span>
                     </div>
                     
-                    <h3 className="text-xl lg:text-2xl font-bold text-white group-hover:text-blue-400 transition-colors mb-3 leading-tight">
+                    <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-white group-hover:text-blue-400 transition-colors mb-2 sm:mb-3 leading-tight">
                       {paper.title}
                     </h3>
                     
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-gray-400 mb-4">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
                       <span className="font-medium">Authors:</span>
                       {paper.authors.map((author, idx) => (
                         <span key={idx} className={author.includes('Prithviraj') ? 'text-blue-400 font-semibold' : ''}>
@@ -229,7 +229,7 @@ export default function Research() {
                       ))}
                     </div>
                     
-                    <div className="text-sm text-gray-400 mb-4">
+                    <div className="text-xs sm:text-sm text-gray-400 mb-3 sm:mb-4">
                       <span className="font-medium">Published in:</span> {paper.journal}
                     </div>
                   </div>
@@ -266,18 +266,18 @@ export default function Research() {
                 </motion.div>
 
                 {/* Actions */}
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
-                  <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 pt-3 sm:pt-4">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {paper.paperLink && (
                       <motion.a
                         href={paper.paperLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
+                        className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all shadow-lg"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <FaExternalLinkAlt className="w-4 h-4" />
+                        <FaExternalLinkAlt className="w-3 h-3 sm:w-4 sm:h-4" />
                         View Paper
                       </motion.a>
                     )}
@@ -285,7 +285,7 @@ export default function Research() {
 
                   <motion.button
                     onClick={() => setExpandedPaper(expandedPaper === paper.title ? null : paper.title)}
-                    className="text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                    className="text-xs sm:text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors"
                     whileHover={{ scale: 1.05 }}
                   >
                     {expandedPaper === paper.title ? 'Show Less' : 'Show More'}

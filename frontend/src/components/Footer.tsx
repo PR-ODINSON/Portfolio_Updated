@@ -37,13 +37,13 @@ const linkVariants = {
 
 export default function Footer() {
   return (
-    <footer className="mt-12 border-t border-[#8eecf5]/20 bg-gradient-to-t from-gray-900 to-gray-800">
+    <footer className="mt-8 sm:mt-12 border-t border-[#8eecf5]/20 bg-gradient-to-t from-gray-900 to-gray-800">
       <motion.div
         variants={container}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: '-100px' }}
-        className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 text-sm sm:flex-row"
+        className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:gap-6 px-4 sm:px-6 py-8 sm:py-12 text-xs sm:text-sm sm:flex-row"
       >
         <motion.span
           variants={item}
@@ -51,7 +51,7 @@ export default function Footer() {
         >
           © {new Date().getFullYear()} PRITHVIRAJ VERMA
         </motion.span>
-        <motion.div variants={item} className="flex gap-6">
+        <motion.div variants={item} className="flex gap-4 sm:gap-6">
           {[
             { href: 'https://github.com/PR-ODINSON', Icon: FaGithub, label: 'GitHub' },
             { href: 'https://www.linkedin.com/in/prithviraj-verma-b58707289/', Icon: FaLinkedin, label: 'LinkedIn' },
@@ -64,10 +64,10 @@ export default function Footer() {
               rel="noopener noreferrer"
               variants={linkVariants}
               whileHover="hover"
-              className="flex items-center gap-2 text-gray-500 transition-colors"
+              className="flex items-center gap-1 sm:gap-2 text-gray-500 transition-colors"
             >
-              <Icon className="h-5 w-5 text-[#8eecf5]" />
-              <span className="hidden sm:inline body-text text-transparent bg-clip-text gradient-text">
+              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-[#8eecf5]" />
+              <span className="hidden sm:inline body-text text-transparent bg-clip-text gradient-text text-xs sm:text-sm">
                 {label}
               </span>
             </motion.a>

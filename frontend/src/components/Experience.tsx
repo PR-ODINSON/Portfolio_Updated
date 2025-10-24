@@ -151,7 +151,7 @@ function ExperienceCard({ exp }: { exp: Experience }) {
 
 export default function ExperienceSection() {
   return (
-    <section id="experience" className="mx-auto w-full px-6 py-20 bg-gradient-to-b from-gray-800 to-gray-900">
+    <section id="experience" className="mx-auto w-full px-4 sm:px-6 py-16 sm:py-20 bg-gradient-to-b from-gray-800 to-gray-900">
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-100px' }}>
         <motion.div variants={item} className="text-center">
           <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 sm:text-4xl lg:text-5xl">

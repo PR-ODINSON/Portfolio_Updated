@@ -138,7 +138,7 @@ const routeConnections = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="mx-auto w-full px-4 py-24 bg-gradient-to-b from-gray-900 to-gray-800">
+    <section id="skills" className="mx-auto w-full px-4 sm:px-6 py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800">
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}

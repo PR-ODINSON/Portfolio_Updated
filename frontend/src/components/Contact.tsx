@@ -91,33 +91,33 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="mx-auto w-full px-4 py-24 bg-gradient-to-b from-gray-900 to-gray-800">
+    <section id="contact" className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-900 to-gray-800">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-center mb-16"
+        className="text-center mb-12 sm:mb-16"
       >
-            <h2 className="section-title text-4xl md:text-5xl mb-4 text-shadow">Let's Connect</h2>
-            <p className="body-text text-lg text-gray-300 max-w-2xl mx-auto">
+            <h2 className="section-title text-3xl sm:text-4xl md:text-5xl mb-3 sm:mb-4 text-shadow">Let's Connect</h2>
+            <p className="body-text text-base sm:text-lg text-gray-300 max-w-2xl mx-auto px-4">
               Ready to bring your ideas to life? Let's start a conversation about your next project.
             </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 max-w-7xl mx-auto">
         {/* Contact Info Cards */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="space-y-8"
+          className="space-y-6 sm:space-y-8"
         >
               <div>
-                <h3 className="card-title text-2xl mb-6 text-shadow">Get in Touch</h3>
-                <p className="body-text text-gray-300 mb-8">
+                <h3 className="card-title text-xl sm:text-2xl mb-4 sm:mb-6 text-shadow">Get in Touch</h3>
+                <p className="body-text text-sm sm:text-base text-gray-300 mb-6 sm:mb-8">
                   I'm always open to collaborations, research, and innovation discussions.
                   If you have an idea, project, or opportunity — let's make it real.
                 </p>
@@ -143,13 +143,13 @@ export default function Contact() {
                 }}
                 className="group"
               >
-                <div className="glass rounded-2xl p-6 flex items-center gap-4 transition-all duration-300 group-hover:shadow-lg">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${info.color} flex items-center justify-center`}>
-                    <info.icon className="w-6 h-6 text-white" />
+                <div className="glass rounded-xl sm:rounded-2xl p-4 sm:p-6 flex items-center gap-3 sm:gap-4 transition-all duration-300 group-hover:shadow-lg">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-gradient-to-r ${info.color} flex items-center justify-center`}>
+                    <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                       <div>
-                        <h4 className="contact-label text-white text-shadow">{info.title}</h4>
-                        <p className="body-text text-gray-300">{info.value}</p>
+                        <h4 className="contact-label text-sm sm:text-base text-white text-shadow">{info.title}</h4>
+                        <p className="body-text text-xs sm:text-sm text-gray-300">{info.value}</p>
                       </div>
                 </div>
               </motion.div>
@@ -165,20 +165,20 @@ export default function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-              <div className="glass rounded-3xl p-8">
-                <h3 className="card-title text-2xl mb-6 text-shadow">Send a Message</h3>
+              <div className="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8">
+                <h3 className="card-title text-xl sm:text-2xl mb-4 sm:mb-6 text-shadow">Send a Message</h3>
             
-            <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.1 }}
               >
-                    <label className="block text-sm contact-label text-gray-200 mb-2">Name</label>
+                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Name</label>
                 <input
                   {...register('name')}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300"
+                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300"
                   placeholder="Your full name"
                 />
                 {errors.name && (
@@ -198,11 +198,11 @@ export default function Contact() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.2 }}
               >
-                    <label className="block text-sm contact-label text-gray-200 mb-2">Email</label>
+                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Email</label>
                 <input
                   type="email"
                   {...register('email')}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300"
+                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300"
                   placeholder="your.email@example.com"
                 />
                 {errors.email && (
@@ -222,10 +222,10 @@ export default function Contact() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.25 }}
               >
-                    <label className="block text-sm contact-label text-gray-200 mb-2">Subject</label>
+                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Subject</label>
                 <input
                   {...register('subject')}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300"
+                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300"
                   placeholder="What's this about?"
                 />
                 {errors.subject && (
@@ -245,11 +245,11 @@ export default function Contact() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3 }}
               >
-                    <label className="block text-sm contact-label text-gray-200 mb-2">Message</label>
+                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Message</label>
                 <textarea
-                  rows={5}
+                  rows={4}
                   {...register('message')}
-                  className="w-full rounded-xl bg-white/5 border border-white/10 px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 resize-none"
+                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-300 resize-none"
                   placeholder="Tell me about your project..."
                 />
                 {errors.message && (
@@ -293,7 +293,7 @@ export default function Contact() {
                     }
                   }}
                   whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-8 py-3 brand-accent text-white transition-all duration-300 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 px-6 sm:px-8 py-3 text-sm sm:text-base brand-accent text-white transition-all duration-300 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>

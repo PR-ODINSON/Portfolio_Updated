@@ -138,7 +138,7 @@ export default function Navbar() {
         style={{ opacity: backgroundOpacity }}
       />
 
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
         {/* Left Navigation */}
         <div className="flex items-center gap-2">
           <div className="hidden lg:flex items-center gap-4 relative">
@@ -170,7 +170,7 @@ export default function Navbar() {
         {/* Center Logo */}
         <div className="flex justify-center">
           <Link to="/" className="group relative">
-            <div className="brand-display text-2xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-105">
+            <div className="brand-display text-xl sm:text-2xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-105">
               <span className="text-gray-300 drop-shadow-lg" 
                     style={{ 
                       fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
@@ -236,7 +236,7 @@ export default function Navbar() {
             ))}
           </div>
           
-          <div className="flex items-center gap-3 ml-4">
+          <div className="flex items-center gap-2 sm:gap-3 ml-2 sm:ml-4">
           <div className="hidden md:flex items-center gap-2">
             {socialIcons.map(({ Icon, label, href, color }, index) => (
               <motion.a
@@ -260,14 +260,14 @@ export default function Navbar() {
 
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <motion.button 
               onClick={() => setOpen((v) => !v)} 
               aria-label="Toggle menu"
               whileTap={{ scale: 0.9 }}
               className="p-2 text-white/70 hover:text-white"
             >
-              {open ? <X className="size-6" /> : <Menu className="size-6" />}
+              {open ? <X className="size-5 sm:size-6" /> : <Menu className="size-5 sm:size-6" />}
             </motion.button>
           </div>
           </div>
@@ -283,9 +283,9 @@ export default function Navbar() {
           scaleY: open ? 1 : 0.95
         }}
         transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="md:hidden overflow-hidden border-t border-white/15 bg-gray-900/90 backdrop-blur-lg"
+        className="lg:hidden overflow-hidden border-t border-white/15 bg-gray-900/90 backdrop-blur-lg"
       >
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-6 py-4">
+        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 sm:px-6 py-4">
           {navItems.map((item, idx) => (
             <motion.button
               key={item.id}

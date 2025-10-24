@@ -57,8 +57,8 @@ export default function Hero() {
         />
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen py-20">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center min-h-screen py-16 sm:py-20">
           <div className="order-2 lg:order-1">
             <motion.div
               variants={container}
@@ -77,14 +77,14 @@ export default function Hero() {
             <motion.h1
               variants={item}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="hero-title mt-3 gradient-text text-5xl sm:text-6xl lg:text-7xl"
+              className="hero-title mt-2 sm:mt-3 gradient-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
             >
               PRITHVIRAJ VERMA
             </motion.h1>
             <motion.p
               variants={item}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mt-6 text-lg hero-subtitle text-gray-100 sm:text-xl lg:text-2xl text-shadow"
+              className="mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl xl:text-2xl hero-subtitle text-gray-100 text-shadow"
             >
               As a passionate <span className="brand-accent text-[#8eecf5]">AI/ML Engineer</span> and <span className="brand-accent text-[#8eecf5]">Full-Stack Developer</span>, I create
               scalable, intelligent systems that bridge data-driven intelligence with seamless user
@@ -93,7 +93,7 @@ export default function Hero() {
             <motion.p
               variants={item}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mt-4 text-base brand-body text-gray-300 sm:text-lg"
+              className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg brand-body text-gray-300"
             >
               With expertise across AI, web technologies, and cloud deployment, I focus on transforming ideas 
               into production-grade innovation and making ML solutions scalable & accessible.
@@ -101,14 +101,14 @@ export default function Hero() {
             <motion.div
               variants={item}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mt-10 flex items-center justify-center lg:justify-start gap-x-6"
+              className="mt-6 sm:mt-8 lg:mt-10 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 lg:gap-6"
             >
               <motion.a
                 href="#projects"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="rounded-lg border-2 border-[#8eecf5] bg-[#8eecf5] px-7 py-3.5 text-sm brand-accent text-black transition-colors hover:bg-[#8eecf5]/90"
+                className="w-full sm:w-auto rounded-lg border-2 border-[#8eecf5] bg-[#8eecf5] px-6 sm:px-7 py-3 sm:py-3.5 text-sm brand-accent text-black transition-colors hover:bg-[#8eecf5]/90"
               >
                 View My Work
               </motion.a>
@@ -117,7 +117,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="rounded-lg border-2 border-[#8eecf5] px-7 py-3.5 text-sm brand-accent text-[#8eecf5] transition-colors hover:bg-[#8eecf5]/20 hover:text-white"
+                className="w-full sm:w-auto rounded-lg border-2 border-[#8eecf5] px-6 sm:px-7 py-3 sm:py-3.5 text-sm brand-accent text-[#8eecf5] transition-colors hover:bg-[#8eecf5]/20 hover:text-white"
               >
                 Get in Touch
               </motion.a>

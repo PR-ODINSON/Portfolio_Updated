@@ -229,3 +229,47 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #a8e6cf, #8eecf5);
 }
+
+/* Mobile-first responsive utilities */
+@media (max-width: 640px) {
+  .hero-title {
+    line-height: 1.1;
+  }
+  
+  .section-title {
+    line-height: 1.2;
+  }
+  
+  /* Ensure text doesn't overflow on small screens */
+  .text-responsive {
+    word-break: break-word;
+    hyphens: auto;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-title {
+    line-height: 1.05;
+  }
+}
+
+/* Touch-friendly interactive elements */
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+  
+  button, a {
+    min-height: 44px; /* Minimum touch target size */
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
