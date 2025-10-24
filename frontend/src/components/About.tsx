@@ -219,7 +219,7 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <motion.a
-              href="/resume.pdf"
+              href="/Prithviraj_resume_28-09.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
