@@ -247,13 +247,6 @@ npm run lint     # Run ESLint
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 📞 Contact
-
-**Prithviraj Verma**
-- 📧 Email: prithraj120@gmail.com
-- 💼 LinkedIn: [Your LinkedIn Profile]
-- 🐙 GitHub: [Your GitHub Profile]
-- 🌐 Portfolio: [Your Portfolio URL]
 
 ---
 
