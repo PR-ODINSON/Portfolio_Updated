@@ -169,8 +169,43 @@ export default function Navbar() {
 
         {/* Center Logo */}
         <div className="flex justify-center">
-          <Link to="/" className="brand-display text-2xl text-transparent bg-clip-text gradient-text text-shadow italic font-bold tracking-wider" style={{ fontFamily: 'Comic Sans MS, cursive' }}>
-            {'</PRITHVI>'}
+          <Link to="/" className="group relative">
+            <div className="brand-display text-2xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-105">
+              <span className="text-gray-300 drop-shadow-lg" 
+                    style={{ 
+                      fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
+                      fontWeight: '700',
+                      letterSpacing: '0.05em',
+                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1)'
+                    }}>
+                {'</'}
+              </span>
+              <span className="text-gray-200 drop-shadow-lg relative" 
+                    style={{ 
+                      fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
+                      fontWeight: '800',
+                      letterSpacing: '0.02em',
+                      textShadow: '0 2px 12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.15)',
+                      filter: 'brightness(1.1) contrast(1.2)'
+                    }}>
+                PRITHVI
+                {/* Subtle animated underline for the name */}
+                <div className="absolute -bottom-0.5 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-60 animate-pulse"></div>
+              </span>
+              <span className="text-gray-300 drop-shadow-lg" 
+                    style={{ 
+                      fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
+                      fontWeight: '700',
+                      letterSpacing: '0.05em',
+                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1)'
+                    }}>
+                {'>'}
+              </span>
+            </div>
+            {/* Animated underline effect */}
+            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 transition-all duration-500 group-hover:w-full"></div>
+            {/* Glow effect on hover */}
+            <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 blur-xl"></div>
           </Link>
         </div>
 
