@@ -1,0 +1,251 @@
+PRITHVIRAJ VERMA - Portfolio Documentation
+🚀 About Prithviraj Verma
+
+Prithviraj Verma is a passionate AI/ML Engineer and Full-Stack Developer dedicated to creating scalable, intelligent systems that bridge data-driven intelligence with seamless user experiences. With expertise across AI, web technologies, and cloud deployment, he focuses on transforming ideas into production-grade innovation.
+
+🎯 Professional Identity
+
+Primary Role: AI/ML Engineer & Full-Stack Developer
+
+Specialization: Machine Learning, Deep Learning, and SaaS-based Full-Stack Development
+
+Focus: Building intelligent, scalable, and cloud-deployed solutions
+
+📍 Contact Information
+
+Email: (your email here)
+
+Phone: (your number here)
+
+Location: Ahmedabad, Gujarat, India
+
+💼 Professional Experience
+🧠 AI/ML Engineer — Insolare Energy Pvt. Ltd., Ahmedabad
+
+Duration: March 2025 – Present
+
+Designing predictive ML models for solar energy optimization and fault detection
+
+Implemented real-time performance tracking and anomaly detection pipelines
+
+Collaborating on MLOps deployment with CI/CD for model lifecycle management
+
+Technologies: Python, TensorFlow, Scikit-learn, Docker, MLflow
+
+💻 AI/ML & Full-Stack Engineer — GarnetAI, Ireland
+
+Duration: April 2025 – July 2025
+
+Developed end-to-end AI-driven business automation systems
+
+Created full-stack dashboards integrating ML APIs with dynamic visualization
+
+Focused on scalable AI microservices with modular backend integration
+
+Technologies: React, TypeScript, FastAPI, PostgreSQL, AWS
+
+🔬 AI/ML Intern — MarkX AI Labs, Ahmedabad
+
+Duration: Jan 2025 – Present
+
+Developed reinforcement learning-based trading algorithms
+
+Deployed ML models on Telegram bot for real-time investment recommendations
+
+Achieved high prediction accuracy in financial pattern recognition
+
+Technologies: Python, RL, Scikit-learn, PyTorch
+
+🧩 Research Intern — IIT Delhi
+
+Duration: July 2024 – Oct 2024
+
+Worked on detection of sleep spindles and K-complexes using EEG & ECG signals
+
+Designed hybrid ML-DL architectures and published IEEE journal paper
+
+Technologies: CNN, TCN, LCNN, GRU, SHAP Explainability
+
+💡 Data Science Intern — Yads Technology Pvt. Ltd.
+
+Duration: May 2024 – July 2024
+
+Built analytics dashboards and optimized data APIs for faster decision-making
+
+Improved data processing pipelines by 40%
+
+Technologies: Python, Pandas, SQL, Power BI
+
+🛠️ Technical Skills & Expertise
+Programming Languages
+
+Python - 95%
+
+C++ - 90%
+
+JavaScript - 85%
+
+TypeScript - 80%
+
+SQL - 85%
+
+MATLAB - 75%
+
+Libraries & Frameworks
+
+React - 90%
+
+Next.js - 85%
+
+NestJS - 85%
+
+FastAPI / Flask - 85%
+
+Tailwind CSS - 90%
+
+TensorFlow / PyTorch - 90%
+
+Scikit-learn / Pandas / NumPy - 95%
+
+Machine Learning & AI
+
+Deep Learning (CNN, LSTM, GRU, TCN, ViT)
+
+Explainable AI (SHAP, LIME)
+
+Time-Series Forecasting
+
+Signal Processing (PPG, EEG)
+
+Model Deployment (MLflow, Docker, Streamlit)
+
+MLOps & CI/CD pipelines
+
+Tools & Platforms
+
+AWS, Docker, Git, PostgreSQL, MongoDB, Figma, Vite
+
+Blockchain (Basic Smart Contract Understanding)
+
+🏆 Areas of Expertise
+Machine Learning & AI
+
+10+ Deployed ML/DL Models
+
+Emotion and Insomnia Detection from PPG Signals
+
+Reinforcement Learning in Financial Markets
+
+Explainable AI for Biomedical Applications
+
+Full-Stack Development
+
+12+ SaaS & Dashboard Projects
+
+Next.js + NestJS + PostgreSQL architecture
+
+API design and integration with scalable backend services
+
+Cloud & Deployment
+
+AWS EC2 & S3 for scalable deployments
+
+CI/CD pipelines for ML models and SaaS apps
+
+Docker & MLflow for versioned model management
+
+Research & Publications
+
+4 IEEE Journal Publications
+
+3 International Conference Papers
+
+Topics: Biomedical AI, Sleep Analysis, Explainable AI, Deep Signal Learning
+
+🚀 Featured Projects
+1. CareerBuddy — AI-Powered Resume & Career Assistant (SaaS)
+
+Description: AI-driven career platform that parses resumes, provides job suggestions, and matches candidates using ML models.
+Tech: Next.js, NestJS, PostgreSQL, Python, ML APIs
+GitHub: https://github.com/PR-ODINSON/CareerBuddy
+
+2. Industry-Level AI Attendance System
+
+Description: Real-time face recognition attendance system with live video feed processing and database integration.
+Tech: OpenCV, Flask, SQL, React
+GitHub: https://github.com/PR-ODINSON/Attendance-System
+
+3. AI-Powered Telemedicine System
+
+Description: Healthcare system with AI chatbot for diagnosis, e-prescriptions, and doctor consultations.
+Tech: AI/ML, NLP, React, Node.js, MongoDB
+GitHub: https://github.com/PR-ODINSON/TeleMedicine-SIH
+
+4. AscendOS — Intelligent Productivity & Automation Suite
+
+Description: A personalized AI workspace designed to automate daily workflow tasks using embedded ML modules.
+Tech: Next.js, Tailwind CSS, Flask, OpenAI API
+GitHub: https://github.com/PR-ODINSON/Solo_leveling
+
+5. Research Work
+
+Automatic Detection of K-complexes using Deep Learning (IEEE)
+
+Insomnia Detection from PPG Signals using Hybrid CNN-ViT Architecture
+
+Sleep Spindle Detection using ECG and EEG Signals (Under Review)
+
+Explainable AI for Biomedical Applications
+
+🌟 Key Achievements & Recognition
+
+🏅 4+ Hackathon Wins – IIT Bombay, Odoo Hackathon, Flux ‘25, IITRAM
+
+🧠 4 IEEE Journal Papers & 3 Conference Papers Published
+
+👨‍🏫 Mentor at Unstop — guiding students in AI/ML
+
+🌐 10K+ LinkedIn Followers
+
+🎯 Coordinator of 3+ Clubs at IITRAM — Tekstra (Coding Club), CDC, Alumni Relations
+
+🎯 Professional Philosophy
+
+Prithviraj believes in "Engineering Intelligence That Empowers" by:
+
+Building explainable, impactful AI systems
+
+Making ML solutions scalable & accessible
+
+Designing elegant and user-centric products
+
+Innovating through real-world research and application
+
+📱 Social Media & Professional Links
+
+(You will fill these manually)
+
+GitHub: [your GitHub link]
+
+LinkedIn: [your LinkedIn link]
+
+Twitter/X: [your handle]
+
+Instagram: [optional]
+
+🚀 Current Focus Areas
+
+Biomedical AI & Explainable ML
+
+MLOps & Cloud Deployment
+
+SaaS Product Engineering
+
+Reinforcement Learning Applications
+
+Human-Centric AI Systems
+
+📧 Get In Touch
+
+Prithviraj is always open to collaborations, research, and innovation discussions.
+If you have an idea, project, or opportunity — let’s make it real.
