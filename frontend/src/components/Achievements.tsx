@@ -139,6 +139,8 @@ const cardVariants = {
 
 export default function Achievements() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [isPaused, setIsPaused] = useState(false)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
@@ -152,7 +154,7 @@ export default function Achievements() {
     <section 
       id="achievements" 
       ref={ref}
-      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800 py-12 sm:py-16 px-4 sm:px-6 lg:px-12"
+      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800 section-padding"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
@@ -182,26 +184,27 @@ export default function Achievements() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto">
+      <div className="section-container">
         {/* Header with Sword Animation */}
         <motion.div
           variants={container}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
         >
           <motion.div
             variants={swordVariants}
             className="flex items-center justify-center mb-6"
           >
             <motion.div
-              className="w-2 h-20 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full mr-4"
+              className="w-2 h-16 sm:h-20 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full mr-3 sm:mr-4"
               initial={{ scaleY: 0 }}
               animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             />
             <motion.h2
-              className="text-5xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500"
+              className="heading-lg gradient-text"
+              style={{ backgroundImage: 'linear-gradient(to right, #fbbf24, #f97316, #ef4444)' }}
               initial={{ opacity: 0, x: 50 }}
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -209,7 +212,7 @@ export default function Achievements() {
               Achievements
             </motion.h2>
             <motion.div
-              className="w-2 h-20 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full ml-4"
+              className="w-2 h-16 sm:h-20 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full ml-3 sm:ml-4"
               initial={{ scaleY: 0 }}
               animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
               transition={{ duration: 0.8, delay: 0.7 }}
@@ -224,7 +227,7 @@ export default function Achievements() {
           />
           
           <motion.p
-            className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto"
+            className="body-lg text-gray-300 max-w-3xl mx-auto mt-6"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.8, delay: 1 }}
@@ -235,7 +238,7 @@ export default function Achievements() {
 
         {/* Category Filter */}
         <motion.div
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10 sm:mb-12"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, delay: 1.2 }}
@@ -244,7 +247,7 @@ export default function Achievements() {
             <motion.button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-6 py-3 rounded-full text-sm font-semibold transition-all border-2 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-semibold transition-all border-2 ${
                 selectedCategory === category
                   ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-black border-transparent shadow-lg'
                   : 'bg-gray-800/50 border-gray-600 text-gray-300 hover:bg-gray-700/50 hover:border-gray-500'
@@ -262,68 +265,54 @@ export default function Achievements() {
           variants={container}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="relative overflow-hidden"
+          className="relative overflow-hidden py-8"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
           {/* Infinite Scrolling Container */}
           <motion.div
-            className="flex gap-6"
+            className="flex gap-6 items-start"
             animate={{
-              x: [0, -100 * filteredAchievements.length]
+              x: isPaused ? undefined : [0, -(456 * filteredAchievements.length)]
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: filteredAchievements.length * 3,
+                duration: filteredAchievements.length * 4,
                 ease: "linear",
               },
             }}
           >
-            {/* First set of achievements */}
-            {filteredAchievements.map((achievement, index) => (
+            {/* First set */}
+            {filteredAchievements.map((achievement) => (
               <motion.div
                 key={`first-${achievement.title}`}
                 variants={cardVariants}
                 whileHover="hover"
-                className="group relative flex-shrink-0 w-80 h-96 rounded-2xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-xl"
+                onClick={() => setSelectedImage(achievement.image)}
+                className="group relative flex-shrink-0 w-[450px] rounded-2xl bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-2xl cursor-pointer"
               >
-                {/* Achievement Image */}
-                <div className="relative h-full overflow-hidden">
+                {/* Image Container with Fixed Aspect */}
+                <div className="relative w-full h-[300px] overflow-hidden bg-gray-900">
                   <img
                     src={achievement.image}
                     alt={achievement.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-all duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent" />
                   
                   {/* Category Badge */}
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full">
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className="px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full shadow-lg">
                       {achievement.category}
                     </span>
                   </div>
 
                   {/* Icon */}
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4 z-10">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
                       <achievement.icon className="w-6 h-6 text-black" />
                     </div>
-                  </div>
-
-                  {/* Content Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <div className="mb-2">
-                      <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors mb-1">
-                        {achievement.title}
-                      </h3>
-                      <span className="text-sm text-gray-300 font-medium">
-                        {achievement.date}
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
-                      {achievement.description}
-                    </p>
                   </div>
 
                   {/* Sword Slash Effect */}
@@ -340,54 +329,54 @@ export default function Achievements() {
                     />
                   </motion.div>
                 </div>
+
+                {/* Content Section */}
+                <div className="p-5 bg-gradient-to-b from-gray-800/80 to-gray-900/90">
+                  <div className="mb-2">
+                    <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors mb-1.5 line-clamp-2">
+                      {achievement.title}
+                    </h3>
+                    <span className="text-sm text-yellow-400 font-medium">
+                      {achievement.date}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">
+                    {achievement.description}
+                  </p>
+                </div>
               </motion.div>
             ))}
             
-            {/* Duplicate set for seamless loop */}
-            {filteredAchievements.map((achievement, index) => (
+            {/* Second set for seamless loop */}
+            {filteredAchievements.map((achievement) => (
               <motion.div
                 key={`second-${achievement.title}`}
                 variants={cardVariants}
                 whileHover="hover"
-                className="group relative flex-shrink-0 w-80 h-96 rounded-2xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-xl"
+                onClick={() => setSelectedImage(achievement.image)}
+                className="group relative flex-shrink-0 w-[450px] rounded-2xl bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-2xl cursor-pointer"
               >
-                {/* Achievement Image */}
-                <div className="relative h-full overflow-hidden">
+                {/* Image Container with Fixed Aspect */}
+                <div className="relative w-full h-[300px] overflow-hidden bg-gray-900">
                   <img
                     src={achievement.image}
                     alt={achievement.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-all duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent" />
                   
                   {/* Category Badge */}
-                  <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full">
+                  <div className="absolute top-4 right-4 z-10">
+                    <span className="px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full shadow-lg">
                       {achievement.category}
                     </span>
                   </div>
 
                   {/* Icon */}
-                  <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4 z-10">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
                       <achievement.icon className="w-6 h-6 text-black" />
                     </div>
-                  </div>
-
-                  {/* Content Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <div className="mb-2">
-                      <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors mb-1">
-                        {achievement.title}
-                      </h3>
-                      <span className="text-sm text-gray-300 font-medium">
-                        {achievement.date}
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-300 text-sm leading-relaxed line-clamp-3">
-                      {achievement.description}
-                    </p>
                   </div>
 
                   {/* Sword Slash Effect */}
@@ -403,15 +392,66 @@ export default function Achievements() {
                       transition={{ duration: 0.6, ease: 'easeInOut' }}
                     />
                   </motion.div>
+                </div>
+
+                {/* Content Section */}
+                <div className="p-5 bg-gradient-to-b from-gray-800/80 to-gray-900/90">
+                  <div className="mb-2">
+                    <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors mb-1.5 line-clamp-2">
+                      {achievement.title}
+                    </h3>
+                    <span className="text-sm text-yellow-400 font-medium">
+                      {achievement.date}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">
+                    {achievement.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Gradient Overlays for Seamless Effect */}
-          <div className="absolute left-0 top-0 w-20 h-full bg-gradient-to-r from-gray-900 to-transparent pointer-events-none z-10"></div>
-          <div className="absolute right-0 top-0 w-20 h-full bg-gradient-to-l from-gray-900 to-transparent pointer-events-none z-10"></div>
+          {/* Gradient Overlays */}
+          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-gray-800 via-gray-800/50 to-transparent pointer-events-none z-10"></div>
+          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-gray-800 via-gray-800/50 to-transparent pointer-events-none z-10"></div>
         </motion.div>
+
+        {/* Full Size Image Modal */}
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 cursor-pointer"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25 }}
+              className="relative max-w-6xl max-h-[90vh] w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={selectedImage}
+                alt="Achievement Full Size"
+                className="w-full h-full object-contain rounded-lg shadow-2xl"
+              />
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold rounded-full shadow-lg flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110"
+              >
+                ×
+              </button>
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-gray-900/80 backdrop-blur-sm text-white text-sm rounded-full">
+                Click anywhere to close
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
 
       </div>
     </section>

@@ -126,16 +126,17 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="mx-auto w-full px-4 sm:px-6 py-12 sm:py-16 bg-gradient-to-b from-gray-800 to-gray-900"
+      className="section-padding bg-gradient-to-b from-gray-800 to-gray-900"
     >
       <motion.div
         variants={container}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: '-100px' }}
+        className="section-container"
       >
-        <motion.div variants={item} className="text-center">
-          <h2 className="heading text-3xl sm:text-4xl lg:text-5xl text-transparent bg-clip-text gradient-text text-shadow-lg">
+        <motion.div variants={item} className="text-center mb-12 sm:mb-16">
+          <h2 className="heading-lg gradient-text">
             My Projects
           </h2>
           <motion.div
@@ -143,12 +144,12 @@ export default function Projects() {
             whileInView={{ width: 160, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mx-auto mt-3 h-1 rounded-full bg-gradient-to-r from-blue-500 to-orange-500"
+            className="mx-auto mt-3 h-1 rounded-full bg-gradient-to-r from-[#a8a8a8] to-white"
           />
         </motion.div>
 
         {/* Project Navigation */}
-        <div className="mt-10 sm:mt-14 relative">
+        <div className="mt-8 sm:mt-12 relative">
           {/* Main Project Display */}
           <AnimatePresence mode="wait">
             <motion.article
@@ -161,10 +162,10 @@ export default function Projects() {
                 ease: [0.25, 0.46, 0.45, 0.94],
                 rotateY: { duration: 0.8 }
               }}
-              className="rounded-2xl sm:rounded-3xl bg-white/5 p-2 sm:p-3 shadow-2xl"
+              className="rounded-xl sm:rounded-2xl lg:rounded-3xl bg-white/5 p-2 sm:p-3 shadow-2xl"
             >
-              <div className="rounded-xl sm:rounded-[22px] border border-white/15 bg-black/40 p-3 sm:p-4">
-                <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2">
+              <div className="card border border-white/15 bg-black/40 p-3 sm:p-4 lg:p-6">
+                <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2 items-center">
                   {/* Project image */}
                   <motion.div 
                     className="relative"
@@ -172,39 +173,39 @@ export default function Projects() {
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
-                    <div className="rounded-2xl border border-white/15 bg-white/5 p-2 shadow-inner">
+                    <div className="rounded-lg sm:rounded-xl lg:rounded-2xl border border-white/15 bg-white/5 p-2 shadow-inner">
                       <img
                         src={currentProject.image}
                         alt={currentProject.title}
-                        className="aspect-video w-full rounded-xl object-cover"
+                        className="aspect-video w-full rounded-lg sm:rounded-xl object-cover"
                       />
                     </div>
-                    <div className="pointer-events-none absolute -inset-2 rounded-[26px] ring-1 ring-white/10" />
+                    <div className="pointer-events-none absolute -inset-2 rounded-xl sm:rounded-2xl ring-1 ring-white/10" />
                   </motion.div>
 
                   {/* Content */}
                   <motion.div 
-                    className="flex flex-col justify-center"
+                    className="flex flex-col justify-center space-y-3 sm:space-y-4"
                     initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3, duration: 0.5 }}
                   >
-                    <h3 className="heading text-xl sm:text-2xl lg:text-3xl text-gray-100 text-shadow">
+                    <h3 className="heading-sm text-gray-100">
                       {currentProject.title}
                     </h3>
-                    <p className="body-text mt-3 sm:mt-4 text-sm sm:text-[15px] leading-6 sm:leading-7 text-gray-300">
+                    <p className="body-base text-gray-300">
                       {currentProject.description}
                     </p>
 
                     {/* Tech badges */}
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-2">
                       {currentProject.tech.map((tech, idx) => (
                         <motion.span
                           key={tech}
                           initial={{ scale: 0, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ delay: 0.4 + idx * 0.1, duration: 0.3 }}
-                          className="rounded-full bg-white/10 px-3 py-0.5 text-xs body-semibold text-[#8eecf5]"
+                          className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-cyan-400"
                         >
                           {tech}
                         </motion.span>
@@ -213,7 +214,7 @@ export default function Projects() {
 
                     {/* Buttons */}
                     <motion.div 
-                      className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4"
+                      className="flex flex-wrap gap-3"
                       initial={{ y: 20, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.5, duration: 0.4 }}
@@ -223,7 +224,7 @@ export default function Projects() {
                         variants={buttonVariants}
                         whileHover="hover"
                         whileTap="tap"
-                        className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 sm:px-5 py-2 text-xs sm:text-sm body-semibold text-gray-900 shadow hover:bg-white"
+                        className="btn bg-white/90 text-gray-900 hover:bg-white inline-flex items-center gap-2 shadow"
                         onClick={(e) => {
                           e.preventDefault()
                           setOpen(currentProject)
@@ -242,7 +243,7 @@ export default function Projects() {
                           whileTap="tap"
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 sm:px-5 py-2 text-xs sm:text-sm body-semibold text-white/90 hover:bg-white/10"
+                          className="btn border border-white/30 text-white/90 hover:bg-white/10 inline-flex items-center gap-2"
                         >
                           GitHub
                         </motion.a>
@@ -268,18 +269,18 @@ export default function Projects() {
           </AnimatePresence>
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-center mt-6 sm:mt-8 gap-4 sm:gap-6">
+          <div className="flex items-center justify-center mt-6 sm:mt-8 gap-3 sm:gap-6">
             <motion.button
               onClick={prevProject}
               whileHover={{ 
-                scale: 1.1, 
-                boxShadow: "0 0 20px rgba(142, 236, 245, 0.5)",
+                scale: 1.05, 
+                boxShadow: "0 0 20px rgba(6, 182, 212, 0.5)",
                 rotate: -5
               }}
               whileTap={{ scale: 0.9 }}
-              className="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group relative w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <FaChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 text-white group-hover:text-yellow-300 transition-colors" />
+              <FaChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white group-hover:text-cyan-100 transition-colors" />
               <motion.div
                 className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20"
                 initial={{ scale: 0 }}
@@ -289,18 +290,19 @@ export default function Projects() {
             </motion.button>
 
             {/* Project Indicators */}
-            <div className="flex gap-2">
+            <div className="flex gap-1.5 sm:gap-2">
               {projects.map((_, idx) => (
                 <motion.button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.8 }}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                     idx === currentIndex 
-                      ? 'bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg' 
+                      ? 'bg-gradient-to-r from-cyan-400 to-blue-500 shadow-lg w-6 sm:w-8' 
                       : 'bg-white/30 hover:bg-white/50'
                   }`}
+                  aria-label={`Go to project ${idx + 1}`}
                 />
               ))}
             </div>
@@ -308,14 +310,14 @@ export default function Projects() {
             <motion.button
               onClick={nextProject}
               whileHover={{ 
-                scale: 1.1, 
-                boxShadow: "0 0 20px rgba(142, 236, 245, 0.5)",
+                scale: 1.05, 
+                boxShadow: "0 0 20px rgba(6, 182, 212, 0.5)",
                 rotate: 5
               }}
               whileTap={{ scale: 0.9 }}
-              className="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
+              className="group relative w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <FaChevronRight className="w-4 h-4 sm:w-6 sm:h-6 text-white group-hover:text-yellow-300 transition-colors" />
+              <FaChevronRight className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white group-hover:text-cyan-100 transition-colors" />
               <motion.div
                 className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-20"
                 initial={{ scale: 0 }}
@@ -332,7 +334,7 @@ export default function Projects() {
       <AnimatePresence>
         {open && (
           <motion.div
-            className="fixed inset-0 z-50 grid place-items-center bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 z-50 grid place-items-center bg-black/70 backdrop-blur-sm p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -344,7 +346,7 @@ export default function Projects() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               transition={{ duration: 0.7, ease: 'easeOut' }}
-              className="w-[min(95vw,900px)] rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm p-4 sm:p-6 lg:p-8 shadow-2xl"
+              className="w-full max-w-4xl card backdrop-blur-sm card-padding shadow-2xl max-h-[90vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <h3 className="heading text-lg sm:text-xl lg:text-2xl text-white text-shadow">
@@ -364,7 +366,7 @@ export default function Projects() {
                 {open?.tech.map((tech) => (
                   <span
                     key={tech}
-                    className="rounded-full bg-white/10 px-3 py-0.5 text-xs body-semibold text-[#8eecf5]"
+                    className="rounded-full bg-white/10 px-3 py-0.5 text-xs body-semibold text-cyan-400"
                   >
                     {tech}
                   </span>

@@ -6,7 +6,6 @@ import { Link, NavLink } from 'react-router-dom'
 const navItems = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
   { id: 'projects', label: 'Projects' },
   { id: 'achievements', label: 'Achievements' },
   { id: 'research', label: 'Research' },
@@ -138,13 +137,13 @@ export default function Navbar() {
         style={{ opacity: backgroundOpacity }}
       />
 
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
         {/* Left Navigation */}
         <div className="flex items-center gap-2">
           <div className="hidden lg:flex items-center gap-4 relative">
             <motion.span 
               ref={leftUnderlineRef} 
-              className="absolute bottom-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 ease-out" 
+              className="absolute bottom-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ease-out" 
               initial={{ width: 0 }}
             />
             {navItems.slice(0, 3).map((item) => (
@@ -203,7 +202,7 @@ export default function Navbar() {
               </span>
             </div>
             {/* Animated underline effect */}
-            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-400 transition-all duration-500 group-hover:w-full"></div>
+            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-500 group-hover:w-full"></div>
             {/* Glow effect on hover */}
             <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 blur-xl"></div>
           </Link>
@@ -214,7 +213,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-4 relative">
             <motion.span 
               ref={rightUnderlineRef} 
-              className="absolute bottom-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 ease-out" 
+              className="absolute bottom-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ease-out" 
               initial={{ width: 0 }}
             />
             {navItems.slice(3).map((item) => (
@@ -293,7 +292,7 @@ export default function Navbar() {
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.1 * idx, type: 'spring', stiffness: 100 }}
-              className="text-left text-sm font-semibold py-3 px-4 rounded-lg hover:bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-white/80 hover:text-white transition-all"
+              className="text-left text-sm font-semibold py-3 px-4 rounded-lg hover:bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-white/80 hover:text-white transition-all"
             >
               {item.label}
             </motion.button>

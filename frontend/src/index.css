@@ -1,5 +1,6 @@
 @import "./fonts.css";
 @import "tailwindcss";
+
 /* Smooth scrolling for in-page navigation */
 html {
   scroll-behavior: smooth;
@@ -9,7 +10,7 @@ html {
 /* App base layout */
 body {
   overflow-x: hidden;
-  background: linear-gradient(180deg, #0b132b 0%, #1c2541 60%, #3a506b 100%);
+  background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 60%, #404040 100%);
   color: #e5e7eb;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -18,16 +19,86 @@ body {
   line-height: 1.6;
 }
 
+/* Consistent Container System */
+.section-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-narrow {
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Standardized Section Spacing */
+.section-padding {
+  @apply py-16 sm:py-20 lg:py-24;
+}
+
+.section-padding-sm {
+  @apply py-12 sm:py-16 lg:py-20;
+}
+
+/* Responsive Typography Scale */
+.heading-xl {
+  @apply text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight;
+}
+
+.heading-lg {
+  @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
+}
+
+.heading-md {
+  @apply text-2xl sm:text-3xl lg:text-4xl font-semibold leading-tight;
+}
+
+.heading-sm {
+  @apply text-xl sm:text-2xl lg:text-3xl font-semibold leading-snug;
+}
+
+.body-lg {
+  @apply text-base sm:text-lg lg:text-xl leading-relaxed;
+}
+
+.body-base {
+  @apply text-sm sm:text-base lg:text-lg leading-relaxed;
+}
+
+/* Card System */
+.card {
+  @apply rounded-xl sm:rounded-2xl bg-gray-800/90 border border-gray-700/50 backdrop-blur-sm;
+}
+
+.card-padding {
+  @apply p-4 sm:p-6 lg:p-8;
+}
+
+/* Button System */
+.btn {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white hover:from-cyan-600 hover:to-blue-700 shadow-lg;
+}
+
+.btn-secondary {
+  @apply border-2 border-cyan-500 text-cyan-400 hover:bg-cyan-500/20 hover:text-white;
+}
+
 /* Glass effect utility */
 .glass {
-  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-lg; 
+  @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-lg;
+}
+
+/* Gradient Text Utility */
+.gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600;
 }
 
 /* Theme tokens */
 :root {
-  --brand-primary: #8eecf5;  /* cyan highlight from hero */
+  --brand-primary: #a8a8a8;  /* grey highlight */
   --brand-accent: #ffffff;   /* white */
-  --brand-dark: #0b132b;     /* dark base */
+  --brand-dark: #1a1a1a;     /* dark base */
 }
 
 /* Premium Typography System with Custom Fonts */
@@ -197,7 +268,7 @@ body {
 }
 
 .gradient-text-secondary {
-  background: linear-gradient(135deg, #8eecf5, #a8e6cf, #ffd3a5);
+  background: linear-gradient(135deg, #a8a8a8, #c0c0c0, #d3d3d3);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -222,12 +293,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #8eecf5, #a8e6cf);
+  background: linear-gradient(180deg, #a8a8a8, #c0c0c0);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #a8e6cf, #8eecf5);
+  background: linear-gradient(180deg, #c0c0c0, #a8a8a8);
 }
 
 /* Mobile-first responsive utilities */

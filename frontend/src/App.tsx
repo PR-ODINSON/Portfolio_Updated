@@ -27,7 +27,6 @@ function App() {
                   <Hero />
                   <About />
                   <Experience />
-                  <Skills />
                   <Projects />
                   <Achievements />
                   <Research />
@@ -50,7 +49,6 @@ function App() {
                 <>
                   <PageTransition />
                   <Skills />
-                 
                 </>
               }
             />
@@ -60,6 +58,24 @@ function App() {
                 <>
                   <PageTransition />
                   <Projects />
+                </>
+              }
+            />
+            <Route
+              path="/achievements"
+              element={
+                <>
+                  <PageTransition />
+                  <Achievements />
+                </>
+              }
+            />
+            <Route
+              path="/research"
+              element={
+                <>
+                  <PageTransition />
+                  <Research />
                 </>
               }
             />

@@ -64,9 +64,9 @@ export default function Footer() {
               rel="noopener noreferrer"
               variants={linkVariants}
               whileHover="hover"
-              className="flex items-center gap-1 sm:gap-2 text-gray-500 transition-colors"
+              className="flex items-center gap-2 text-gray-500 transition-colors"
             >
-              <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-[#8eecf5]" />
+              <Icon className="h-5 w-5 text-cyan-400" />
               <span className="hidden sm:inline body-text text-transparent bg-clip-text gradient-text text-xs sm:text-sm">
                 {label}
               </span>
