@@ -11,6 +11,16 @@ type Achievement = {
   date: string
 }
 
+const CATEGORY_COLOR: Record<string, { badge: string; glow: string; border: string }> = {
+  Competition: { badge: 'from-red-500 to-orange-500',   glow: 'rgba(239,68,68,0.25)',    border: '#ef4444' },
+  Hackathon:   { badge: 'from-amber-400 to-yellow-500', glow: 'rgba(251,191,36,0.25)',   border: '#fbbf24' },
+  Leadership:  { badge: 'from-blue-500 to-indigo-500',  glow: 'rgba(99,102,241,0.25)',   border: '#6366f1' },
+  Research:    { badge: 'from-violet-500 to-purple-600',glow: 'rgba(139,92,246,0.25)',   border: '#8b5cf6' },
+  Academic:    { badge: 'from-emerald-500 to-teal-500', glow: 'rgba(16,185,129,0.25)',   border: '#10b981' },
+  Coding:      { badge: 'from-cyan-500 to-blue-500',    glow: 'rgba(6,182,212,0.25)',    border: '#06b6d4' },
+}
+const defaultColor = { badge: 'from-gray-500 to-gray-600', glow: 'rgba(156,163,175,0.2)', border: '#9ca3af' }
+
 const achievements: Achievement[] = [
   {
     title: '1st Runner Up - IIT Bombay Techfest',
@@ -185,55 +195,31 @@ export default function Achievements() {
       </div>
 
       <div className="section-container">
-        {/* Header with Sword Animation */}
+        {/* Header */}
         <motion.div
-          variants={container}
-          initial="hidden"
-          animate={isInView ? "show" : "hidden"}
           className="text-center mb-12 sm:mb-16"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.7 }}
         >
-          <motion.div
-            variants={swordVariants}
-            className="flex items-center justify-center mb-6"
-          >
-            <motion.div
-              className="w-2 h-16 sm:h-20 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full mr-3 sm:mr-4"
-              initial={{ scaleY: 0 }}
-              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-            />
-            <motion.h2
-              className="heading-lg gradient-text"
-              style={{ backgroundImage: 'linear-gradient(to right, #fbbf24, #f97316, #ef4444)' }}
-              initial={{ opacity: 0, x: 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+          <h2 className="heading-lg text-white">
+            My{' '}
+            <span
+              className="gradient-text"
+              style={{ backgroundImage: 'linear-gradient(90deg,#fbbf24,#f97316)' }}
             >
               Achievements
-            </motion.h2>
-            <motion.div
-              className="w-2 h-16 sm:h-20 bg-gradient-to-b from-yellow-400 to-orange-500 rounded-full ml-3 sm:ml-4"
-              initial={{ scaleY: 0 }}
-              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-            />
-          </motion.div>
-          
+            </span>
+          </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            animate={isInView ? { width: 200, opacity: 1 } : { width: 0, opacity: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="mx-auto h-1 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500"
+            animate={isInView ? { width: 160, opacity: 1 } : { width: 0, opacity: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mx-auto mt-3 h-0.5 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500"
           />
-          
-          <motion.p
-            className="body-lg text-gray-300 max-w-3xl mx-auto mt-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 1 }}
-          >
-            A collection of milestones, recognitions, and victories that showcase my journey in technology and innovation
-          </motion.p>
+          <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
+            {achievements.length} milestones across competitions, research, leadership & more
+          </p>
         </motion.div>
 
         {/* Category Filter */}
@@ -289,123 +275,115 @@ export default function Achievements() {
               <motion.div
                 key={`first-${achievement.title}`}
                 variants={cardVariants}
-                whileHover="hover"
                 onClick={() => setSelectedImage(achievement.image)}
-                className="group relative flex-shrink-0 w-[450px] rounded-2xl bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-2xl cursor-pointer"
+                className="group relative flex-shrink-0 w-[380px] rounded-2xl bg-gray-900/80 backdrop-blur-sm border border-gray-700/60 overflow-hidden shadow-xl cursor-pointer transition-all duration-300"
+                style={{
+                  borderLeft: `3px solid ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}50`,
+                }}
+                whileHover={{
+                  y: -8,
+                  borderColor: (CATEGORY_COLOR[achievement.category] ?? defaultColor).border,
+                  boxShadow: `0 20px 40px ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).glow}`,
+                }}
               >
-                {/* Image Container with Fixed Aspect */}
-                <div className="relative w-full h-[300px] overflow-hidden bg-gray-900">
+                {/* Image */}
+                <div className="relative w-full h-[240px] overflow-hidden bg-gray-950">
                   <img
                     src={achievement.image}
                     alt={achievement.title}
-                    className="w-full h-full object-contain transition-all duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full shadow-lg">
+                  {/* dark gradient at bottom for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/30 to-transparent" />
+
+                  {/* Category badge — category-specific colour */}
+                  <div className="absolute top-3 right-3 z-10">
+                    <span className={`px-2.5 py-1 bg-gradient-to-r ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).badge} text-white text-[10px] font-bold rounded-full shadow-lg`}>
                       {achievement.category}
                     </span>
                   </div>
 
                   {/* Icon */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
-                      <achievement.icon className="w-6 h-6 text-black" />
+                  <div className="absolute top-3 left-3 z-10">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center shadow-lg"
+                      style={{ background: `linear-gradient(135deg, ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}, ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}aa)` }}
+                    >
+                      <achievement.icon className="w-4 h-4 text-white" />
                     </div>
                   </div>
 
-                  {/* Sword Slash Effect */}
+                  {/* Shimmer sweep on hover */}
                   <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  >
-                    <motion.div
-                      className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
-                      initial={{ x: '-100%' }}
-                      whileHover={{ x: '100%' }}
-                      transition={{ duration: 0.6, ease: 'easeInOut' }}
-                    />
-                  </motion.div>
+                    className="absolute top-0 left-0 w-full h-0.5 pointer-events-none"
+                    style={{ background: `linear-gradient(90deg, transparent, ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}, transparent)` }}
+                    initial={{ x: '-100%' }}
+                    whileHover={{ x: '100%' }}
+                    transition={{ duration: 0.7, ease: 'easeInOut' }}
+                  />
                 </div>
 
-                {/* Content Section */}
-                <div className="p-5 bg-gradient-to-b from-gray-800/80 to-gray-900/90">
-                  <div className="mb-2">
-                    <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors mb-1.5 line-clamp-2">
-                      {achievement.title}
-                    </h3>
-                    <span className="text-sm text-yellow-400 font-medium">
-                      {achievement.date}
-                    </span>
-                  </div>
-                  
-                  <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">
+                {/* Content */}
+                <div className="p-4">
+                  <h3 className="text-sm font-bold text-white group-hover:text-yellow-300 transition-colors mb-1 line-clamp-2 leading-snug">
+                    {achievement.title}
+                  </h3>
+                  <span
+                    className="text-[11px] font-semibold"
+                    style={{ color: (CATEGORY_COLOR[achievement.category] ?? defaultColor).border }}
+                  >
+                    {achievement.date}
+                  </span>
+                  <p className="mt-1.5 text-gray-400 text-xs leading-relaxed line-clamp-2">
                     {achievement.description}
                   </p>
                 </div>
               </motion.div>
             ))}
-            
+
             {/* Second set for seamless loop */}
             {filteredAchievements.map((achievement) => (
               <motion.div
                 key={`second-${achievement.title}`}
                 variants={cardVariants}
-                whileHover="hover"
                 onClick={() => setSelectedImage(achievement.image)}
-                className="group relative flex-shrink-0 w-[450px] rounded-2xl bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-sm border border-gray-700/50 overflow-hidden shadow-2xl cursor-pointer"
+                className="group relative flex-shrink-0 w-[380px] rounded-2xl bg-gray-900/80 backdrop-blur-sm border border-gray-700/60 overflow-hidden shadow-xl cursor-pointer transition-all duration-300"
+                style={{ borderLeft: `3px solid ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}50` }}
+                whileHover={{
+                  y: -8,
+                  borderColor: (CATEGORY_COLOR[achievement.category] ?? defaultColor).border,
+                  boxShadow: `0 20px 40px ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).glow}`,
+                }}
               >
-                {/* Image Container with Fixed Aspect */}
-                <div className="relative w-full h-[300px] overflow-hidden bg-gray-900">
+                <div className="relative w-full h-[240px] overflow-hidden bg-gray-950">
                   <img
                     src={achievement.image}
                     alt={achievement.title}
-                    className="w-full h-full object-contain transition-all duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-4 right-4 z-10">
-                    <span className="px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/30 to-transparent" />
+                  <div className="absolute top-3 right-3 z-10">
+                    <span className={`px-2.5 py-1 bg-gradient-to-r ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).badge} text-white text-[10px] font-bold rounded-full shadow-lg`}>
                       {achievement.category}
                     </span>
                   </div>
-
-                  {/* Icon */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center shadow-lg">
-                      <achievement.icon className="w-6 h-6 text-black" />
+                  <div className="absolute top-3 left-3 z-10">
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center shadow-lg"
+                      style={{ background: `linear-gradient(135deg, ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}, ${(CATEGORY_COLOR[achievement.category] ?? defaultColor).border}aa)` }}
+                    >
+                      <achievement.icon className="w-4 h-4 text-white" />
                     </div>
                   </div>
-
-                  {/* Sword Slash Effect */}
-                  <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  >
-                    <motion.div
-                      className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent"
-                      initial={{ x: '-100%' }}
-                      whileHover={{ x: '100%' }}
-                      transition={{ duration: 0.6, ease: 'easeInOut' }}
-                    />
-                  </motion.div>
                 </div>
-
-                {/* Content Section */}
-                <div className="p-5 bg-gradient-to-b from-gray-800/80 to-gray-900/90">
-                  <div className="mb-2">
-                    <h3 className="text-lg font-bold text-white group-hover:text-yellow-400 transition-colors mb-1.5 line-clamp-2">
-                      {achievement.title}
-                    </h3>
-                    <span className="text-sm text-yellow-400 font-medium">
-                      {achievement.date}
-                    </span>
-                  </div>
-                  
-                  <p className="text-gray-300 text-sm leading-relaxed line-clamp-2">
+                <div className="p-4">
+                  <h3 className="text-sm font-bold text-white group-hover:text-yellow-300 transition-colors mb-1 line-clamp-2 leading-snug">
+                    {achievement.title}
+                  </h3>
+                  <span className="text-[11px] font-semibold" style={{ color: (CATEGORY_COLOR[achievement.category] ?? defaultColor).border }}>
+                    {achievement.date}
+                  </span>
+                  <p className="mt-1.5 text-gray-400 text-xs leading-relaxed line-clamp-2">
                     {achievement.description}
                   </p>
                 </div>
@@ -419,39 +397,55 @@ export default function Achievements() {
         </motion.div>
 
         {/* Full Size Image Modal */}
-        {selectedImage && (
+        {selectedImage && (() => {
+          const match = achievements.find(a => a.image === selectedImage)
+          return (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 cursor-pointer"
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
           >
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", damping: 25 }}
-              className="relative max-w-6xl max-h-[90vh] w-full"
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: 'spring', damping: 22 }}
+              className="relative max-w-4xl w-full bg-gray-900 rounded-2xl overflow-hidden border border-gray-700 shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <img
                 src={selectedImage}
-                alt="Achievement Full Size"
-                className="w-full h-full object-contain rounded-lg shadow-2xl"
+                alt="Achievement"
+                className="w-full max-h-[70vh] object-contain bg-gray-950"
               />
+              {match && (
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-white font-bold text-lg leading-snug">{match.title}</h3>
+                      <p className="text-gray-400 text-sm mt-1">{match.description}</p>
+                    </div>
+                    <span className={`flex-shrink-0 px-3 py-1 bg-gradient-to-r ${(CATEGORY_COLOR[match.category] ?? defaultColor).badge} text-white text-xs font-bold rounded-full`}>
+                      {match.category}
+                    </span>
+                  </div>
+                </div>
+              )}
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute -top-4 -right-4 w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold rounded-full shadow-lg flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110"
+                className="absolute top-3 right-3 w-8 h-8 bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white font-bold rounded-full flex items-center justify-center text-lg transition-all"
               >
                 ×
               </button>
-              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 px-6 py-2 bg-gray-900/80 backdrop-blur-sm text-white text-sm rounded-full">
-                Click anywhere to close
+              <div className="absolute bottom-[5.5rem] left-1/2 -translate-x-1/2 px-4 py-1.5 bg-gray-900/80 backdrop-blur-sm text-gray-400 text-xs rounded-full border border-gray-700">
+                Click outside to close
               </div>
             </motion.div>
           </motion.div>
-        )}
+          )
+        })()}
 
       </div>
     </section>

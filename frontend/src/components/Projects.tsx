@@ -136,15 +136,15 @@ export default function Projects() {
         className="section-container"
       >
         <motion.div variants={item} className="text-center mb-12 sm:mb-16">
-          <h2 className="heading-lg gradient-text">
-            My Projects
+          <h2 className="heading-lg text-white">
+            My <span className="gradient-text">Projects</span>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 160, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mx-auto mt-3 h-1 rounded-full bg-gradient-to-r from-[#a8a8a8] to-white"
+            className="mx-auto mt-3 h-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"
           />
         </motion.div>
 
@@ -159,10 +159,10 @@ export default function Projects() {
               exit={{ opacity: 0, x: -300, rotateY: -45 }}
               transition={{ 
                 duration: 0.6, 
-                ease: [0.25, 0.46, 0.45, 0.94],
+                ease: [0.25, 0.46, 0.45, 0.94] as const,
                 rotateY: { duration: 0.8 }
               }}
-              className="rounded-xl sm:rounded-2xl lg:rounded-3xl bg-white/5 p-2 sm:p-3 shadow-2xl"
+              className="rounded-xl sm:rounded-2xl lg:rounded-3xl bg-gray-800/50 p-2 sm:p-3 shadow-2xl border border-gray-700/40"
             >
               <div className="card border border-white/15 bg-black/40 p-3 sm:p-4 lg:p-6">
                 <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-2 items-center">
@@ -190,6 +190,28 @@ export default function Projects() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3, duration: 0.5 }}
                   >
+                    {/* Status chips */}
+                    <div className="flex flex-wrap gap-2">
+                      {currentProject.demo && currentProject.demo !== '#' && (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                          Live
+                        </span>
+                      )}
+                      {currentProject.github && currentProject.github !== '#' && (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-blue-500/15 border border-blue-500/30 text-blue-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Open Source
+                        </span>
+                      )}
+                      {(!currentProject.demo || currentProject.demo === '#') && (!currentProject.github || currentProject.github === '#') && (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-gray-700/60 border border-gray-600/50 text-gray-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-gray-500" />
+                          Private
+                        </span>
+                      )}
+                    </div>
+
                     <h3 className="heading-sm text-gray-100">
                       {currentProject.title}
                     </h3>
@@ -288,6 +310,15 @@ export default function Projects() {
                 transition={{ duration: 0.3 }}
               />
             </motion.button>
+
+            {/* Counter */}
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-mono text-gray-500 tabular-nums">
+                {String(currentIndex + 1).padStart(2, '0')}
+                <span className="text-gray-700"> / </span>
+                {String(projects.length).padStart(2, '0')}
+              </span>
+            </div>
 
             {/* Project Indicators */}
             <div className="flex gap-1.5 sm:gap-2">

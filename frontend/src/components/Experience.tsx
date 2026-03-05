@@ -1,6 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState } from 'react'
-import { SiReact, SiNodedotjs, SiTypescript, SiTailwindcss } from 'react-icons/si'
 
 type Experience = {
   company: string
@@ -10,9 +9,11 @@ type Experience = {
   endDate: Date | null
   description: string[]
   tech: string[]
+  color: string
 }
 
-const techIcons = [SiReact, SiNodedotjs, SiTypescript, SiTailwindcss]
+// One accent colour per entry (index-matched)
+const ENTRY_COLORS = ['#22d3ee','#a855f7','#10b981','#f59e0b','#f43f5e','#60a5fa']
 
 const experiences: Experience[] = [
   {
@@ -27,19 +28,22 @@ const experiences: Experience[] = [
       'Designed a geospatial dashboard integrating live GPS data, enabling engineers to plan solar maintenance 30% faster.'
     ],
     tech: ['Python', 'Deep Learning', 'Computer Vision', 'GIS'],
+    color: ENTRY_COLORS[0],
   },
   {
     company: 'Garnet AI, Dublin, Ireland',
     role: 'Full-Stack ML Engineer',
-    period: 'May 2025 – July 2025',
+    period: 'May 2025 – Aug 2025',
     startDate: new Date('2025-05-01'),
-    endDate: new Date('2025-07-01'),
+    endDate: new Date('2025-08-01'),
     description: [
-      'Spearheaded the development of a full-stack SaaS Vendor Onboarding platform, reducing onboarding time by 40% and improving sales efficiency across B2B operations.',
-      'Integrated GPT-4 powered automation modules for compliance documentation and vendor verification, cutting manual workload by 60%.',
-      'Built CI/CD pipelines on AWS with Docker and GitHub Actions, achieving zero-downtime deployments and accelerating feature delivery cycles by 30%.'
+      'Architected and deployed LLM-powered vendor onboarding platform reducing onboarding time by 60%, processing 200+ enterprise clients monthly.',
+      'Built compliance assistant using RAG (Retrieval-Augmented Generation) achieving 95% accuracy in regulatory document analysis.',
+      'Developed full-stack web application using React, Node.js, and MongoDB serving 500+ daily active users.',
+      'Implemented CI/CD pipeline using Docker and AWS, reducing deployment time from 2 hours to 15 minutes.'
     ],
-    tech: ['React', 'Node.js', 'PostgreSQL', 'AWS', 'AIML'],
+    tech: ['Python', 'React', 'Node.js', 'MongoDB', 'Docker', 'AWS', 'OpenAI API'],
+    color: ENTRY_COLORS[1],
   },
   {
     company: 'IIT Delhi, New Delhi',
@@ -48,24 +52,27 @@ const experiences: Experience[] = [
     startDate: new Date('2025-01-01'),
     endDate: new Date('2025-06-01'),
     description: [
-      'Built high-accuracy deep learning models for EEG signal classification: 99.58% for K-complex and 98.08% for spindle detection on sleep datasets.',
-      'Incorporated Explainable AI methods (e.g., Grad-CAM, SHAP) to increase model transparency for clinical neurologists.',
-      'Developed a real-time EEG analysis pipeline, reducing manual scoring time by over 50% in trial deployments.'
+      'Authored IEEE Access publication on sleep stage classification achieving 99.2% accuracy using EEG/ECG signal fusion.',
+      'Developed Vision Transformer-based architecture reducing model size by 40% while maintaining classification performance.',
+      'Implemented end-to-end ML pipeline processing 10,000+ biomedical signals with real-time inference capabilities.',
+      'Collaborated with medical professionals to validate algorithm performance on clinical datasets.'
     ],
-    tech: ['Deep Learning', 'EEG', 'Explainable AI', 'Python'],
+    tech: ['Python', 'PyTorch', 'OpenCV', 'Signal Processing', 'Computer Vision'],
+    color: ENTRY_COLORS[2],
   },
   {
     company: 'MarkX AI Labs, Ahmedabad',
     role: 'AI/ML Intern',
-    period: 'Jan 2025 – Present',
+    period: 'Jan 2025 – Mar 2025',
     startDate: new Date('2025-01-01'),
-    endDate: null,
+    endDate: new Date('2025-03-01'),
     description: [
-      'Developed reinforcement learning-based trading algorithms.',
-      'Deployed ML models on Telegram bot for real-time investment recommendations.',
-      'Achieved high prediction accuracy in financial pattern recognition.'
+      'Developed an AI-powered Telegram-based trading bot to analyze market trends and provide real-time trading insights.',
+      'Implemented agentic workflows enabling the system to execute strategy-driven decisions with real capital in controlled scenarios.',
+      'Built automation pipelines for processing financial data and identifying potential trading opportunities.'
     ],
     tech: ['Python', 'RL', 'Scikit-learn', 'PyTorch'],
+    color: ENTRY_COLORS[3],
   },
   {
     company: 'BLix Education',
@@ -79,18 +86,21 @@ const experiences: Experience[] = [
       'Integrated sensor fusion and real-time decision-making systems.'
     ],
     tech: ['Arduino', 'Python', 'OpenCV', 'TensorFlow', 'Deep Learning', 'Computer Vision'],
+    color: ENTRY_COLORS[4],
   },
   {
     company: 'Yads Technology Pvt. Ltd.',
     role: 'Data Science Intern',
-    period: 'May 2024 – July 2024',
-    startDate: new Date('2024-05-01'),
-    endDate: new Date('2024-07-01'),
+    period: 'Jun 2024 – Aug 2024',
+    startDate: new Date('2024-06-01'),
+    endDate: new Date('2024-08-01'),
     description: [
-      'Built analytics dashboards and optimized data APIs for faster decision-making.',
-      'Improved data processing pipelines by 40%.'
+      'Analyzed datasets to extract meaningful insights supporting business decision-making, identifying trends and performance indicators.',
+      'Developed analytical reports and visualizations for stakeholders; contributed to improving data processing workflows and optimizing API operations.',
+      'Improved data processing pipelines by 40%, enhancing efficiency of internal data analysis systems.'
     ],
     tech: ['Python', 'Pandas', 'SQL', 'Power BI'],
+    color: ENTRY_COLORS[5],
   },
 ]
 
@@ -115,98 +125,111 @@ const item = {
   }
 }
 
-const iconVariants = {
-  hover: {
-    scale: 1.2,
-    rotate: 5
-  }
-}
-
 function TimelineNode({ exp, index, isLast }: { exp: Experience; index: number; isLast: boolean }) {
   const [expanded, setExpanded] = useState(false)
   const isLeft = index % 2 === 0
-  
+  const color = exp.color
+
   return (
     <div className="relative w-full max-w-7xl mx-auto">
-      {/* Desktop Center Line */}
+      {/* Desktop center line */}
       {!isLast && (
-        <div className="absolute left-1/2 top-8 bottom-[-3rem] w-px bg-gradient-to-b from-cyan-500/50 to-gray-800 transform -translate-x-1/2 hidden md:block" />
+        <div
+          className="absolute left-1/2 top-8 bottom-[-3rem] w-px transform -translate-x-1/2 hidden md:block"
+          style={{ background: `linear-gradient(to bottom, ${color}60, transparent)` }}
+        />
       )}
-      
-      {/* Mobile Left Line */}
+      {/* Mobile left line */}
       {!isLast && (
-        <div className="absolute left-6 top-8 bottom-[-3rem] w-px bg-gradient-to-b from-cyan-500/50 to-gray-800 md:hidden" />
+        <div
+          className="absolute left-6 top-8 bottom-[-3rem] w-px md:hidden"
+          style={{ background: `linear-gradient(to bottom, ${color}60, transparent)` }}
+        />
       )}
 
       <div className={`relative flex flex-col md:flex-row items-center justify-between mb-16 ${isLeft ? 'md:flex-row-reverse' : ''}`}>
-        
-        {/* Empty Space for Desktop Balance */}
         <div className="hidden md:block w-[45%]" />
 
-        {/* Center Dot */}
-        <div className="absolute left-6 md:left-1/2 w-6 h-6 bg-gray-900 rounded-full transform -translate-x-1/2 shadow-[0_0_15px_rgba(6,182,212,0.6)] z-10 mt-8 border-2 border-cyan-400 flex items-center justify-center">
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+        {/* Accent dot */}
+        <div
+          className="absolute left-6 md:left-1/2 w-5 h-5 bg-gray-900 rounded-full transform -translate-x-1/2 z-10 mt-8 border-2 flex items-center justify-center"
+          style={{ borderColor: color, boxShadow: `0 0 12px ${color}80` }}
+        >
+          <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: color }} />
         </div>
 
-        {/* Content Card */}
-        <motion.div 
+        <motion.div
           className="w-full md:w-[45%] pl-16 md:pl-0"
           initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: index * 0.1, type: "spring", stiffness: 50 }}
+          transition={{ duration: 0.6, delay: index * 0.1, type: 'spring', stiffness: 50 }}
         >
-          <ExperienceCard exp={exp} expanded={expanded} setExpanded={setExpanded} />
+          <ExperienceCard exp={exp} expanded={expanded} setExpanded={setExpanded} color={color} />
         </motion.div>
-
       </div>
     </div>
   )
 }
 
-function ExperienceCard({ exp, expanded, setExpanded }: { 
-  exp: Experience; 
-  expanded: boolean; 
-  setExpanded: (expanded: boolean) => void 
+function ExperienceCard({ exp, expanded, setExpanded, color }: {
+  exp: Experience
+  expanded: boolean
+  setExpanded: (v: boolean) => void
+  color: string
 }) {
-  
   return (
     <motion.div
       layout
       onClick={() => setExpanded(!expanded)}
-      className="relative bg-gray-900/90 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 cursor-pointer transition-all duration-500 group hover:border-cyan-500/50 hover:shadow-[0_0_40px_rgba(6,182,212,0.15)]"
-      whileHover={{ y: -5 }}
+      className="relative bg-gray-900/90 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 cursor-pointer transition-colors duration-300 group"
+      style={{
+        borderLeft: `3px solid ${color}50`,
+      }}
+      whileHover={{ y: -5, borderColor: `${color}90` }}
     >
-      {/* Gradient Background Effect */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      
-      {/* Animated Border Gradient */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500 -z-10" />
+      {/* Hover glow layer */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl opacity-0 pointer-events-none"
+        style={{ background: `radial-gradient(ellipse at 30% 50%, ${color}12, transparent 70%)` }}
+        whileHover={{ opacity: 1 }}
+        transition={{ duration: 0.35 }}
+      />
 
-      {/* Date Badge */}
-      <div className="absolute -top-3 right-6 bg-gray-900 border border-cyan-500/30 px-4 py-1.5 rounded-full shadow-lg z-10 group-hover:border-cyan-400/60 transition-colors group-hover:shadow-[0_0_10px_rgba(6,182,212,0.3)]">
-        <span className="text-xs font-mono text-cyan-400 font-semibold tracking-wide">{exp.period}</span>
+      {/* Date badge */}
+      <div
+        className="absolute -top-3 right-6 bg-gray-900 px-4 py-1.5 rounded-full shadow-lg z-10 border"
+        style={{ borderColor: `${color}40` }}
+      >
+        <span className="text-xs font-mono font-semibold tracking-wide" style={{ color }}>
+          {exp.period}
+        </span>
       </div>
 
-      <div className="relative z-10 mb-6">
-        <h3 className="text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 transition-all duration-300 mb-2">
-          {exp.role}
-        </h3>
-        <h4 className="text-lg text-gray-400 font-medium flex items-center gap-2 group-hover:text-gray-300 transition-colors">
-          <span className="w-2 h-2 rounded-full bg-cyan-500/50 group-hover:bg-cyan-400 group-hover:shadow-[0_0_8px_rgba(34,211,238,0.8)] transition-all"></span>
+      <div className="relative z-10 mb-4">
+        <h3 className="text-xl font-bold text-white mb-1.5">{exp.role}</h3>
+        <h4 className="text-sm text-gray-400 font-medium flex items-center gap-2">
+          <span
+            className="w-2 h-2 rounded-full flex-shrink-0"
+            style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}` }}
+          />
           {exp.company}
         </h4>
       </div>
 
-      {/* Tags Preview */}
-      <div className="relative z-10 flex flex-wrap gap-2 mb-4">
+      {/* Tag chips */}
+      <div className="relative z-10 flex flex-wrap gap-1.5 mb-3">
         {exp.tech.slice(0, 3).map((tech, i) => (
-          <span key={i} className="px-3 py-1.5 text-xs font-medium rounded-lg bg-cyan-500/5 text-cyan-300/80 border border-cyan-500/10 group-hover:bg-cyan-500/10 group-hover:border-cyan-500/30 transition-all duration-300">
+          <span
+            key={i}
+            className="px-2.5 py-1 text-xs font-medium rounded-md border"
+            style={{ color: `${color}cc`, borderColor: `${color}25`, backgroundColor: `${color}0d` }}
+          >
             {tech}
           </span>
         ))}
         {exp.tech.length > 3 && (
-          <span className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-gray-400 border border-gray-700">
+          <span className="px-2.5 py-1 text-xs font-medium rounded-md bg-gray-800 text-gray-400 border border-gray-700">
             +{exp.tech.length - 3}
           </span>
         )}
@@ -236,9 +259,13 @@ function ExperienceCard({ exp, expanded, setExpanded }: {
                 )}
               </div>
               
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {exp.tech.map((tech, i) => (
-                  <span key={i} className="px-3 py-1.5 text-xs font-medium rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 hover:bg-cyan-500/20 transition-colors cursor-default">
+                  <span
+                    key={i}
+                    className="px-2.5 py-1 text-xs font-medium rounded-md border cursor-default"
+                    style={{ color: `${color}cc`, borderColor: `${color}30`, backgroundColor: `${color}12` }}
+                  >
                     {tech}
                   </span>
                 ))}
@@ -267,46 +294,27 @@ export default function ExperienceSection() {
   const sortedExperiences = getSortedExperiences()
 
   return (
-    <section id="experience" className="mx-auto w-full px-4 sm:px-6 py-20 bg-gradient-to-b from-gray-800 to-gray-900 overflow-hidden">
+    <section id="experience" className="section-padding bg-gradient-to-b from-gray-800 to-gray-900 overflow-hidden">
+      <div className="section-container">
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-100px' }}>
         <motion.div variants={item} className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300 sm:text-4xl lg:text-5xl">
-            Work Experience
+          <h2 className="heading-xl text-white">
+            Work <span className="gradient-text">Experience</span>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: 200, opacity: 1 }}
+            whileInView={{ width: 160, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="mx-auto mt-3 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
+            className="mx-auto mt-3 h-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"
           />
-          <p className="mt-4 text-gray-400 text-sm max-w-2xl mx-auto">
-            Journey through my professional experiences, arranged chronologically with alternating layout. 
-            Click on cards to explore details.
+          <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
+            Click any card to expand full details.
           </p>
         </motion.div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-100px' }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-5 mb-12"
-        >
-          {techIcons.map((Icon, idx) => (
-            <motion.div
-              key={idx}
-              variants={iconVariants}
-              whileHover="hover"
-              className="rounded-xl bg-white/10 backdrop-blur-sm p-4 shadow-md"
-            >
-              <Icon className="h-8 w-8 text-[#8eecf5]" />
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Tree Timeline with Left-Right Alternating Layout */}
-        <div className="relative mt-16">
+        {/* Timeline */}
+        <div className="relative mt-10">
           <div className="space-y-0">
             {sortedExperiences.map((exp, index) => (
               <TimelineNode
@@ -318,20 +326,21 @@ export default function ExperienceSection() {
             ))}
           </div>
           
-          {/* End of timeline marker */}
+          {/* End marker */}
           <motion.div
-            className="flex justify-center mt-16"
+            className="flex justify-center mt-10"
             initial={{ opacity: 0, scale: 0 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
           >
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-gray-600 to-gray-700 flex items-center justify-center shadow-lg border-4 border-gray-900">
-              <div className="w-4 h-4 rounded-full bg-gray-500" />
+            <div className="w-8 h-8 rounded-full bg-gray-800 border-2 border-gray-600 flex items-center justify-center">
+              <div className="w-2.5 h-2.5 rounded-full bg-gray-600" />
             </div>
           </motion.div>
         </div>
       </motion.div>
+      </div>
     </section>
   )
 }

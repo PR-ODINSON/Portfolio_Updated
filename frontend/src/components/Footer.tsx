@@ -24,32 +24,38 @@ const item = {
   },
 }
 
-const linkVariants = {
-  hover: {
-    scale: 1.1,
-    color: '#8eecf5',
-    transition: {
-      duration: 0.3,
-      ease: [0.25, 0.1, 0.25, 1] as const, // ✅ replaced 'easeOut' with cubic bezier
-    },
-  },
-}
-
 export default function Footer() {
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+
   return (
-    <footer className="mt-8 sm:mt-12 border-t border-[#8eecf5]/20 bg-gradient-to-t from-gray-900 to-gray-800">
+    <footer className="border-t border-gray-800 bg-gray-950">
+      {/* Back to top */}
+      <div className="flex justify-center -translate-y-1/2">
+        <motion.button
+          onClick={scrollTop}
+          whileHover={{ scale: 1.08, boxShadow: '0 0 18px rgba(6,182,212,0.35)' }}
+          whileTap={{ scale: 0.94 }}
+          className="flex items-center gap-2 px-5 py-2 rounded-full bg-gray-900 border border-gray-700 hover:border-cyan-500/50 text-gray-400 hover:text-cyan-400 text-xs font-mono tracking-widest uppercase transition-colors"
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          </svg>
+          Back to top
+        </motion.button>
+      </div>
+
       <motion.div
         variants={container}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, margin: '-100px' }}
-        className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:gap-6 px-4 sm:px-6 py-8 sm:py-12 text-xs sm:text-sm sm:flex-row"
+        className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 sm:gap-6 px-4 sm:px-6 pb-8 text-xs sm:text-sm sm:flex-row"
       >
         <motion.span
           variants={item}
-          className="body-semibold text-transparent bg-clip-text gradient-text text-shadow"
+          className="text-gray-500 font-mono"
         >
-          © {new Date().getFullYear()} PRITHVIRAJ VERMA
+          © {new Date().getFullYear()} Prithviraj Verma — Built with React & TypeScript
         </motion.span>
         <motion.div variants={item} className="flex gap-4 sm:gap-6">
           {[
@@ -62,14 +68,11 @@ export default function Footer() {
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              variants={linkVariants}
-              whileHover="hover"
-              className="flex items-center gap-2 text-gray-500 transition-colors"
+              whileHover={{ y: -2, color: '#22d3ee' }}
+              className="flex items-center gap-2 text-gray-600 hover:text-cyan-400 transition-colors"
             >
-              <Icon className="h-5 w-5 text-cyan-400" />
-              <span className="hidden sm:inline body-text text-transparent bg-clip-text gradient-text text-xs sm:text-sm">
-                {label}
-              </span>
+              <Icon className="h-4 w-4" />
+              <span className="hidden sm:inline text-xs">{label}</span>
             </motion.a>
           ))}
         </motion.div>

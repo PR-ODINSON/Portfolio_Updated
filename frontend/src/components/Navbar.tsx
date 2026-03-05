@@ -1,322 +1,232 @@
-import { useEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { Menu, X, Github, Linkedin, Mail, Globe } from 'lucide-react'
-import { Link, NavLink } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
+import { Menu, X } from 'lucide-react'
+import { SiGithub, SiLinkedin } from 'react-icons/si'
+import { FiMail } from 'react-icons/fi'
+import { NavLink } from 'react-router-dom'
 
-const navItems = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'achievements', label: 'Achievements' },
-  { id: 'research', label: 'Research' },
-  { id: 'contact', label: 'Contact' },
+const LEFT_ITEMS = [
+  { id: 'about',      label: 'About'      },
+  { id: 'experience', label: 'Experience' },
+  { id: 'projects',   label: 'Projects'   },
 ]
+const RIGHT_ITEMS = [
+  { id: 'achievements', label: 'Achievements' },
+  { id: 'research',     label: 'Research'     },
+  { id: 'contact',      label: 'Contact'      },
+]
+const ALL_ITEMS = [...LEFT_ITEMS, ...RIGHT_ITEMS]
 
-const socialIcons = [
-  { Icon: Github, label: 'GitHub', href: '#', color: 'hover:text-gray-200' },
-  { Icon: Linkedin, label: 'LinkedIn', href: '#', color: 'hover:text-blue-400' },
-  { Icon: Mail, label: 'Email', href: 'mailto:prithraj120@gmail.com', color: 'hover:text-red-400' },
-  { Icon: Globe, label: 'Website', href: '#', color: 'hover:text-green-400' },
+const SOCIALS = [
+  { href: 'https://github.com/PR-ODINSON',                           Icon: SiGithub,   label: 'GitHub',   cls: 'hover:text-white'    },
+  { href: 'https://www.linkedin.com/in/prithviraj-verma-b58707289/', Icon: SiLinkedin, label: 'LinkedIn', cls: 'hover:text-blue-400' },
+  { href: 'mailto:prithraj120@gmail.com',                            Icon: FiMail,     label: 'Email',    cls: 'hover:text-cyan-400' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen] = useState(false)
-  const [active, setActive] = useState('home')
-  const leftUnderlineRef = useRef<HTMLSpanElement | null>(null)
-  const rightUnderlineRef = useRef<HTMLSpanElement | null>(null)
-  const leftLinksRef = useRef<Record<string, HTMLButtonElement | null>>({})
-  const rightLinksRef = useRef<Record<string, HTMLButtonElement | null>>({})
-  const navRef = useRef<HTMLElement | null>(null)
-  const { scrollYProgress } = useScroll({ target: navRef })
-  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 0.8])
+  const [open, setOpen]         = useState(false)
+  const [active, setActive]     = useState<string>('')
 
-  // Scroll handler for active section detection
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
+
+  // Nav background on scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-      
-      // Get all sections
-      const sections = navItems.map(item => ({
-        id: item.id === 'home' ? 'home' : item.id,
-        element: item.id === 'home' ? document.body : document.getElementById(item.id)
-      })).filter(section => section.element)
-      
-      // Find the section currently in view
-      const scrollPosition = window.scrollY + 150 // Offset for navbar height
-      
-      let activeSection = 'home' // Default to home
-      
-      for (const section of sections) {
-        if (section.element && section.id !== 'home') {
-          const rect = section.element.getBoundingClientRect()
-          const elementTop = rect.top + window.scrollY
-          
-          if (scrollPosition >= elementTop - 100) {
-            activeSection = section.id
-          }
-        }
-      }
-      
-      // Special case for home section (top of page)
-      if (window.scrollY < 100) {
-        activeSection = 'home'
-      }
-      
-      setActive(activeSection)
-    }
-    
-    handleScroll() // Initial check
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Active section via IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id) }),
+      { threshold: 0.25, rootMargin: '-80px 0px -50% 0px' }
+    )
+    ALL_ITEMS.forEach(({ id }) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
 
-  const handleClick = (id: string) => {
-    const el = document.getElementById(id)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  // On homepage scroll into view; on a sub-route let NavLink route normally
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    if (window.location.pathname === '/') {
+      e.preventDefault()
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
     setOpen(false)
-    setActive(id)
   }
 
-  const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, section: 'left' | 'right') => {
-    const elTarget = e.currentTarget as HTMLAnchorElement
-    const rect = elTarget.getBoundingClientRect()
-    const parentRect = elTarget.parentElement!.getBoundingClientRect()
-    
-    if (section === 'left' && leftUnderlineRef.current) {
-      leftUnderlineRef.current.style.width = `${rect.width}px`
-      leftUnderlineRef.current.style.left = `${rect.left - parentRect.left}px`
-    } else if (section === 'right' && rightUnderlineRef.current) {
-      rightUnderlineRef.current.style.width = `${rect.width}px`
-      rightUnderlineRef.current.style.left = `${rect.left - parentRect.left}px`
-    }
-  }
-
-  // Update underline position when active section changes
-  useEffect(() => {
-    const leftItems = navItems.slice(0, 3)
-    const rightItems = navItems.slice(3)
-    
-    const activeLeftItem = leftItems.find(item => item.id === active)
-    const activeRightItem = rightItems.find(item => item.id === active)
-    
-    if (activeLeftItem && leftLinksRef.current[active] && leftUnderlineRef.current) {
-      const el = leftLinksRef.current[active]
-      const rect = el.getBoundingClientRect()
-      const parentRect = el.parentElement!.getBoundingClientRect()
-      leftUnderlineRef.current.style.width = `${rect.width}px`
-      leftUnderlineRef.current.style.left = `${rect.left - parentRect.left}px`
-    }
-    
-    if (activeRightItem && rightLinksRef.current[active] && rightUnderlineRef.current) {
-      const el = rightLinksRef.current[active]
-      const rect = el.getBoundingClientRect()
-      const parentRect = el.parentElement!.getBoundingClientRect()
-      rightUnderlineRef.current.style.width = `${rect.width}px`
-      rightUnderlineRef.current.style.left = `${rect.left - parentRect.left}px`
-    }
-  }, [active])
+  const baseLinkCls = 'relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 select-none'
 
   return (
-    <motion.header
-      ref={navRef}
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+    <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-gradient-to-r from-gray-900/90 to-gray-800/90 backdrop-blur-lg border-b border-white/15 shadow-lg' 
-          : 'bg-transparent'
+        scrolled
+          ? 'bg-gray-950/85 backdrop-blur-xl border-b border-white/10 shadow-[0_2px_30px_rgba(0,0,0,0.5)]'
+          : ''
       }`}
     >
-      <motion.div 
-        className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"
-        style={{ opacity: backgroundOpacity }}
+      {/* Scroll progress bar */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 origin-left pointer-events-none"
+        style={{ scaleX }}
       />
 
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-4">
-        {/* Left Navigation */}
-        <div className="flex items-center gap-2">
-          <div className="hidden lg:flex items-center gap-4 relative">
-            <motion.span 
-              ref={leftUnderlineRef} 
-              className="absolute bottom-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ease-out" 
-              initial={{ width: 0 }}
-            />
-            {navItems.slice(0, 3).map((item) => (
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
+
+        {/* ── Left nav items ── */}
+        <div className="hidden lg:flex items-center gap-0.5">
+          {LEFT_ITEMS.map((item) => (
+            <NavLink
+              key={item.id}
+              to={`/${item.id}`}
+              onClick={(e) => handleNavClick(e, item.id)}
+              className={`${baseLinkCls} ${active === item.id ? 'text-white' : 'text-white/50 hover:text-white/90'}`}
+            >
+              {active === item.id && (
+                <motion.div
+                  layoutId="nav-pill"
+                  className="absolute inset-0 rounded-md bg-white/10 border border-white/10"
+                  transition={{ type: 'spring', bounce: 0.15, duration: 0.35 }}
+                />
+              )}
+              <span className="relative z-10">{item.label}</span>
+            </NavLink>
+          ))}
+        </div>
+
+        {/* ── Center logo ── */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="group font-mono font-bold text-lg sm:text-xl tracking-wider select-none"
+        >
+          <span className="text-cyan-400/60 group-hover:text-cyan-400 transition-colors duration-200">{'</'}</span>
+          <span className="text-white group-hover:text-gray-100 transition-colors duration-200">PRITHVI</span>
+          <span className="text-cyan-400/60 group-hover:text-cyan-400 transition-colors duration-200">{'>'}</span>
+        </button>
+
+        {/* ── Right nav + socials + mobile toggle ── */}
+        <div className="flex items-center gap-1">
+
+          {/* Right nav items */}
+          <div className="hidden lg:flex items-center gap-0.5">
+            {RIGHT_ITEMS.map((item) => (
               <NavLink
                 key={item.id}
-                ref={(el) => {
-                  if (el) leftLinksRef.current[item.id] = el as any;
-                }}
-                to={item.id === 'home' ? '/' : `/${item.id}`}
-                onClick={(e) => handleNavLinkClick(e, 'left')}
-                className={({ isActive }) => `
-                  relative px-3 py-2 text-sm nav-text transition-colors duration-200
-                  ${isActive ? 'text-white' : 'text-white/70 hover:text-white'}
-                `}
-                aria-current={item.id === active ? 'page' : undefined}
+                to={`/${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className={`${baseLinkCls} ${active === item.id ? 'text-white' : 'text-white/50 hover:text-white/90'}`}
               >
-                {item.label}
+                {active === item.id && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-md bg-white/10 border border-white/10"
+                    transition={{ type: 'spring', bounce: 0.15, duration: 0.35 }}
+                  />
+                )}
+                <span className="relative z-10">{item.label}</span>
               </NavLink>
             ))}
           </div>
-        </div>
 
-        {/* Center Logo */}
-        <div className="flex justify-center">
-          <Link to="/" className="group relative">
-            <div className="brand-display text-xl sm:text-2xl font-bold tracking-wider transform transition-all duration-300 group-hover:scale-105">
-              <span className="text-gray-300 drop-shadow-lg" 
-                    style={{ 
-                      fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
-                      fontWeight: '700',
-                      letterSpacing: '0.05em',
-                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1)'
-                    }}>
-                {'</'}
-              </span>
-              <span className="text-gray-200 drop-shadow-lg relative" 
-                    style={{ 
-                      fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
-                      fontWeight: '800',
-                      letterSpacing: '0.02em',
-                      textShadow: '0 2px 12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.15)',
-                      filter: 'brightness(1.1) contrast(1.2)'
-                    }}>
-                PRITHVI
-                {/* Subtle animated underline for the name */}
-                <div className="absolute -bottom-0.5 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-60 animate-pulse"></div>
-              </span>
-              <span className="text-gray-300 drop-shadow-lg" 
-                    style={{ 
-                      fontFamily: "'Space Grotesk', 'Outfit', 'Inter', system-ui, sans-serif",
-                      fontWeight: '700',
-                      letterSpacing: '0.05em',
-                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.1)'
-                    }}>
-                {'>'}
-              </span>
-            </div>
-            {/* Animated underline effect */}
-            <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-500 group-hover:w-full"></div>
-            {/* Glow effect on hover */}
-            <div className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 blur-xl"></div>
-          </Link>
-        </div>
-
-        {/* Right Navigation & Actions */}
-        <div className="flex items-center gap-2">
-          <div className="hidden lg:flex items-center gap-4 relative">
-            <motion.span 
-              ref={rightUnderlineRef} 
-              className="absolute bottom-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 ease-out" 
-              initial={{ width: 0 }}
-            />
-            {navItems.slice(3).map((item) => (
-              <NavLink
-                key={item.id}
-                ref={(el) => {
-                  if (el) rightLinksRef.current[item.id] = el as any;
-                }}
-                to={item.id === 'home' ? '/' : `/${item.id}`}
-                onClick={(e) => handleNavLinkClick(e, 'right')}
-                className={({ isActive }) => `
-                  relative px-3 py-2 text-sm nav-text transition-colors duration-200
-                  ${isActive ? 'text-white' : 'text-white/70 hover:text-white'}
-                `}
-                aria-current={item.id === active ? 'page' : undefined}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-          </div>
-          
-          <div className="flex items-center gap-2 sm:gap-3 ml-2 sm:ml-4">
-          <div className="hidden md:flex items-center gap-2">
-            {socialIcons.map(({ Icon, label, href, color }, index) => (
+          {/* Social icons — desktop only */}
+          <div className="hidden lg:flex items-center gap-0.5 ml-3 pl-3 border-l border-white/10">
+            {SOCIALS.map(({ href, Icon, label, cls }) => (
               <motion.a
                 key={label}
                 href={href}
+                target={href.startsWith('http') ? '_blank' : undefined}
+                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={label}
-                className={`p-2 text-white/70 ${color} transition-colors relative group`}
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
+                className={`p-2 text-white/40 ${cls} transition-colors duration-200`}
               >
-                <Icon className="size-5" />
-                <span className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 hidden group-hover:block text-xs bg-gray-900/90 text-white px-2 py-1 rounded-md shadow-lg">
-                  {label}
-                </span>
+                <Icon className="w-4 h-4" />
               </motion.a>
             ))}
           </div>
 
-
-          {/* Mobile Menu Toggle */}
-          <div className="lg:hidden flex items-center">
-            <motion.button 
-              onClick={() => setOpen((v) => !v)} 
-              aria-label="Toggle menu"
-              whileTap={{ scale: 0.9 }}
-              className="p-2 text-white/70 hover:text-white"
-            >
-              {open ? <X className="size-5 sm:size-6" /> : <Menu className="size-5 sm:size-6" />}
-            </motion.button>
-          </div>
-          </div>
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setOpen(v => !v)}
+            className="lg:hidden p-2 text-white/60 hover:text-white transition-colors ml-1"
+            aria-label="Toggle menu"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={open ? 'x' : 'menu'}
+                initial={{ rotate: -90, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 90, opacity: 0 }}
+                transition={{ duration: 0.15 }}
+                className="flex"
+              >
+                {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </motion.span>
+            </AnimatePresence>
+          </button>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
-      <motion.div
-        initial={false}
-        animate={{ 
-          height: open ? 'auto' : 0, 
-          opacity: open ? 1 : 0,
-          scaleY: open ? 1 : 0.95
-        }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        className="lg:hidden overflow-hidden border-t border-white/15 bg-gray-900/90 backdrop-blur-lg"
-      >
-        <div className="mx-auto flex max-w-7xl flex-col gap-2 px-4 sm:px-6 py-4">
-          {navItems.map((item, idx) => (
-            <motion.button
-              key={item.id}
-              onClick={() => handleClick(item.id)}
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.1 * idx, type: 'spring', stiffness: 100 }}
-              className="text-left text-sm font-semibold py-3 px-4 rounded-lg hover:bg-gradient-to-r from-cyan-500/10 to-blue-500/10 text-white/80 hover:text-white transition-all"
-            >
-              {item.label}
-            </motion.button>
-          ))}
-          {/* Mobile Social Icons */}
-          <div className="flex gap-3 mt-4 justify-center">
-            {socialIcons.map(({ Icon, label, href, color }, index) => (
-              <motion.a
-                key={label}
-                href={href}
-                aria-label={label}
-                className={`p-2 text-white/70 ${color} transition-colors`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 * (index + navItems.length) }}
-              >
-                <Icon className="size-5" />
-              </motion.a>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    </motion.header>
+      {/* ── Mobile menu ── */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="lg:hidden overflow-hidden border-t border-white/10 bg-gray-950/95 backdrop-blur-2xl"
+          >
+            <div className="px-4 py-4 space-y-1 max-w-7xl mx-auto">
+              {ALL_ITEMS.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ x: -12, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: i * 0.04 }}
+                >
+                  <NavLink
+                    to={`/${item.id}`}
+                    onClick={(e) => handleNavClick(e, item.id)}
+                    className={`flex items-center w-full px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                      active === item.id
+                        ? 'bg-white/10 text-white border border-white/10'
+                        : 'text-white/55 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <span className="text-gray-700 mr-3 font-mono text-xs tabular-nums">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    {item.label}
+                  </NavLink>
+                </motion.div>
+              ))}
+
+              {/* Mobile socials */}
+              <div className="flex gap-1 pt-3 mt-2 border-t border-white/10">
+                {SOCIALS.map(({ href, Icon, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith('http') ? '_blank' : undefined}
+                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    aria-label={label}
+                    className="p-2.5 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5"
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   )
 }

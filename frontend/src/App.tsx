@@ -1,6 +1,7 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import CustomCursor from './components/CustomCursor'
 import Hero from './components/Hero'
 import About from './components/About'
 import Experience from './components/Experience'
@@ -15,6 +16,7 @@ import PageTransition from './components/PageTransition'
 function App() {
   return (
     <BrowserRouter>
+      <CustomCursor />
       <div className="min-h-screen flex flex-col overflow-x-hidden">
         <Navbar />
         <main className="flex-1">

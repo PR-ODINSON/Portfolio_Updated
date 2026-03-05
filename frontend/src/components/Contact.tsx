@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle } from 'react-icons/fi'
-import { SiGithub, SiLinkedin, SiX, SiInstagram } from 'react-icons/si'
+import { SiGithub, SiLinkedin } from 'react-icons/si'
 import { contactAPI } from '../utils/api'
 
 const schema = z.object({
@@ -21,27 +21,25 @@ const contactInfo = [
     icon: FiMail,
     title: 'Email',
     value: 'prithraj120@gmail.com',
-    color: 'from-gray-500 to-gray-600'
+    color: 'from-cyan-500 to-blue-600'
   },
   {
     icon: FiPhone,
     title: 'Phone',
-    value: '+91 7697966155',
+    value: '+91 9926719150',
     color: 'from-green-500 to-emerald-500'
   },
   {
     icon: FiMapPin,
     title: 'Location',
     value: 'Ahmedabad, Gujarat, India',
-    color: 'from-gray-400 to-gray-500'
+    color: 'from-violet-500 to-purple-600'
   }
 ]
 
 const socialLinks = [
-  { icon: SiGithub, href: 'https://github.com/PR-ODINSON', color: 'from-gray-500 to-gray-700' },
-  { icon: SiLinkedin, href: 'https://www.linkedin.com/in/prithviraj-verma-b58707289/', color: 'from-gray-600 to-gray-800' },
-  { icon: SiX, href: '#', color: 'from-gray-500 to-gray-600' },
-  { icon: SiInstagram, href: '#', color: 'from-pink-500 to-purple-500' }
+  { icon: SiGithub,   href: 'https://github.com/PR-ODINSON',                           color: 'from-gray-700 to-gray-900' },
+  { icon: SiLinkedin, href: 'https://www.linkedin.com/in/prithviraj-verma-b58707289/', color: 'from-blue-600 to-blue-800' },
 ]
 
 export default function Contact() {
@@ -101,15 +99,15 @@ export default function Contact() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="heading-lg gradient-text">
-            Get In Touch
+          <h2 className="heading-lg text-white">
+            Get In <span className="gradient-text">Touch</span>
           </h2>
           <motion.div
             initial={{ width: 0, opacity: 0 }}
             whileInView={{ width: 160, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2 }}
-            className="mx-auto mt-3 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-blue-500"
+            className="mx-auto mt-3 h-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"
           />
           <p className="body-base text-gray-300 mt-4 max-w-2xl mx-auto">
             I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
@@ -194,7 +192,7 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="glass card card-padding">
+            <div className="glass card card-padding border border-gray-700/60 bg-gray-800/40">
               <h3 className="heading-sm text-white mb-6">Send a Message</h3>
             
             <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
@@ -207,7 +205,7 @@ export default function Contact() {
                     <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Name</label>
                 <input
                   {...register('name')}
-                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200"
                   placeholder="Your full name"
                 />
                 {errors.name && (
@@ -231,7 +229,7 @@ export default function Contact() {
                 <input
                   type="email"
                   {...register('email')}
-                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200"
                   placeholder="your.email@example.com"
                 />
                 {errors.email && (
@@ -254,7 +252,7 @@ export default function Contact() {
                     <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Subject</label>
                 <input
                   {...register('subject')}
-                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300"
+                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200"
                   placeholder="What's this about?"
                 />
                 {errors.subject && (
@@ -278,7 +276,7 @@ export default function Contact() {
                 <textarea
                   rows={4}
                   {...register('message')}
-                  className="w-full rounded-lg sm:rounded-xl bg-white/5 border border-white/10 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all duration-300 resize-none"
+                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200 resize-none"
                   placeholder="Tell me about your project..."
                 />
                 {errors.message && (
