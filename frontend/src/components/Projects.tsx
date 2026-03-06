@@ -270,19 +270,7 @@ export default function Projects() {
                           GitHub
                         </motion.a>
                       )}
-                      {currentProject.demo && (
-                        <motion.a
-                          href={currentProject.demo}
-                          variants={buttonVariants}
-                          whileHover="hover"
-                          whileTap="tap"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-full border border-white/30 px-4 sm:px-5 py-2 text-xs sm:text-sm body-semibold text-white/90 hover:bg-white/10"
-                        >
-                          Live Demo
-                        </motion.a>
-                      )}
+
                     </motion.div>
                   </motion.div>
                 </div>
