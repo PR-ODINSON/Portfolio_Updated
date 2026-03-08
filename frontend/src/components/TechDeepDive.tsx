@@ -59,7 +59,7 @@ export default function TechDeepDive() {
           transition={{ duration: 0.55 }}
         >
           <p className="text-xs font-mono text-violet-500/70 uppercase tracking-widest mb-3">Engineering Depth</p>
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="max-w-2xl">
               <h2 className="heading-lg text-white">
                 Technical <span className="gradient-text">Deep Dive</span>
@@ -72,7 +72,7 @@ export default function TechDeepDive() {
             </div>
             <button
               onClick={() => setOpen(v => !v)}
-              className="shrink-0 mt-1 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-violet-500/30 bg-violet-500/5 text-violet-400 hover:bg-violet-500/10 text-sm font-medium transition-colors"
+              className="self-start shrink-0 sm:mt-1 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-violet-500/30 bg-violet-500/5 text-violet-400 hover:bg-violet-500/10 text-sm font-medium transition-colors"
             >
               {open ? 'Collapse' : 'Expand'}
               <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.25 }}>

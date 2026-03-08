@@ -157,7 +157,7 @@ export default function Hero() {
               <motion.div
                 variants={item}
                 transition={{ duration: 0.6 }}
-                className="grid grid-cols-4 gap-2 sm:gap-4 py-4 border-y border-gray-800/60 max-w-lg mx-auto lg:mx-0"
+                className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 py-4 border-y border-gray-800/60 max-w-lg mx-auto lg:mx-0"
               >
                 {stats.map((s, i) => <StatCard key={s.label} {...s} index={i} />)}
               </motion.div>
@@ -195,7 +195,7 @@ export default function Hero() {
           </div>
 
           {/* ── Neural Network Visualization ─────────── */}
-          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+          <div className="order-1 lg:order-2 hidden lg:flex justify-center lg:justify-end">
             <NeuralNetworkViz />
           </div>
         </div>

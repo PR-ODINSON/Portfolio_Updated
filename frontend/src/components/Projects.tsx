@@ -18,15 +18,15 @@ type Project = {
 const projects: Project[] = [
   {
     title: 'Garnet AI · Vendor Onboarding Platform',
-    tagline: 'LLM-powered enterprise automation at scale',
-    problem: 'Enterprise vendor onboarding took 2+ weeks per client, requiring manual compliance review of 50–100-page regulatory documents.',
-    approach: 'Built an LLM pipeline using RAG (Retrieval-Augmented Generation) to parse compliance docs, extract obligations, and auto-fill onboarding forms. Deployed on AWS with a React + Node.js frontend serving real enterprise clients.',
-    impact: '60% reduction in onboarding time. 200+ enterprise clients processed monthly. 95% accuracy in regulatory document analysis.',
-    image: '/projects/CareerBuddy.png',
-    github: 'https://github.com/PR-ODINSON/CareerBuddy',
+    tagline: 'Transform weeks of vendor compliance into hours',
+    problem: 'Enterprise vendor onboarding averaged 2+ weeks per client — buried in manual review of 50–100 page regulatory questionnaires, siloed evidence requests, and back-and-forth with compliance teams.',
+    approach: 'Engineered an LLM-powered compliance platform using RAG to auto-parse regulatory documents, intelligently auto-fill security questionnaires, manage evidence collections, and publish live trust portals for clients. Built on React + Node.js, deployed at scale in Dublin.',
+    impact: '150+ compliance frameworks supported. 95% questionnaire response accuracy. Avg vendor onboarding time cut from 2 weeks to 2.5 hours. Enterprise clients close deals 50% faster.',
+    image: '/projects/garnetai.png',
+    github: '#',
     demo: '#',
-    tech: ['React', 'Node.js', 'MongoDB', 'OpenAI API', 'RAG', 'Docker', 'AWS'],
-    highlight: '60% faster onboarding',
+    tech: ['React', 'Node.js', 'LLM / RAG', 'OpenAI API', 'TypeScript', 'Docker', 'AWS'],
+    highlight: '50% faster deal closure',
   },
   {
     title: 'AI Attendance System',
@@ -128,22 +128,22 @@ export default function Projects() {
                       <a
                         href={project.github}
                         target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-black/50 text-white/70 hover:text-white border border-white/10 backdrop-blur-sm transition-colors"
+                        className="p-2 rounded-lg bg-black/50 text-white/70 hover:text-white border border-white/10 backdrop-blur-sm transition-colors"
                         aria-label="GitHub"
                         onClick={e => e.stopPropagation()}
                       >
-                        <FaGithub className="w-3.5 h-3.5" />
+                        <FaGithub className="w-4 h-4" />
                       </a>
                     )}
                     {hasDemo && (
                       <a
                         href={project.demo}
                         target="_blank" rel="noopener noreferrer"
-                        className="p-1.5 rounded-lg bg-black/50 text-white/70 hover:text-cyan-400 border border-white/10 backdrop-blur-sm transition-colors"
+                        className="p-2 rounded-lg bg-black/50 text-white/70 hover:text-cyan-400 border border-white/10 backdrop-blur-sm transition-colors"
                         aria-label="Live Demo"
                         onClick={e => e.stopPropagation()}
                       >
-                        <FaExternalLinkAlt className="w-3 h-3" />
+                        <FaExternalLinkAlt className="w-3.5 h-3.5" />
                       </a>
                     )}
                   </div>
