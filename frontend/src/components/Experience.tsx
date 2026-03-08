@@ -182,7 +182,7 @@ function ExperienceCard({ exp, expanded, setExpanded, color }: {
     <motion.div
       layout
       onClick={() => setExpanded(!expanded)}
-      className="relative bg-gray-900/90 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 cursor-pointer transition-colors duration-300 group"
+      className="relative bg-gray-900/90 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-4 sm:p-6 lg:p-8 cursor-pointer transition-colors duration-300 group"
       style={{
         borderLeft: `3px solid ${color}50`,
       }}
@@ -297,7 +297,7 @@ export default function ExperienceSection() {
     <section id="experience" className="section-padding bg-gradient-to-b from-gray-800 to-gray-900 overflow-hidden">
       <div className="section-container">
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-100px' }}>
-        <motion.div variants={item} className="text-center mb-16">
+        <motion.div variants={item} className="text-center mb-10 sm:mb-16">
           <h2 className="heading-xl text-white">
             Work <span className="gradient-text">Experience</span>
           </h2>

@@ -5,7 +5,6 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle } from 'react-icons/fi'
 import { SiGithub, SiLinkedin } from 'react-icons/si'
-import { contactAPI } from '../utils/api'
 
 const schema = z.object({
   name: z.string().min(2, 'Name is too short'),

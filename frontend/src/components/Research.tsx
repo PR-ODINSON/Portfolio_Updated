@@ -145,7 +145,7 @@ export default function Research() {
 
         {/* Impact stats row */}
         <motion.div
-          className="grid grid-cols-3 gap-4 mb-12 max-w-2xl mx-auto"
+          className="grid grid-cols-3 gap-2 sm:gap-4 mb-12 max-w-2xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, delay: 0.35 }}
@@ -153,7 +153,7 @@ export default function Research() {
           {impactStats.map((s) => (
             <div
               key={s.label}
-              className="relative rounded-xl bg-gray-800/60 border border-gray-700/50 p-4 text-center overflow-hidden"
+              className="relative rounded-xl bg-gray-800/60 border border-gray-700/50 p-3 sm:p-4 text-center overflow-hidden"
             >
               <div
                 className="absolute bottom-0 left-0 right-0 h-[2px] opacity-70"

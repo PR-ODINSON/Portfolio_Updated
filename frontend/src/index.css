@@ -71,6 +71,7 @@
 html {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  scroll-padding-top: 72px;
 }
 
 /* App base layout */
