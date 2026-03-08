@@ -294,7 +294,7 @@ export default function ExperienceSection() {
   const sortedExperiences = getSortedExperiences()
 
   return (
-    <section id="experience" className="section-padding bg-gradient-to-b from-gray-800 to-gray-900 overflow-hidden">
+    <section id="experience" className="section-padding bg-gradient-to-b from-[#07090f] to-gray-900 overflow-hidden">
       <div className="section-container">
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, margin: '-100px' }}>
         <motion.div variants={item} className="text-center mb-10 sm:mb-16">

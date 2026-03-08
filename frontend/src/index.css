@@ -77,7 +77,7 @@ html {
 /* App base layout */
 body {
   overflow-x: hidden;
-  background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 60%, #404040 100%);
+  background: #05070f;
   color: #e5e7eb;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -163,119 +163,34 @@ body {
 
 /* Theme tokens */
 :root {
-  --brand-primary: #a8a8a8;  /* grey highlight */
-  --brand-accent: #ffffff;   /* white */
-  --brand-dark: #1a1a1a;     /* dark base */
+  --brand-primary: #22d3ee;
+  --brand-accent: #a855f7;
+  --brand-dark: #05070f;
 }
 
-/* Premium Typography System with Custom Fonts */
-.display {
-  font-family: 'MetaRegular', 'Outfit', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+/* Simplified typography — all using Inter */
+.display, .display-large {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   letter-spacing: -0.03em;
-  font-weight: 400;
-  line-height: 1.1;
-}
-
-.display-large {
-  font-family: 'MetaRegular', 'Outfit', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  letter-spacing: -0.04em;
-  font-weight: 400;
+  font-weight: 800;
   line-height: 1.05;
 }
 
-.display-italic {
-  font-family: 'Playfair Display', 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.subtle-italic {
-  font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif;
-  font-style: italic;
-  font-weight: 500;
-}
-
-.heading {
-  font-family: 'DIN', 'FranklinGothic', 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+.heading, .heading-light, .brand-heading, .hero-title, .hero-subtitle {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
-.heading-light {
-  font-family: 'DIN', 'FranklinGothic', 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
-}
-
-.body-text {
-  font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-.body-semibold {
-  font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.body-light {
-  font-family: 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  line-height: 1.7;
+.body-text, .body-semibold, .body-light, .brand-body, .brand-accent, .display-italic, .subtle-italic, .brand-display {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .code-text {
-  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', 'Courier New', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
   font-weight: 400;
   letter-spacing: 0.02em;
-}
-
-/* Premium Brand Typography */
-.brand-display {
-  font-family: 'BalconeRano3', 'MetaRegular', 'Outfit', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  letter-spacing: -0.05em;
-  font-weight: 400;
-  line-height: 1.0;
-}
-
-.brand-heading {
-  font-family: 'PeterGothic', 'DIN', 'FranklinGothic', 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
-}
-
-.brand-body {
-  font-family: 'AmericanTypewriter', 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  line-height: 1.6;
-  letter-spacing: 0.01em;
-}
-
-.brand-accent {
-  font-family: 'FranklinGothic', 'DIN', 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.4;
-}
-
-/* Specialized Typography Classes */
-.hero-title {
-  font-family: 'MetaRegular', 'BalconeRano3', 'Outfit', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  letter-spacing: -0.06em;
-  font-weight: 400;
-  line-height: 0.95;
-}
-
-.hero-subtitle {
-  font-family: 'PeterGothic', 'DIN', 'FranklinGothic', 'Helvetica Neue', 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
 }
 
 .section-title {

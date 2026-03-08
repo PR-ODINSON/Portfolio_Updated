@@ -88,7 +88,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section-padding bg-gradient-to-b from-gray-900 to-gray-800">
+    <section id="contact" className="section-padding bg-gradient-to-b from-gray-900 to-[#07090f]">
       <div className="section-container">
         {/* Header */}
         <motion.div

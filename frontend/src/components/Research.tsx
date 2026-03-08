@@ -105,7 +105,7 @@ export default function Research() {
     <section
       id="research"
       ref={ref}
-      className="relative isolate overflow-hidden bg-gradient-to-b from-gray-800 to-gray-900 section-padding"
+      className="relative isolate overflow-hidden bg-gradient-to-b from-[#07090f] to-gray-900 section-padding"
     >
       {/* Background blobs */}
       <div className="absolute inset-0 -z-10">

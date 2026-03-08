@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import { Download, ArrowRight } from 'lucide-react'
 import NeuralNetworkViz from './NeuralNetworkViz'
-import RotatingText from './RotatingText'
+
+const RESUME_URL = 'https://drive.google.com/file/d/YOUR_RESUME_FILE_ID/view'
 
 // ── Animated count-up ────────────────────────────────────
 function useCounter(target: number, duration = 1600) {
@@ -61,13 +63,11 @@ const item = {
 }
 
 const stats = [
-  { value: 8,  suffix: '+',  label: 'Projects' },
-  { value: 3,  suffix: '',   label: 'Publications' },
+  { value: 3,  suffix: '',   label: 'IEEE Papers' },
   { value: 6,  suffix: '+',  label: 'Internships' },
+  { value: 8,  suffix: '+',  label: 'Projects Built' },
   { value: 99, suffix: '%',  label: 'ML Accuracy' },
 ]
-
-const roles = ['AI / ML Engineer', 'Full-Stack Developer', 'Research Scientist', 'LLM Architect']
 
 export default function Hero() {
   return (
@@ -131,29 +131,26 @@ export default function Hero() {
                 <span className="gradient-text">Verma</span>
               </motion.h1>
 
-              {/* Rotating role */}
-              <motion.div
+              {/* Role — single strong identity */}
+              <motion.p
                 variants={item}
                 transition={{ duration: 0.6 }}
-                className="flex items-center justify-center lg:justify-start gap-2 text-base sm:text-lg text-gray-400"
+                className="text-lg sm:text-xl font-semibold text-cyan-300 tracking-wide"
               >
-                <span className="text-gray-600 font-mono text-sm">{'<'}</span>
-                <RotatingText
-                  texts={roles}
-                  mainClassName="text-cyan-300 font-semibold tracking-wide"
-                  rotationInterval={2600}
-                />
-                <span className="text-gray-600 font-mono text-sm">{'/>'}</span>
-              </motion.div>
+                AI/ML Engineer &amp; IEEE Researcher
+              </motion.p>
 
-              {/* Bio */}
+              {/* Bio — concise positioning statement */}
               <motion.p
                 variants={item}
                 transition={{ duration: 0.8 }}
                 className="body-base text-gray-400 max-w-lg mx-auto lg:mx-0 leading-relaxed"
               >
-                Building <span className="text-white font-medium">production-grade AI/ML systems</span> — from IEEE-published biomedical research to LLM-powered enterprise automation. Pre-final year at IITRAM turning research into{' '}
-                <span className="text-cyan-400 font-medium">scalable reality</span>.
+                I build <span className="text-white font-medium">production ML systems end-to-end</span> — from
+                IEEE-published biomedical deep learning to LLM-powered enterprise platforms.
+                Pre-final year at IITRAM with{' '}
+                <span className="text-cyan-400 font-medium">3 IEEE publications</span> and{' '}
+                <span className="text-cyan-400 font-medium">real deployments at scale</span>.
               </motion.p>
 
               {/* Stats */}
@@ -173,21 +170,25 @@ export default function Hero() {
               >
                 <motion.a
                   href="#projects"
+                  onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}
                   whileHover={{ scale: 1.04, boxShadow: '0 0 28px rgba(6,182,212,0.45)' }}
                   whileTap={{ scale: 0.97 }}
                   transition={{ duration: 0.18 }}
-                  className="btn btn-primary btn-glow w-full sm:w-auto text-center"
+                  className="btn btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2"
                 >
-                  View My Work
+                  View Projects
+                  <ArrowRight className="w-4 h-4" />
                 </motion.a>
                 <motion.a
-                  href="#contact"
+                  href={RESUME_URL}
+                  target="_blank" rel="noopener noreferrer"
                   whileHover={{ scale: 1.04, boxShadow: '0 0 18px rgba(6,182,212,0.2)' }}
                   whileTap={{ scale: 0.97 }}
                   transition={{ duration: 0.18 }}
-                  className="btn btn-secondary w-full sm:w-auto text-center"
+                  className="btn btn-secondary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2"
                 >
-                  Get in Touch
+                  <Download className="w-4 h-4" />
+                  Download Resume
                 </motion.a>
               </motion.div>
             </motion.div>

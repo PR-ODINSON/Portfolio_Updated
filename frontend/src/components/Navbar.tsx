@@ -1,27 +1,18 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Download } from 'lucide-react'
 import { SiGithub, SiLinkedin } from 'react-icons/si'
-import { FiMail } from 'react-icons/fi'
-import { NavLink } from 'react-router-dom'
 
-const LEFT_ITEMS = [
-  { id: 'about',      label: 'About'      },
-  { id: 'experience', label: 'Experience' },
+const NAV_ITEMS = [
   { id: 'projects',   label: 'Projects'   },
+  { id: 'experience', label: 'Experience' },
+  { id: 'research',   label: 'Research'   },
+  { id: 'about',      label: 'Skills'     },
+  { id: 'contact',    label: 'Contact'    },
 ]
-const RIGHT_ITEMS = [
-  { id: 'achievements', label: 'Achievements' },
-  { id: 'research',     label: 'Research'     },
-  { id: 'contact',      label: 'Contact'      },
-]
-const ALL_ITEMS = [...LEFT_ITEMS, ...RIGHT_ITEMS]
 
-const SOCIALS = [
-  { href: 'https://github.com/PR-ODINSON',                           Icon: SiGithub,   label: 'GitHub',   cls: 'hover:text-white'    },
-  { href: 'https://www.linkedin.com/in/prithviraj-verma-b58707289/', Icon: SiLinkedin, label: 'LinkedIn', cls: 'hover:text-blue-400' },
-  { href: 'mailto:prithraj120@gmail.com',                            Icon: FiMail,     label: 'Email',    cls: 'hover:text-cyan-400' },
-]
+// Replace this URL with your actual hosted resume PDF
+const RESUME_URL = 'https://drive.google.com/file/d/YOUR_RESUME_FILE_ID/view'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -31,42 +22,36 @@ export default function Navbar() {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
 
-  // Nav background on scroll
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Active section via IntersectionObserver
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id) }),
       { threshold: 0.25, rootMargin: '-80px 0px -50% 0px' }
     )
-    ALL_ITEMS.forEach(({ id }) => {
+    NAV_ITEMS.forEach(({ id }) => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
   }, [])
 
-  // On homepage scroll into view; on a sub-route let NavLink route normally
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    if (window.location.pathname === '/') {
-      e.preventDefault()
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+  const scrollTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     setOpen(false)
   }
 
-  const baseLinkCls = 'relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 select-none'
+  const baseLinkCls = 'relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 select-none cursor-pointer'
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-gray-950/85 backdrop-blur-xl border-b border-white/10 shadow-[0_2px_30px_rgba(0,0,0,0.5)]'
+          ? 'bg-[#05070f]/90 backdrop-blur-xl border-b border-white/8 shadow-[0_2px_30px_rgba(0,0,0,0.6)]'
           : ''
       }`}
     >
@@ -78,13 +63,22 @@ export default function Navbar() {
 
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 py-3.5">
 
-        {/* ── Left nav items ── */}
+        {/* ── Logo ── */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="group font-mono font-bold text-lg sm:text-xl tracking-wider select-none"
+        >
+          <span className="text-cyan-400/60 group-hover:text-cyan-400 transition-colors duration-200">{'</'}</span>
+          <span className="text-white group-hover:text-gray-100 transition-colors duration-200">PRITHVI</span>
+          <span className="text-cyan-400/60 group-hover:text-cyan-400 transition-colors duration-200">{'>'}</span>
+        </button>
+
+        {/* ── Desktop nav ── */}
         <div className="hidden lg:flex items-center gap-0.5">
-          {LEFT_ITEMS.map((item) => (
-            <NavLink
+          {NAV_ITEMS.map((item) => (
+            <button
               key={item.id}
-              to={`/${item.id}`}
-              onClick={(e) => handleNavClick(e, item.id)}
+              onClick={() => scrollTo(item.id)}
               className={`${baseLinkCls} ${active === item.id ? 'text-white' : 'text-white/50 hover:text-white/90'}`}
             >
               {active === item.id && (
@@ -95,61 +89,46 @@ export default function Navbar() {
                 />
               )}
               <span className="relative z-10">{item.label}</span>
-            </NavLink>
+            </button>
           ))}
         </div>
 
-        {/* ── Center logo ── */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="group font-mono font-bold text-lg sm:text-xl tracking-wider select-none"
-        >
-          <span className="text-cyan-400/60 group-hover:text-cyan-400 transition-colors duration-200">{'</'}</span>
-          <span className="text-white group-hover:text-gray-100 transition-colors duration-200">PRITHVI</span>
-          <span className="text-cyan-400/60 group-hover:text-cyan-400 transition-colors duration-200">{'>'}</span>
-        </button>
+        {/* ── Right side: socials + Resume ── */}
+        <div className="flex items-center gap-2">
 
-        {/* ── Right nav + socials + mobile toggle ── */}
-        <div className="flex items-center gap-1">
-
-          {/* Right nav items */}
-          <div className="hidden lg:flex items-center gap-0.5">
-            {RIGHT_ITEMS.map((item) => (
-              <NavLink
-                key={item.id}
-                to={`/${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className={`${baseLinkCls} ${active === item.id ? 'text-white' : 'text-white/50 hover:text-white/90'}`}
-              >
-                {active === item.id && (
-                  <motion.div
-                    layoutId="nav-pill"
-                    className="absolute inset-0 rounded-md bg-white/10 border border-white/10"
-                    transition={{ type: 'spring', bounce: 0.15, duration: 0.35 }}
-                  />
-                )}
-                <span className="relative z-10">{item.label}</span>
-              </NavLink>
-            ))}
+          {/* Social icons */}
+          <div className="hidden lg:flex items-center gap-1 mr-2">
+            <motion.a
+              href="https://github.com/PR-ODINSON"
+              target="_blank" rel="noopener noreferrer"
+              whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
+              className="p-2 text-white/40 hover:text-white transition-colors"
+              aria-label="GitHub"
+            >
+              <SiGithub className="w-4 h-4" />
+            </motion.a>
+            <motion.a
+              href="https://www.linkedin.com/in/prithviraj-verma-b58707289/"
+              target="_blank" rel="noopener noreferrer"
+              whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
+              className="p-2 text-white/40 hover:text-blue-400 transition-colors"
+              aria-label="LinkedIn"
+            >
+              <SiLinkedin className="w-4 h-4" />
+            </motion.a>
           </div>
 
-          {/* Social icons — desktop only */}
-          <div className="hidden lg:flex items-center gap-0.5 ml-3 pl-3 border-l border-white/10">
-            {SOCIALS.map(({ href, Icon, label, cls }) => (
-              <motion.a
-                key={label}
-                href={href}
-                target={href.startsWith('http') ? '_blank' : undefined}
-                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                aria-label={label}
-                whileHover={{ scale: 1.15 }}
-                whileTap={{ scale: 0.9 }}
-                className={`p-2 text-white/40 ${cls} transition-colors duration-200`}
-              >
-                <Icon className="w-4 h-4" />
-              </motion.a>
-            ))}
-          </div>
+          {/* Resume CTA */}
+          <motion.a
+            href={RESUME_URL}
+            target="_blank" rel="noopener noreferrer"
+            whileHover={{ scale: 1.04, boxShadow: '0 0 20px rgba(6,182,212,0.3)' }}
+            whileTap={{ scale: 0.97 }}
+            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 text-sm font-medium transition-all duration-200"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Resume
+          </motion.a>
 
           {/* Mobile hamburger */}
           <button
@@ -181,19 +160,18 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
-            className="lg:hidden overflow-hidden border-t border-white/10 bg-gray-950/95 backdrop-blur-2xl"
+            className="lg:hidden overflow-hidden border-t border-white/10 bg-[#05070f]/95 backdrop-blur-2xl"
           >
             <div className="px-4 py-4 space-y-1 max-w-7xl mx-auto">
-              {ALL_ITEMS.map((item, i) => (
+              {NAV_ITEMS.map((item, i) => (
                 <motion.div
                   key={item.id}
                   initial={{ x: -12, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.04 }}
                 >
-                  <NavLink
-                    to={`/${item.id}`}
-                    onClick={(e) => handleNavClick(e, item.id)}
+                  <button
+                    onClick={() => scrollTo(item.id)}
                     className={`flex items-center w-full px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                       active === item.id
                         ? 'bg-white/10 text-white border border-white/10'
@@ -204,24 +182,28 @@ export default function Navbar() {
                       {String(i + 1).padStart(2, '0')}
                     </span>
                     {item.label}
-                  </NavLink>
+                  </button>
                 </motion.div>
               ))}
 
-              {/* Mobile socials */}
-              <div className="flex gap-1 pt-3 mt-2 border-t border-white/10">
-                {SOCIALS.map(({ href, Icon, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target={href.startsWith('http') ? '_blank' : undefined}
-                    rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    aria-label={label}
-                    className="p-2.5 text-white/40 hover:text-white transition-colors rounded-lg hover:bg-white/5"
-                  >
-                    <Icon className="w-5 h-5" />
-                  </a>
-                ))}
+              <div className="flex items-center gap-2 pt-3 mt-2 border-t border-white/10">
+                <a
+                  href={RESUME_URL}
+                  target="_blank" rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-sm font-medium"
+                >
+                  <Download className="w-4 h-4" />
+                  Download Resume
+                </a>
+                <a href="https://github.com/PR-ODINSON" target="_blank" rel="noopener noreferrer"
+                  className="p-2.5 text-white/40 hover:text-white rounded-lg hover:bg-white/5" aria-label="GitHub">
+                  <SiGithub className="w-5 h-5" />
+                </a>
+                <a href="https://www.linkedin.com/in/prithviraj-verma-b58707289/" target="_blank" rel="noopener noreferrer"
+                  className="p-2.5 text-white/40 hover:text-blue-400 rounded-lg hover:bg-white/5" aria-label="LinkedIn">
+                  <SiLinkedin className="w-5 h-5" />
+                </a>
               </div>
             </div>
           </motion.div>

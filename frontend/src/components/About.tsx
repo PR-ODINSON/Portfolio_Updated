@@ -157,8 +157,8 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.3 }}
           >
             <h2 className="heading-lg text-white">
-              Transforming Ideas Into{' '}
-              <span className="gradient-text">Innovation</span>
+              Skills &amp;{' '}
+              <span className="gradient-text">Stack</span>
             </h2>
 
             <p className="body-base text-gray-300">
@@ -215,32 +215,11 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* ── Resume button ── */}
-        <motion.div
-          className="flex justify-center mb-14 sm:mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.7, delay: 0.9 }}
-        >
-          <motion.a
-            href="https://drive.google.com/file/d/1FAvOEMlgpb-EHnjtrniqd0k-Ebdo9xEn/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary inline-flex items-center gap-3"
-            whileHover={{ scale: 1.05, y: -2, boxShadow: '0 0 22px rgba(6,182,212,0.35)' }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Download Resume
-          </motion.a>
-        </motion.div>
-
         {/* ── Technology Stack ── */}
         <div>
-          <h3 className="heading-sm text-center text-white mb-6 sm:mb-8">Technology Stack</h3>
+          <h3 className="heading-sm text-white mb-6 sm:mb-8">
+            Core <span className="gradient-text">Technologies</span>
+          </h3>
 
           {/* Tab pills */}
           <div className="flex justify-center gap-2 sm:gap-3 mb-7 flex-wrap">
