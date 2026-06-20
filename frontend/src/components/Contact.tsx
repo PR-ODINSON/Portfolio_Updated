@@ -1,348 +1,154 @@
-import { motion } from 'framer-motion'
-import { useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FiMail, FiPhone, FiMapPin, FiSend, FiCheckCircle } from 'react-icons/fi'
+// Contact.tsx — .cta-section pattern: dark full-bleed, mailto-only CTA
+// No form. Email/phone/location as muted text. GitHub/LinkedIn links below CTA.
+
+import { useEffect, useRef } from 'react'
 import { SiGithub, SiLinkedin } from 'react-icons/si'
 
-const schema = z.object({
-  name: z.string().min(2, 'Name is too short'),
-  email: z.string().email('Enter a valid email'),
-  subject: z.string().min(5, 'Subject is too short'),
-  message: z.string().min(10, 'Message is too short'),
-})
+function useMagnetic(enabled: boolean = true) {
+  const ref = useRef<HTMLAnchorElement | null>(null)
 
-type FormData = z.infer<typeof schema>
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !enabled) return
 
-const contactInfo = [
-  {
-    icon: FiMail,
-    title: 'Email',
-    value: 'prithraj120@gmail.com',
-    color: 'from-cyan-500 to-blue-600'
-  },
-  {
-    icon: FiPhone,
-    title: 'Phone',
-    value: '+91 9926719150',
-    color: 'from-green-500 to-emerald-500'
-  },
-  {
-    icon: FiMapPin,
-    title: 'Location',
-    value: 'Ahmedabad, Gujarat, India',
-    color: 'from-violet-500 to-purple-600'
-  }
-]
+    const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (matchReduced) return
 
-const socialLinks = [
-  { icon: SiGithub,   href: 'https://github.com/PR-ODINSON',                           color: 'from-gray-700 to-gray-900' },
-  { icon: SiLinkedin, href: 'https://www.linkedin.com/in/prithviraj-verma-b58707289/', color: 'from-blue-600 to-blue-800' },
-]
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      const deltaX = e.clientX - centerX
+      const deltaY = e.clientY - centerY
+
+      const distance = Math.hypot(deltaX, deltaY)
+      const triggerArea = 100
+
+      if (distance < triggerArea) {
+        const factor = (triggerArea - distance) / triggerArea
+        const pullX = deltaX * 0.12 * factor
+        const pullY = deltaY * 0.12 * factor
+        const clampedX = Math.max(-6, Math.min(6, pullX))
+        const clampedY = Math.max(-6, Math.min(6, pullY))
+
+        el.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) scale(1.03)`
+        el.style.transition = 'transform 0.08s ease-out'
+      } else {
+        el.style.transform = ''
+        el.style.transition = 'transform 0.3s ease-out'
+      }
+    }
+
+    const onMouseLeave = () => {
+      el.style.transform = ''
+      el.style.transition = 'transform 0.3s ease-out'
+    }
+
+    window.addEventListener('mousemove', onMouseMove)
+    el.addEventListener('mouseleave', onMouseLeave)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      el.removeEventListener('mouseleave', onMouseLeave)
+    }
+  }, [enabled])
+
+  return ref
+}
 
 export default function Contact() {
-  const formRef = useRef<HTMLFormElement | null>(null)
-  const [sent, setSent] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) })
-
-  const onSubmit = async (data: FormData) => {
-    try {
-      setLoading(true)
-      setError(null)
-      
-      const response = await fetch('https://formspree.io/f/xqaelwjd', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-      
-      if (!response.ok) {
-        throw new Error('Failed to send message')
-      }
-
-      setSent(true)
-      reset()
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setSent(false)
-      }, 5000)
-      
-    } catch (err) {
-      console.error('Error sending message:', err)
-      setError(err instanceof Error ? err.message : 'Failed to send message. Please try again.')
-    } finally {
-      setLoading(false)
-    }
-  }
+  const emailCtaRef = useMagnetic()
 
   return (
-    <section id="contact" className="section-padding bg-gradient-to-b from-gray-900 to-[#07090f]">
+    <section id="contact" className="cta-section">
       <div className="section-container">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center mb-12 sm:mb-16"
-        >
-          <h2 className="heading-lg text-white">
-            Get In <span className="gradient-text">Touch</span>
+
+        {/* Giant headline */}
+        <div className="reveal" style={{ marginBottom: '3rem' }}>
+          <h2 className="cta-headline">
+            LET'S BUILD<br />
+            SOMETHING{' '}
+            <span className="accent">REAL.</span>
           </h2>
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            whileInView={{ width: 160, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mx-auto mt-3 h-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"
-          />
-          <p className="body-base text-gray-300 mt-4 max-w-2xl mx-auto">
-            I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="space-y-6"
-          >
-            <div>
-              <h3 className="heading-sm text-white mb-3">Get in Touch</h3>
-              <p className="body-base text-gray-300">
-                I'm always open to collaborations, research, and innovation discussions.
-                If you have an idea, project, or opportunity — let's make it real.
-              </p>
-            </div>
-
-            {/* Contact Info Cards */}
-            <div className="space-y-4">
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={info.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    x: 12,
-                    boxShadow: '0 15px 30px rgba(142, 236, 245, 0.2)',
-                    transition: { 
-                      duration: 0.4,
-                      ease: "easeOut"
-                    }
-                  }}
-                  className="group"
-                >
-                  <div className="glass card p-4 sm:p-5 flex items-center gap-3 sm:gap-4 transition-all duration-300">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-r ${info.color} flex items-center justify-center flex-shrink-0`}>
-                      <info.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                    </div>
-                    <div className="min-w-0">
-                      <h4 className="text-sm sm:text-base text-white font-medium">{info.title}</h4>
-                      <p className="text-xs sm:text-sm text-gray-300 truncate">{info.value}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Social Links */}
-            <div>
-              <h4 className="text-white font-semibold mb-3">Connect on Social</h4>
-              <div className="flex gap-3">
-                {socialLinks.map((social, idx) => (
-                  <motion.a
-                    key={idx}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.1, y: -3 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-r ${social.color} flex items-center justify-center shadow-lg hover:shadow-xl transition-all`}
-                  >
-                    <social.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </motion.a>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div className="glass card card-padding border border-gray-700/60 bg-gray-800/40">
-              <h3 className="heading-sm text-white mb-6">Send a Message</h3>
-            
-            <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-              >
-                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Name</label>
-                <input
-                  {...register('name')}
-                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200"
-                  placeholder="Your full name"
-                />
-                {errors.name && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 text-sm text-red-400"
-                  >
-                    {errors.name.message}
-                  </motion.p>
-                )}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-              >
-                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Email</label>
-                <input
-                  type="email"
-                  {...register('email')}
-                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200"
-                  placeholder="your.email@example.com"
-                />
-                {errors.email && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 text-sm text-red-400"
-                  >
-                    {errors.email.message}
-                  </motion.p>
-                )}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.25 }}
-              >
-                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Subject</label>
-                <input
-                  {...register('subject')}
-                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200"
-                  placeholder="What's this about?"
-                />
-                {errors.subject && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 text-sm text-red-400"
-                  >
-                    {errors.subject.message}
-                  </motion.p>
-                )}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-              >
-                    <label className="block text-xs sm:text-sm contact-label text-gray-200 mb-2">Message</label>
-                <textarea
-                  rows={4}
-                  {...register('message')}
-                  className="w-full rounded-lg sm:rounded-xl bg-gray-800/60 border border-gray-700 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all duration-200 resize-none"
-                  placeholder="Tell me about your project..."
-                />
-                {errors.message && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 text-sm text-red-400"
-                  >
-                    {errors.message.message}
-                  </motion.p>
-                )}
-              </motion.div>
-
-              {/* Error Message */}
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="p-4 bg-red-500/10 border border-red-500/20 rounded-xl"
-                >
-                  <p className="text-red-400 text-sm">{error}</p>
-                </motion.div>
-              )}
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                className="flex items-center gap-4"
-              >
-                <motion.button
-                  type="submit"
-                  disabled={loading}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="btn btn-primary w-full inline-flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {loading ? (
-                    <>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
-                      />
-                      Sending...
-                    </>
-                  ) : sent ? (
-                    <>
-                      <FiCheckCircle className="w-5 h-5" />
-                      Message Sent!
-                    </>
-                  ) : (
-                    <>
-                      <FiSend className="w-5 h-5" />
-                      Send Message
-                    </>
-                  )}
-                </motion.button>
-              </motion.div>
-            </form>
-            </div>
-          </motion.div>
         </div>
+
+        {/* CTA button */}
+        <div className="reveal" style={{ marginBottom: '2.5rem' }}>
+          <a
+            ref={emailCtaRef}
+            id="contact-email-cta"
+            href="mailto:prithraj120@gmail.com"
+            className="cta-btn"
+          >
+            Send an Email ↗
+          </a>
+        </div>
+
+        {/* Muted contact details */}
+        <div
+          className="reveal"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.4rem',
+            marginBottom: '2.5rem',
+          }}
+        >
+          <p className="cta-meta">prithraj120@gmail.com</p>
+          <p className="cta-meta">+91 7697966155</p>
+          <p className="cta-meta">Ahmedabad, Gujarat, India</p>
+        </div>
+
+        {/* Social links */}
+        <div
+          className="reveal"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem' }}
+        >
+          <a
+            id="contact-github-link"
+            href="https://github.com/PR-ODINSON"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--muted-dark)',
+              textDecoration: 'none',
+              transition: 'color 0.15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--paper)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted-dark)')}
+          >
+            <SiGithub size={16} /> GitHub
+          </a>
+          <a
+            id="contact-linkedin-link"
+            href="https://www.linkedin.com/in/prithviraj-verma-b58707289/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.875rem',
+              fontWeight: 600,
+              color: 'var(--muted-dark)',
+              textDecoration: 'none',
+              transition: 'color 0.15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'var(--paper)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted-dark)')}
+          >
+            <SiLinkedin size={16} /> LinkedIn
+          </a>
+        </div>
+
       </div>
     </section>
   )
 }
-
-

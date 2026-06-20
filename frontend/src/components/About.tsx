@@ -11,9 +11,10 @@ const tabs = ['Languages', 'Libraries & Frameworks', 'Machine Learning', 'Tools 
 type Tab = (typeof tabs)[number]
 
 const showcaseStats = [
-  { value: '3.4',  label: 'IEEE Impact Factor', sub: 'IEEE Access journal',      colorFrom: '#8b5cf6', colorTo: '#7c3aed' },
+  { value: '6',    label: 'IEEE Publications',   sub: '3 published / 3 in review', colorFrom: '#8b5cf6', colorTo: '#7c3aed' },
   { value: '99.2%',label: 'Model Accuracy',      sub: 'EEG/ECG sleep staging',    colorFrom: '#06b6d4', colorTo: '#3b82f6' },
-  { value: '50+',  label: 'Students Mentored',   sub: 'IITRAM Coding Club',        colorFrom: '#10b981', colorTo: '#059669' },
+  { value: '50+',  label: 'Students Mentored',   sub: 'IITRAM Tekstra Club',       colorFrom: '#10b981', colorTo: '#059669' },
+  // CONFLICT: CV says "60%" workflow reduction (Garnet AI); About section previously showed "60%" — consistent
   { value: '60%',  label: 'Workflow Reduction',  sub: 'Garnet AI automation',      colorFrom: '#f59e0b', colorTo: '#d97706' },
 ]
 
@@ -32,36 +33,36 @@ export default function About() {
 
   const techStacks = {
     Languages: [
-      { name: 'Python',     icon: SiPython,     proficiency: 95 },
-      { name: 'C++',        icon: FaCode,        proficiency: 90 },
-      { name: 'JavaScript', icon: SiJavascript,  proficiency: 85 },
-      { name: 'TypeScript', icon: SiTypescript,  proficiency: 80 },
-      { name: 'SQL',        icon: FaDatabase,    proficiency: 85 },
-      { name: 'MATLAB',     icon: FaCode,        proficiency: 75 },
+      { name: 'Python',     icon: SiPython,     proficiency: 95 },  // Expert (CV)
+      { name: 'C++',        icon: FaCode,        proficiency: 90 },  // Expert (CV)
+      { name: 'JavaScript', icon: SiJavascript,  proficiency: 85 },  // Proficient (CV)
+      { name: 'TypeScript', icon: SiTypescript,  proficiency: 80 },  // Proficient (CV)
+      { name: 'SQL',        icon: FaDatabase,    proficiency: 85 },  // Proficient (CV)
+      { name: 'MATLAB',     icon: FaCode,        proficiency: 70 },  // Familiar (CV)
     ],
     'Libraries & Frameworks': [
       { name: 'React',        icon: SiReact,      proficiency: 90 },
       { name: 'Next.js',      icon: SiReact,      proficiency: 85 },
-      { name: 'NestJS',       icon: SiNodedotjs,  proficiency: 85 },
       { name: 'FastAPI',      icon: FaServer,     proficiency: 85 },
+      { name: 'Node.js',      icon: SiNodedotjs,  proficiency: 80 },
       { name: 'Tailwind CSS', icon: FaPalette,    proficiency: 90 },
       { name: 'TensorFlow',   icon: SiTensorflow, proficiency: 90 },
     ],
     'Machine Learning': [
-      { name: 'PyTorch',      icon: FaBrain,    proficiency: 90 },
-      { name: 'Scikit-learn', icon: FaBrain,    proficiency: 95 },
-      { name: 'Pandas',       icon: FaDatabase, proficiency: 95 },
-      { name: 'NumPy',        icon: FaCode,     proficiency: 95 },
-      { name: 'MLflow',       icon: FaBrain,    proficiency: 85 },
-      { name: 'OpenCV',       icon: FaCode,     proficiency: 80 },
+      { name: 'PyTorch',        icon: FaBrain,    proficiency: 90 },  // Expert (CV)
+      { name: 'Scikit-learn',   icon: FaBrain,    proficiency: 95 },  // Expert (CV)
+      { name: 'Pandas / NumPy', icon: FaDatabase, proficiency: 95 },  // Expert (CV)
+      { name: 'OpenCV',         icon: FaCode,     proficiency: 85 },  // Proficient (CV)
+      { name: 'LangChain',      icon: FaBrain,    proficiency: 85 },  // Proficient (CV) + LinkedIn Top Skills
+      { name: 'HuggingFace',    icon: FaBrain,    proficiency: 80 },  // Proficient (CV)
     ],
     'Tools & Platforms': [
-      { name: 'AWS',        icon: FaCloud,    proficiency: 85 },
+      { name: 'AWS',        icon: FaCloud,    proficiency: 80 },
       { name: 'Docker',     icon: SiDocker,   proficiency: 85 },
       { name: 'Git',        icon: FaGitAlt,   proficiency: 95 },
       { name: 'PostgreSQL', icon: FaDatabase, proficiency: 85 },
       { name: 'MongoDB',    icon: SiMongodb,  proficiency: 80 },
-      { name: 'Figma',      icon: SiFigma,    proficiency: 85 },
+      { name: 'MLflow',     icon: FaBrain,    proficiency: 80 },  // CV: Familiar
     ],
   }
 
@@ -174,14 +175,9 @@ export default function About() {
                 Research Impact
               </h4>
               <p className="text-xs text-gray-300 leading-relaxed">
-                Co-authored{' '}
-                <span className="text-cyan-400 font-medium italic">
-                  "Multi Feature Fusion for Sleep Stage Classification using EEG and ECG Signals"
-                </span>{' '}
-                published in{' '}
-                <span className="text-blue-400 font-medium">IEEE Access (Impact Factor: 3.4)</span>.
-                Achieved{' '}
-                <span className="text-green-400 font-semibold">99.2% accuracy</span> using Vision Transformer-based architectures.
+                Published research in{' '}
+                <span className="text-blue-400 font-medium">IEEE Access</span> on automated sleep staging and insomnia detection. Developed EEG/PPG signal processing models achieving up to{' '}
+                <span className="text-green-400 font-semibold">99.58% accuracy</span> using CNNs and Vision Transformers.
               </p>
             </div>
 

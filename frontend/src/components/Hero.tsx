@@ -1,220 +1,437 @@
-import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import { Download, ArrowRight } from 'lucide-react'
-import NeuralNetworkViz from './NeuralNetworkViz'
+import { useEffect, useState, useRef } from 'react'
 
-const RESUME_URL = 'https://drive.google.com/file/d/YOUR_RESUME_FILE_ID/view'
+const RESUME_URL = '/Prithviraj_CV.pdf'
 
-// ── Animated count-up ────────────────────────────────────
-function useCounter(target: number, duration = 1600) {
-  const [count, setCount] = useState(0)
-  const rafRef = useRef(0)
-  const startRef = useRef<number | null>(null)
+// 1. Signature Moment (B) — Live Animating EEG Waveform
+function AnimatingEegGraphic() {
+  const [points, setPoints] = useState<string>('')
+  const phase = useRef(0)
+
   useEffect(() => {
-    if (target === 0) { setCount(0); return }
-    startRef.current = null
-    const tick = (ts: number) => {
-      if (!startRef.current) startRef.current = ts
-      const p = Math.min((ts - startRef.current) / duration, 1)
-      const eased = 1 - Math.pow(1 - p, 3)
-      setCount(Math.round(eased * target))
-      if (p < 1) rafRef.current = requestAnimationFrame(tick)
+    const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (matchReduced) {
+      // Fallback static points
+      setPoints("0,18 8,18 12,4 16,32 20,18 26,18 30,10 33,26 36,18 42,18 46,2 50,34 54,18 60,18 64,12 68,24 72,18 80,18 84,8 88,28 92,18 100,18 104,14 108,22 112,18 120,18")
+      return
     }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(rafRef.current)
-  }, [target, duration])
-  return count
-}
 
-function StatCard({ value, suffix, label, index }: { value: number; suffix: string; label: string; index: number }) {
-  const [started, setStarted] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setStarted(true); obs.disconnect() } }, { threshold: 0.5 })
-    if (ref.current) obs.observe(ref.current)
-    return () => obs.disconnect()
+    let frameId: number
+    const count = 40
+    const step = 120 / (count - 1)
+    const update = () => {
+      // Increment phase to animate the wave from right to left
+      phase.current += 0.045
+      const t = phase.current
+
+      const newPoints = []
+      for (let i = 0; i < count; i++) {
+        const xCoord = i * step
+        // Sample points across a wider space domain so both features are visible on screen
+        const pt = t + i * 0.26
+        
+        // 1. Baseline noise (alpha/theta + high frequency beta)
+        const noise = Math.sin(pt * 1.5) * 0.8 + Math.sin(pt * 5.0) * 0.3
+        
+        // 2. K-Complex (biphasic wave, repeats periodically)
+        let kComplex = 0
+        const kPeriod = 6.28
+        const kTime = Math.abs(pt) % kPeriod
+        if (kTime < 1.8) {
+          kComplex = Math.sin(kTime * (Math.PI / 1.8)) * 12 * Math.sin(kTime * 5.5)
+        }
+        
+        // 3. Sleep Spindle (waxing/waning burst, offset from K-complex)
+        let spindle = 0
+        const sPeriod = 6.28
+        const sTime = Math.abs(pt + 3.14) % sPeriod
+        if (sTime < 2.0) {
+          const envelope = Math.sin(sTime * (Math.PI / 2.0))
+          spindle = envelope * Math.sin(sTime * 22) * 4.0
+        }
+        
+        const y = 18 + kComplex + spindle + noise
+        newPoints.push(`${xCoord.toFixed(1)},${y.toFixed(1)}`)
+      }
+
+      setPoints(newPoints.join(' '))
+      frameId = requestAnimationFrame(update)
+    }
+
+    frameId = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(frameId)
   }, [])
-  const count = useCounter(started ? value : 0)
+
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="text-center"
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 120 36"
+      style={{
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        width: '0.72em',
+        height: '0.22em',
+        margin: '0 0.04em',
+        position: 'relative',
+        top: '-0.08em',
+        overflow: 'visible',
+      }}
     >
-      <p className="text-2xl sm:text-3xl font-bold text-cyan-400 tabular-nums leading-none">
-        {count}{suffix}
-      </p>
-      <p className="text-[10px] sm:text-xs text-gray-500 mt-1 tracking-wider uppercase">{label}</p>
-    </motion.div>
+      <polyline
+        points={points || "0,18 120,18"}
+        fill="none"
+        stroke="#22d3ee"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        style={{
+          filter: 'drop-shadow(0 0 3.5px rgba(34, 211, 238, 0.65))',
+        }}
+      />
+    </svg>
   )
 }
 
-// ── Animation variants ───────────────────────────────────
-const container = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.14, delayChildren: 0.35 } },
+// 2. Stat Counter Component (A5)
+function StatCounter({ value, duration = 750 }: { value: string; duration?: number }) {
+  const [displayVal, setDisplayVal] = useState('0')
+  const ref = useRef<HTMLParagraphElement>(null)
+  const animated = useRef(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (matchReduced) {
+      setDisplayVal(value)
+      return
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !animated.current) {
+        animated.current = true
+        
+        const numMatch = value.match(/^([\d.]+)(.*)$/)
+        if (!numMatch) {
+          setDisplayVal(value)
+          return
+        }
+
+        const target = parseFloat(numMatch[1])
+        const suffix = numMatch[2]
+        
+        let start = 0
+        const startTime = performance.now()
+
+        const step = (now: number) => {
+          const progress = Math.min((now - startTime) / duration, 1)
+          const easeProgress = progress * (2 - progress) // Ease-out quad
+          const current = start + easeProgress * (target - start)
+          
+          if (Number.isInteger(target)) {
+            setDisplayVal(Math.floor(current) + suffix)
+          } else {
+            setDisplayVal(current.toFixed(1) + suffix)
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(step)
+          } else {
+            setDisplayVal(value)
+          }
+        }
+        requestAnimationFrame(step)
+        observer.unobserve(el)
+      }
+    }, { threshold: 0.1 })
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [value, duration])
+
+  return <span ref={ref}>{displayVal}</span>
 }
-const item = {
-  hidden: { y: 28, opacity: 0 },
-  show:  { y: 0,  opacity: 1 },
+
+// 3. Magnetic Hover Hook (A1)
+export function useMagnetic(enabled: boolean = true) {
+  const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el || !enabled) return
+
+    const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (matchReduced) return
+
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect()
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      const deltaX = e.clientX - centerX
+      const deltaY = e.clientY - centerY
+
+      const distance = Math.hypot(deltaX, deltaY)
+      const triggerArea = 100
+
+      if (distance < triggerArea) {
+        const factor = (triggerArea - distance) / triggerArea
+        // Cap movement delta pull to 6px, scale to 1.03x
+        const pullX = deltaX * 0.12 * factor
+        const pullY = deltaY * 0.12 * factor
+        const clampedX = Math.max(-6, Math.min(6, pullX))
+        const clampedY = Math.max(-6, Math.min(6, pullY))
+
+        el.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) scale(1.03)`
+        el.style.transition = 'transform 0.08s ease-out'
+      } else {
+        el.style.transform = ''
+        el.style.transition = 'transform 0.3s ease-out'
+      }
+    }
+
+    const onMouseLeave = () => {
+      el.style.transform = ''
+      el.style.transition = 'transform 0.3s ease-out'
+    }
+
+    window.addEventListener('mousemove', onMouseMove)
+    el.addEventListener('mouseleave', onMouseLeave)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      el.removeEventListener('mouseleave', onMouseLeave)
+    }
+  }, [enabled])
+
+  return ref
 }
 
 const stats = [
-  { value: 3,  suffix: '',   label: 'IEEE Papers' },
-  { value: 6,  suffix: '+',  label: 'Internships' },
-  { value: 8,  suffix: '+',  label: 'Projects Built' },
-  { value: 99, suffix: '%',  label: 'ML Accuracy' },
+  { value: '3',   label: 'IEEE Papers'  },
+  { value: '7+',  label: 'Internships'  },
+  { value: '4+',  label: 'Products Built' },
+  { value: '2×',  label: 'Research Award' },
 ]
 
 export default function Hero() {
+  const viewWorkRef = useMagnetic() as React.RefObject<HTMLAnchorElement>
+  const resumeRef   = useMagnetic() as React.RefObject<HTMLAnchorElement>
+
   return (
     <section
       id="home"
-      className="relative isolate overflow-hidden min-h-screen flex items-center"
-      style={{ background: 'linear-gradient(160deg, #05070f 0%, #0b0e1a 60%, #070a14 100%)' }}
+      style={{
+        background: 'var(--bg-dark)',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '0 0 4rem',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
     >
-      {/* Animated dot grid */}
-      <div className="hero-grid pointer-events-none absolute inset-0 -z-10" />
+      <div className="section-container" style={{ width: '100%', paddingTop: '7rem' }}>
 
-      {/* Background glow blobs */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <motion.div
-          className="absolute left-[15%] top-[-5%] h-[36rem] w-[36rem] rounded-full bg-gradient-to-r from-cyan-600/12 to-indigo-600/12 blur-3xl"
-          animate={{ x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.1, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-        />
-        <motion.div
-          className="absolute right-[5%] bottom-[10%] h-[30rem] w-[30rem] rounded-full bg-gradient-to-l from-violet-600/12 to-purple-700/12 blur-3xl"
-          animate={{ x: [0, -28, 0], y: [0, -22, 0], scale: [1, 1.12, 1] }}
-          transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-        />
-        <motion.div
-          className="absolute left-[55%] top-[45%] h-[18rem] w-[18rem] rounded-full bg-gradient-to-r from-blue-500/6 to-cyan-500/6 blur-2xl"
-          animate={{ x: [0, 18, 0], y: [0, -14, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-        />
-      </div>
+        {/* Top row: status tag | bio sub-text */}
+        <div
+          className="reveal"
+          style={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1rem',
+            marginBottom: '2.5rem',
+          }}
+        >
+          {/* Status tag */}
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--muted-dark)',
+              border: '1px solid var(--line)',
+              borderRadius: '999px',
+              padding: '0.35rem 0.875rem',
+            }}
+          >
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: '#4ade80',
+                display: 'inline-block',
+                boxShadow: '0 0 6px #4ade8090',
+              }}
+            />
+            Available for Opportunities
+          </span>
 
-      <div className="section-container w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[calc(100vh-80px)] py-12 sm:py-16">
-          
-          {/* ── Text Content ─────────────────────────── */}
-          <div className="order-2 lg:order-1">
-            <motion.div
-              variants={container}
-              initial="hidden"
-              animate="show"
-              className="text-center lg:text-left space-y-5 sm:space-y-6"
-            >
-              {/* Status badge */}
-              <motion.div variants={item} transition={{ duration: 0.6 }} className="flex justify-center lg:justify-start">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 text-[10px] sm:text-xs font-mono tracking-widest uppercase">
-                  <motion.span
-                    className="h-1.5 w-1.5 rounded-full bg-cyan-400"
-                    animate={{ opacity: [1, 0.3, 1] }}
-                    transition={{ duration: 1.4, repeat: Infinity }}
-                  />
-                  Available for Opportunities
-                </span>
-              </motion.div>
-
-              {/* Name */}
-              <motion.h1
-                variants={item}
-                transition={{ duration: 0.8 }}
-                className="heading-xl text-white leading-[1.05]"
-              >
-                Prithviraj{' '}
-                <span className="gradient-text">Verma</span>
-              </motion.h1>
-
-              {/* Role — single strong identity */}
-              <motion.p
-                variants={item}
-                transition={{ duration: 0.6 }}
-                className="text-lg sm:text-xl font-semibold text-cyan-300 tracking-wide"
-              >
-                AI/ML Engineer &amp; IEEE Researcher
-              </motion.p>
-
-              {/* Bio — concise positioning statement */}
-              <motion.p
-                variants={item}
-                transition={{ duration: 0.8 }}
-                className="body-base text-gray-400 max-w-lg mx-auto lg:mx-0 leading-relaxed"
-              >
-                I build <span className="text-white font-medium">production ML systems end-to-end</span> — from
-                IEEE-published biomedical deep learning to LLM-powered enterprise platforms.
-                Pre-final year at IITRAM with{' '}
-                <span className="text-cyan-400 font-medium">3 IEEE publications</span> and{' '}
-                <span className="text-cyan-400 font-medium">real deployments at scale</span>.
-              </motion.p>
-
-              {/* Stats */}
-              <motion.div
-                variants={item}
-                transition={{ duration: 0.6 }}
-                className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 py-4 border-y border-gray-800/60 max-w-lg mx-auto lg:mx-0"
-              >
-                {stats.map((s, i) => <StatCard key={s.label} {...s} index={i} />)}
-              </motion.div>
-
-              {/* CTAs */}
-              <motion.div
-                variants={item}
-                transition={{ duration: 0.6 }}
-                className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1"
-              >
-                <motion.a
-                  href="#projects"
-                  onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}
-                  whileHover={{ scale: 1.04, boxShadow: '0 0 28px rgba(6,182,212,0.45)' }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.18 }}
-                  className="btn btn-primary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2"
-                >
-                  View Projects
-                  <ArrowRight className="w-4 h-4" />
-                </motion.a>
-                <motion.a
-                  href={RESUME_URL}
-                  target="_blank" rel="noopener noreferrer"
-                  whileHover={{ scale: 1.04, boxShadow: '0 0 18px rgba(6,182,212,0.2)' }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.18 }}
-                  className="btn btn-secondary w-full sm:w-auto text-center inline-flex items-center justify-center gap-2"
-                >
-                  <Download className="w-4 h-4" />
-                  Download Resume
-                </motion.a>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* ── Neural Network Visualization ─────────── */}
-          <div className="order-1 lg:order-2 hidden lg:flex justify-center lg:justify-end">
-            <NeuralNetworkViz />
-          </div>
+          {/* Bio sub-text — right side */}
+          <p
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.875rem',
+              color: 'var(--muted-dark)',
+              maxWidth: 300,
+              lineHeight: 1.65,
+              textAlign: 'right',
+            }}
+            className="hidden lg:block"
+          >
+            Pre-final year at IITRAM · AI/ML Engineer &amp; IEEE Researcher ·
+            Production ML systems from biomedical DL to LLM platforms.
+          </p>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-gray-600 pointer-events-none"
-        animate={{ y: [0, 8, 0], opacity: [0.6, 1, 0.6] }}
-        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <span className="text-[9px] tracking-[0.2em] font-mono uppercase">Scroll</span>
-        <div className="w-px h-7 bg-gradient-to-b from-gray-600 to-transparent" />
-        <motion.div
-          className="w-1 h-1 rounded-full bg-cyan-500/60"
-          animate={{ scale: [1, 1.6, 1] }}
-          transition={{ duration: 1.2, repeat: Infinity }}
-        />
-      </motion.div>
+        {/* Author Eyebrow */}
+        <div
+          className="reveal"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: 'clamp(0.6875rem, 1.5vw, 0.75rem)',
+            fontWeight: 700,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'var(--paper)',
+            marginBottom: '1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          <span>PRITHVIRAJ VERMA</span>
+          <span style={{ width: 12, height: 1, background: 'var(--line)' }} className="hidden sm:inline-block" />
+          <span style={{ color: 'var(--muted-dark)', fontWeight: 500 }} className="hidden sm:inline-block">AI/ML ENGINEER &amp; RESEARCHER</span>
+        </div>
+
+        {/* Giant headline */}
+        <h1
+          className="hero-headline reveal"
+          style={{ margin: 0 }}
+        >
+          <span style={{ display: 'block' }}>BUILDING</span>
+          <span style={{ display: 'block' }}>
+            RE<AnimatingEegGraphic />SEARCH-
+          </span>
+          <span style={{ display: 'block', color: 'var(--muted-dark)' }}>GRADE ML.</span>
+        </h1>
+
+        {/* Stats bar */}
+        <div
+          className="reveal"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            borderTop: '1px solid var(--line)',
+            borderBottom: '1px solid var(--line)',
+            marginTop: '3rem',
+          }}
+        >
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              style={{
+                padding: '1.25rem 1rem',
+                borderRight: i < stats.length - 1 ? '1px solid var(--line)' : 'none',
+                textAlign: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "'Archivo', sans-serif",
+                  fontWeight: 900,
+                  fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
+                  letterSpacing: '-0.04em',
+                  color: 'var(--paper)',
+                  lineHeight: 1,
+                }}
+              >
+                <StatCounter value={s.value} />
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '0.6875rem',
+                  fontWeight: 600,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: 'var(--muted-dark)',
+                  marginTop: '0.35rem',
+                }}
+              >
+                {s.label}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA row */}
+        <div
+          className="reveal"
+          style={{
+            marginTop: '2.5rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          <a
+            ref={viewWorkRef}
+            href="#projects"
+            onClick={e => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
+              fontSize: '0.875rem',
+              letterSpacing: '-0.01em',
+              color: 'var(--ink)',
+              background: 'var(--paper)',
+              padding: '0.75rem 1.75rem',
+              borderRadius: '999px',
+              textDecoration: 'none',
+              transition: 'opacity 0.2s',
+            }}
+          >
+            View Work ↓
+          </a>
+          <a
+            ref={resumeRef}
+            href={RESUME_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
+              fontSize: '0.875rem',
+              letterSpacing: '-0.01em',
+              color: 'var(--muted-dark)',
+              background: 'none',
+              padding: '0.75rem 0',
+              textDecoration: 'none',
+              borderBottom: '1px solid var(--line)',
+            }}
+          >
+            Download Resume ↗
+          </a>
+        </div>
+
+      </div>
     </section>
   )
 }

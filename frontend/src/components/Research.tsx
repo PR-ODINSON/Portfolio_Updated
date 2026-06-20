@@ -1,332 +1,103 @@
-import { motion, useInView } from 'framer-motion'
-import { useRef, useState } from 'react'
-import { FaExternalLinkAlt, FaFlask, FaBookOpen, FaQuoteLeft } from 'react-icons/fa'
-import { SiIeee } from 'react-icons/si'
+// Research.tsx — pub-list table layout (light section)
+// 4 columns: index | title (linked) | venue | status pill
+// Published: dark pill; Under Review: transparent muted border
 
-const impactStats = [
-  { value: '3',    label: 'IEEE Publications',  sub: 'Peer-reviewed papers',       icon: FaBookOpen,  color: '#22d3ee' },
-  { value: '3.4',  label: 'Avg Impact Factor',  sub: 'IEEE Access journal',        icon: SiIeee,      color: '#a855f7' },
-  { value: '98%+', label: 'Model Accuracy',     sub: 'Best result achieved',       icon: FaFlask,     color: '#10b981' },
-]
-
-type ResearchPaper = {
-  title: string
-  authors: string[]
-  journal: string
-  year: string
-  abstract: string
-  keywords: string[]
-  paperLink?: string
-  category: 'Conference' | 'Journal' | 'Workshop' | 'Preprint'
-}
-
-const researchPapers: ResearchPaper[] = [
+const publishedPapers = [
   {
     title: "Automated Identification of Cyclic Alternating Patterns of Sleep Using Fusion of VGG16 and Vision Transformer",
-    authors: ["Prithviraj Verma", "et al."],
-    journal: "IEEE Access, 2025",
-    year: "2025",
-    abstract: "This paper presents a novel approach for automated identification of cyclic alternating patterns (CAP) in sleep EEG signals using a fusion architecture combining VGG16 convolutional neural networks and Vision Transformer models. The research contributes to improved sleep analysis and medical diagnostics through advanced deep learning techniques.",
-    keywords: ["Sleep Analysis", "CAP Detection", "VGG16", "Vision Transformer", "Deep Learning", "EEG"],
-    paperLink: "https://doi.org/10.1109/ACCESS.2025.3571145",
-    category: "Journal"
+    venue: "IEEE Access, 2025",
+    doi: "https://doi.org/10.1109/ACCESS.2025.3571145",
+    status: "published" as const,
   },
   {
-    title: "PPG-Based Accurate Insomnia Detection System Using Convolutional Neural Networks With Self-Attention Mechanism and Gated Recurrent Units",
-    authors: ["Prithviraj Verma", "et al."],
-    journal: "IEEE Access, 2025",
-    year: "2025",
-    abstract: "This research presents an accurate insomnia detection system based on photoplethysmography (PPG) signals using a hybrid architecture combining convolutional neural networks with self-attention mechanisms and gated recurrent units for enhanced sleep disorder diagnosis.",
-    keywords: ["PPG", "Insomnia Detection", "CNN", "Self-Attention", "GRU", "Sleep Disorders"],
-    paperLink: "https://doi.org/10.1109/ACCESS.2025.3598863",
-    category: "Journal"
+    title: "PPG-Based Accurate Insomnia Detection System Using CNN With Self-Attention Mechanism and Gated Recurrent Units",
+    venue: "IEEE Access, 2025",
+    doi: "https://doi.org/10.1109/ACCESS.2025.3598863",
+    status: "published" as const,
   },
   {
-    title: "Automated Sleep Stage Classification Using Biorthogonal Wavelet Decomposition and Machine Learning Techniques",
-    authors: ["Prithviraj Verma", "et al."],
-    journal: "2025 International Conference on Artificial Intelligence and Machine Vision (AIMV), IEEE",
-    year: "2025",
-    abstract: "This work presents an automated sleep stage classification system leveraging classical machine learning combined with advanced signal processing techniques, enabling accurate and efficient staging of sleep from physiological signals without manual intervention.",
-    keywords: ["Sleep Stage Classification", "Machine Learning", "Signal Processing", "EEG", "Biomedical AI"],
-    paperLink: "https://doi.org/10.1109/AIMV66517.2025.11203559",
-    category: "Conference"
-  }
+    title: "Automated Sleep Stage Classification Using Biorthogonal Wavelet Decomposition and Machine Learning",
+    venue: "IEEE AIMV Conference, 2025",
+    doi: "https://doi.org/10.1109/AIMV66517.2025.11203559",
+    status: "published" as const,
+  },
 ]
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2 }
-  }
-}
-
-const paperVariants = {
-  hidden: { 
-    y: 60, 
-    opacity: 0,
-    rotateX: -15
+const underReviewPapers = [
+  {
+    title: "Explainable Multimodal Deep Learning Framework for K-Complex Detection using EEG Signals",
+    venue: "Under Review",
+    doi: null,
+    status: "review" as const,
   },
-  show: { 
-    y: 0, 
-    opacity: 1,
-    rotateX: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 15,
-      duration: 0.8
-    }
+  {
+    title: "Automatic Sleep Spindle Detection Using Separable Convolutional Neural Network With EEG Signals",
+    venue: "Under Review",
+    doi: null,
+    status: "review" as const,
   },
-  hover: {
-    y: -8,
-    scale: 1.02,
-    rotateX: 5,
-    boxShadow: "0 25px 50px rgba(142, 236, 245, 0.15)",
-    transition: { duration: 0.3 }
-  }
-}
+  {
+    title: "An Attention-Based Denoising Model for Diffusion Weighted Imaging",
+    venue: "Under Review",
+    doi: null,
+    status: "review" as const,
+  },
+]
 
+const allPapers = [...publishedPapers, ...underReviewPapers]
 
 export default function Research() {
-  const [selectedCategory, setSelectedCategory] = useState<string>('All')
-  const [expandedPaper, setExpandedPaper] = useState<string | null>(null)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-
-  const categories = ['All', 'Journal', 'Conference', 'Workshop', 'Preprint']
-  
-  const filteredPapers = selectedCategory === 'All' 
-    ? researchPapers 
-    : researchPapers.filter(paper => paper.category === selectedCategory)
-
-
   return (
-    <section
-      id="research"
-      ref={ref}
-      className="relative isolate overflow-hidden bg-gradient-to-b from-[#07090f] to-gray-900 section-padding"
-    >
-      {/* Background blobs */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div
-          className="absolute left-1/3 top-1/3 h-80 w-80 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 blur-3xl"
-          animate={{ scale: [1, 1.3, 1], rotate: [0, 360] }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-        />
-        <motion.div
-          className="absolute right-1/3 bottom-1/3 h-96 w-96 rounded-full bg-gradient-to-l from-purple-500/10 to-indigo-500/10 blur-3xl"
-          animate={{ scale: [1.3, 1, 1.3], rotate: [360, 0] }}
-          transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
-        />
-      </div>
-
+    <section id="research" className="bg-section-light section-padding">
       <div className="section-container">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-12 sm:mb-16"
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-          transition={{ duration: 0.7 }}
-        >
-          <h2 className="heading-lg text-white">
-            <span className="gradient-text">Research</span>{' '}&amp;{' '}Publications
-          </h2>
-          <motion.div
-            initial={{ width: 0, opacity: 0 }}
-            animate={isInView ? { width: 160, opacity: 1 } : { width: 0, opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mx-auto mt-3 h-0.5 rounded-full bg-gradient-to-r from-cyan-400 to-violet-500"
-          />
-          <p className="mt-4 text-gray-400 text-sm max-w-xl mx-auto">
-            Peer-reviewed work on deep learning, biomedical signal processing &amp; AI diagnostics
-          </p>
-        </motion.div>
 
-        {/* Impact stats row */}
-        <motion.div
-          className="grid grid-cols-3 gap-2 sm:gap-4 mb-12 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.35 }}
-        >
-          {impactStats.map((s) => (
-            <div
-              key={s.label}
-              className="relative rounded-xl bg-gray-800/60 border border-gray-700/50 p-3 sm:p-4 text-center overflow-hidden"
-            >
-              <div
-                className="absolute bottom-0 left-0 right-0 h-[2px] opacity-70"
-                style={{ background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }}
-              />
-              <p className="text-xl sm:text-2xl font-bold text-white tabular-nums">{s.value}</p>
-              <p className="text-[11px] font-semibold text-gray-300 mt-0.5">{s.label}</p>
-              <p className="text-[10px] text-gray-500">{s.sub}</p>
+        {/* Header */}
+        <div className="reveal" style={{ marginBottom: '3rem' }}>
+          <p className="eyebrow" style={{ marginBottom: '0.75rem' }}>IEEE Publications</p>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+            <h2 className="section-head section-head-light">Research</h2>
+            <div style={{ display: 'flex', gap: '2rem', marginBottom: '0.5rem' }}>
+              {[
+                { v: '3', l: 'Published' },
+                { v: '3', l: 'Under Review' },
+              ].map(s => (
+                <div key={s.l} style={{ textAlign: 'center' }}>
+                  <p style={{ fontFamily: "'Archivo',sans-serif", fontWeight: 900, fontSize: '1.75rem', letterSpacing: '-0.04em', color: 'var(--ink)', lineHeight: 1 }}>{s.v}</p>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.6875rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted)', marginTop: '0.2rem' }}>{s.l}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="pub-list reveal-group">
+          {allPapers.map((p, i) => (
+            <div key={p.title} className="pub-row reveal-item">
+              <span className="pub-idx">{String(i + 1).padStart(2, '0')}</span>
+
+              <div>
+                {p.doi ? (
+                  <a href={p.doi} target="_blank" rel="noopener noreferrer" className="pub-title">
+                    {p.title} ↗
+                  </a>
+                ) : (
+                  <span className="pub-title" style={{ cursor: 'default', color: 'var(--muted)' }}>
+                    {p.title}
+                  </span>
+                )}
+              </div>
+
+              <span className="pub-venue">{p.venue}</span>
+
+              <div className="pub-status-wrap">
+                <span className={`pub-status ${p.status}`}>
+                  {p.status === 'published' ? 'Published' : 'In Review'}
+                </span>
+              </div>
             </div>
           ))}
-        </motion.div>
-
-
-        {/* Category Filter */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-10 px-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.7, delay: 0.5 }}
-        >
-          {categories.map((category) => (
-            <motion.button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all border ${
-                selectedCategory === category
-                  ? 'bg-gradient-to-r from-cyan-400 to-blue-600 text-white border-transparent shadow-md'
-                  : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 hover:border-gray-600'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {category}
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Research Papers */}
-        <motion.div
-          variants={container}
-          initial="hidden"
-          animate={isInView ? "show" : "hidden"}
-          className="space-y-6 sm:space-y-8"
-        >
-          {filteredPapers.map((paper, paperIdx) => (
-            <motion.div
-              key={paper.title}
-              variants={paperVariants}
-              className="group relative rounded-2xl bg-gray-900/80 backdrop-blur-sm border border-gray-700/60 overflow-hidden shadow-xl hover:border-cyan-500/30 hover:shadow-[0_0_30px_rgba(6,182,212,0.1)] transition-all duration-300"
-              style={{ borderLeft: '3px solid rgba(6,182,212,0.25)' }}
-              whileHover={{ y: -4, borderLeftColor: 'rgba(6,182,212,0.7)' }}
-            >
-              {/* hover glow */}
-              <motion.div
-                className="absolute inset-0 pointer-events-none opacity-0 rounded-2xl"
-                style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(6,182,212,0.07), transparent 60%)' }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-
-              <div className="p-5 sm:p-7 relative z-10">
-                {/* Top row */}
-                <div className="flex items-start gap-4 mb-5">
-                  {/* Paper number */}
-                  <div className="hidden sm:flex flex-col items-center gap-1 flex-shrink-0 pt-1">
-                    <span className="text-4xl font-black text-gray-800 leading-none tabular-nums select-none">
-                      {String(paperIdx + 1).padStart(2, '0')}
-                    </span>
-                    <span className="text-[9px] font-mono text-gray-600 uppercase tracking-widest">Paper</span>
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    {/* Category + Year chips */}
-                    <div className="flex items-center gap-2 mb-2.5">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                        paper.category === 'Journal'    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' :
-                        paper.category === 'Conference' ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30' :
-                        paper.category === 'Workshop'   ? 'bg-violet-500/15 text-violet-400 border border-violet-500/30' :
-                        'bg-gray-700 text-gray-400 border border-gray-600'
-                      }`}>
-                        {paper.category}
-                      </span>
-                      <span className="text-xs text-gray-500 font-mono">{paper.year}</span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-cyan-300 transition-colors leading-snug mb-2.5">
-                      {paper.title}
-                    </h3>
-
-                    {/* Authors */}
-                    <div className="flex flex-wrap items-center gap-1.5 text-xs text-gray-500 mb-1.5">
-                      {paper.authors.map((author, idx) => (
-                        <span
-                          key={idx}
-                          className={author.includes('Prithviraj') ? 'text-cyan-400 font-semibold' : ''}
-                        >
-                          {author}{idx < paper.authors.length - 1 ? '·' : ''}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Journal */}
-                    <p className="text-xs text-gray-500">
-                      <span className="font-medium text-gray-400">Published in </span>
-                      {paper.journal}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Keywords — always visible */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {paper.keywords.map((kw, i) => (
-                    <span
-                      key={i}
-                      className="px-2.5 py-1 bg-cyan-500/10 text-cyan-400 text-[11px] font-medium rounded-md border border-cyan-500/20"
-                    >
-                      {kw}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Abstract expandable */}
-                <motion.div
-                  initial={false}
-                  animate={{ height: expandedPaper === paper.title ? 'auto' : 0 }}
-                  className="overflow-hidden"
-                >
-                  <div className="pb-5 border-t border-gray-700/50 pt-4">
-                    <div className="flex gap-2">
-                      <FaQuoteLeft className="text-gray-700 w-4 h-4 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-400 text-sm leading-relaxed">{paper.abstract}</p>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Actions row */}
-                <div className="flex items-center justify-between gap-3 flex-wrap">
-                  <div className="flex gap-2">
-                    {paper.paperLink && (
-                      <motion.a
-                        href={paper.paperLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-semibold shadow-md hover:shadow-[0_0_14px_rgba(6,182,212,0.3)] transition-all"
-                        whileHover={{ scale: 1.04, y: -1 }}
-                        whileTap={{ scale: 0.96 }}
-                      >
-                        <FaExternalLinkAlt className="w-3 h-3" />
-                        View on IEEE
-                      </motion.a>
-                    )}
-                  </div>
-
-                  <motion.button
-                    onClick={() => setExpandedPaper(expandedPaper === paper.title ? null : paper.title)}
-                    className="text-xs text-gray-500 hover:text-cyan-400 font-medium transition-colors flex items-center gap-1"
-                    whileHover={{ scale: 1.03 }}
-                  >
-                    <motion.span
-                      animate={{ rotate: expandedPaper === paper.title ? 180 : 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="inline-block"
-                    >
-                      ▼
-                    </motion.span>
-                    {expandedPaper === paper.title ? 'Hide Abstract' : 'Read Abstract'}
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        </div>
 
       </div>
     </section>

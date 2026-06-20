@@ -1,8 +1,13 @@
-﻿import { motion, AnimatePresence } from 'framer-motion'
+// Projects.tsx — Reference .work-grid pattern (light section)
+// 2×2 CSS grid, card with bg image, monogram overlay, hover arrow.
+// Staggered scroll reveal, cursor-aware tilt/parallax (capped at 4 degrees)
+
 import { useState } from 'react'
-import { FaGithub, FaExternalLinkAlt, FaChevronDown } from 'react-icons/fa'
+import { AnimatePresence, motion } from 'framer-motion'
+import { FaGithub } from 'react-icons/fa'
 
 type Project = {
+  monogram: string
   title: string
   tagline: string
   problem: string
@@ -10,234 +15,199 @@ type Project = {
   impact: string
   image: string
   github?: string
-  demo?: string
   tech: string[]
-  highlight: string
 }
 
 const projects: Project[] = [
   {
-    title: 'Garnet AI · Vendor Onboarding Platform',
-    tagline: 'Transform weeks of vendor compliance into hours',
-    problem: 'Enterprise vendor onboarding averaged 2+ weeks per client — buried in manual review of 50–100 page regulatory questionnaires, siloed evidence requests, and back-and-forth with compliance teams.',
-    approach: 'Engineered an LLM-powered compliance platform using RAG to auto-parse regulatory documents, intelligently auto-fill security questionnaires, manage evidence collections, and publish live trust portals for clients. Built on React + Node.js, deployed at scale in Dublin.',
-    impact: '150+ compliance frameworks supported. 95% questionnaire response accuracy. Avg vendor onboarding time cut from 2 weeks to 2.5 hours. Enterprise clients close deals 50% faster.',
-    image: '/projects/garnetai.png',
-    github: '#',
-    demo: '#',
-    tech: ['React', 'Node.js', 'LLM / RAG', 'OpenAI API', 'TypeScript', 'Docker', 'AWS'],
-    highlight: '50% faster deal closure',
+    monogram: 'CB',
+    title: 'CareerBuddy',
+    tagline: 'AI-Powered Career Guidance Platform',
+    problem: 'Students and early-career professionals lack personalised, data-driven career guidance.',
+    approach: 'Full-stack platform powered by LLMs and RAG delivering personalised career roadmaps, skill gap analysis, resume feedback, and job-market intelligence.',
+    impact: 'Enables role-specific roadmaps in minutes. Actionable gap analysis across 100+ career paths.',
+    image: '/projects/CareerBuddy.png',
+    github: 'https://github.com/PR-ODINSON',
+    tech: ['Python', 'LLM / RAG', 'React', 'FastAPI', 'OpenAI API', 'MongoDB'],
   },
   {
-    title: 'AI Attendance System',
-    tagline: 'Real-time face recognition for enterprise campuses',
-    problem: 'Proxy check-ins and manual attendance tracking were causing compliance issues across 3 industry sites at Insolare Pvt. Ltd.',
-    approach: 'Developed a real-time facial recognition pipeline with OpenCV and deep learning models. Integrated with live video feeds and a SQL database. Built a geospatial dashboard for site engineers.',
-    impact: '>98% verification accuracy. Eliminated proxy check-ins across all 3 sites. Engineers plan maintenance 30% faster with the GIS dashboard.',
-    image: '/projects/AttendanceSystem.png',
-    github: 'https://github.com/PR-ODINSON/Attendance-System',
-    demo: '#',
-    tech: ['Python', 'OpenCV', 'Deep Learning', 'Flask', 'SQL', 'React', 'GIS'],
-    highlight: '>98% accuracy',
+    monogram: 'TM',
+    title: 'TeleMedicine',
+    tagline: 'AI Diagnostic Platform for Underserved Regions',
+    problem: 'Rural patients face long wait times and limited specialist access.',
+    approach: 'Full-stack telemedicine with AI symptom triage, LLM-powered report summarisation, and secure video consultations.',
+    impact: 'Specialist-level symptom analysis for 50+ conditions. Serves patients in low-connectivity regions.',
+    image: '/projects/TeleMedicine.png',
+    github: 'https://github.com/PR-ODINSON',
+    tech: ['Python', 'React', 'Node.js', 'OpenAI API', 'NLP', 'WebRTC'],
   },
   {
-    title: 'AscendOS · AI Productivity Suite',
-    tagline: 'Personal AI workspace with embedded ML automation',
-    problem: 'Knowledge workers lose 2–3 hours daily to repetitive scheduling, task switching, and workflow fragmentation across tools.',
-    approach: 'Built an intelligent workspace that integrates ML modules for smart task prioritization, automated scheduling, and workflow pattern detection. Built on Next.js with a Flask ML backend.',
-    impact: 'Automated >40% of daily workflow tasks in personal trials. Smart scheduling reduced context-switching by 35%.',
-    image: '/projects/AscendOS.png',
-    github: 'https://github.com/PR-ODINSON/Solo_leveling',
-    demo: '#',
-    tech: ['Next.js', 'Tailwind CSS', 'Flask', 'OpenAI API', 'ML', 'PostgreSQL'],
-    highlight: '40% workflow automated',
+    monogram: 'UP',
+    title: 'UrbanPulse',
+    tagline: 'Smart City Command Center',
+    problem: 'City operations teams lack a unified real-time view of traffic, utilities, and public safety.',
+    approach: 'Multi-layer dashboard integrating IoT feeds, CV-based traffic analysis, predictive anomaly detection, and GIS visualisation.',
+    impact: 'Centralises 10+ data streams. Anomaly detection triggers alerts 40% faster than manual monitoring.',
+    image: '/projects/UrbanPulse.png',
+    github: 'https://github.com/PR-ODINSON',
+    tech: ['Python', 'React', 'Computer Vision', 'GIS', 'IoT', 'Time-Series ML'],
   },
   {
-    title: 'StartupX · Ecosystem Platform',
-    tagline: 'Full-stack platform connecting founders and investors',
-    problem: "Early-stage founders lack structured access to investors, mentors, and market intelligence — wasting months on cold outreach.",
-    approach: 'Designed and built a full-stack marketplace with startup profiles, investor matching, mentorship scheduling, and a real-time analytics dashboard using Chart.js and MongoDB aggregations.',
-    impact: 'Live at start-upx.netlify.app. Connects founders with investors and mentors through intelligent matching algorithms.',
-    image: '/projects/StartupX.png',
-    github: '#',
-    demo: 'https://start-upx.netlify.app/',
-    tech: ['React', 'Node.js', 'MongoDB', 'Express', 'Chart.js'],
-    highlight: 'Live in production',
+    monogram: 'KB',
+    title: 'KhetiBuddy',
+    tagline: 'AI Advisory for Precision Farming',
+    problem: 'Smallholder farmers lack access to timely, localised crop guidance.',
+    approach: 'Multilingual AI advisory platform combining satellite data, IoT sensors, and an LLM chatbot for real-time farming recommendations.',
+    impact: 'Advisory for 20+ crops in regional languages. Integrates real-time weather, soil, and mandi price signals.',
+    image: '/projects/KhetiBuddy.png',
+    github: 'https://github.com/PR-ODINSON',
+    tech: ['Python', 'LLM', 'IoT', 'Satellite Data', 'FastAPI', 'Multilingual NLP'],
   },
 ]
-
-const cardVariants = {
-  hidden: { y: 40, opacity: 0 },
-  show: { y: 0, opacity: 1, transition: { duration: 0.55, ease: [0.25, 0.46, 0.45, 0.94] as const } },
-}
 
 export default function Projects() {
   const [expanded, setExpanded] = useState<string | null>(null)
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (matchReduced) return
+
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    
+    // Relative coordinates [-0.5, 0.5]
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+
+    // Tilt max 4 degrees
+    const tiltX = -y * 4
+    const tiltY = x * 4
+
+    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.01)`
+    card.style.transition = 'transform 0.08s ease-out'
+
+    // Arrow tracking
+    const arrow = card.querySelector<HTMLElement>('.wc-arrow')
+    if (arrow) {
+      const arrowX = x * 10
+      const arrowY = y * 10
+      arrow.style.transform = `translate3d(${arrowX}px, ${arrowY}px, 0) rotate(45deg)`
+    }
+  }
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'
+    card.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+
+    const arrow = card.querySelector<HTMLElement>('.wc-arrow')
+    if (arrow) {
+      arrow.style.transform = ''
+      arrow.style.transition = 'transform 0.3s ease'
+    }
+  }
+
   return (
-    <section
-      id="projects"
-      className="section-padding bg-gradient-to-b from-gray-900 to-[#07090f]"
-    >
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: '-80px' }}
-        variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.12 } } }}
-        className="section-container"
-      >
-        {/* Section header */}
-        <motion.div variants={cardVariants} className="mb-12 sm:mb-16">
-          <p className="text-xs font-mono text-cyan-500/70 uppercase tracking-widest mb-3">Selected Work</p>
-          <h2 className="heading-lg text-white">
-            Projects &amp; <span className="gradient-text">Case Studies</span>
-          </h2>
-          <p className="mt-4 body-base text-gray-500 max-w-xl">
-            Each project has a real problem, a deliberate approach, and measurable impact.
-          </p>
-        </motion.div>
+    <section id="projects" className="bg-section-light section-padding">
+      <div className="section-container">
 
-        {/* 2x2 grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
-          {projects.map((project) => {
-            const isOpen = expanded === project.title
-            const hasDemo = project.demo && project.demo !== '#'
-            const hasGithub = project.github && project.github !== '#'
-            return (
-              <motion.article
-                key={project.title}
-                variants={cardVariants}
-                layout
-                className="group rounded-2xl border border-white/8 bg-gray-900/60 backdrop-blur-sm overflow-hidden hover:border-white/15 transition-colors duration-300"
-              >
-                {/* Project image */}
-                <div className="relative overflow-hidden h-44 sm:h-48 bg-gray-800/60">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent" />
-                  <div className="absolute top-3 right-3">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-semibold bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 backdrop-blur-sm">
-                      {project.highlight}
-                    </span>
-                  </div>
-                  <div className="absolute top-3 left-3 flex gap-2">
-                    {hasGithub && (
-                      <a
-                        href={project.github}
-                        target="_blank" rel="noopener noreferrer"
-                        className="p-2 rounded-lg bg-black/50 text-white/70 hover:text-white border border-white/10 backdrop-blur-sm transition-colors"
-                        aria-label="GitHub"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <FaGithub className="w-4 h-4" />
-                      </a>
-                    )}
-                    {hasDemo && (
-                      <a
-                        href={project.demo}
-                        target="_blank" rel="noopener noreferrer"
-                        className="p-2 rounded-lg bg-black/50 text-white/70 hover:text-cyan-400 border border-white/10 backdrop-blur-sm transition-colors"
-                        aria-label="Live Demo"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        <FaExternalLinkAlt className="w-3.5 h-3.5" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                {/* Card body */}
-                <div className="p-5 sm:p-6">
-                  <h3 className="text-base sm:text-lg font-bold text-white leading-snug">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-cyan-400/80 mt-1 font-medium">{project.tagline}</p>
-
-                  <div className="flex flex-wrap gap-1.5 mt-4">
-                    {project.tech.map(t => (
-                      <span key={t} className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/6 border border-white/10 text-gray-400">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  <button
-                    onClick={() => setExpanded(isOpen ? null : project.title)}
-                    className="mt-4 flex items-center gap-1.5 text-xs font-medium text-gray-500 hover:text-cyan-400 transition-colors"
-                  >
-                    <motion.span animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.25 }}>
-                      <FaChevronDown className="w-3 h-3" />
-                    </motion.span>
-                    {isOpen ? 'Hide case study' : 'View case study'}
-                  </button>
-
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        key="case-study"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="overflow-hidden"
-                      >
-                        <div className="pt-4 mt-4 border-t border-white/8 space-y-4">
-                          <div>
-                            <p className="text-[10px] font-mono uppercase tracking-widest text-gray-600 mb-1">Problem</p>
-                            <p className="text-sm text-gray-300 leading-relaxed">{project.problem}</p>
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-mono uppercase tracking-widest text-gray-600 mb-1">Approach</p>
-                            <p className="text-sm text-gray-300 leading-relaxed">{project.approach}</p>
-                          </div>
-                          <div>
-                            <p className="text-[10px] font-mono uppercase tracking-widest text-cyan-600 mb-1">Impact</p>
-                            <p className="text-sm text-cyan-300/90 leading-relaxed font-medium">{project.impact}</p>
-                          </div>
-                          <div className="flex gap-3 pt-1">
-                            {hasGithub && (
-                              <a
-                                href={project.github}
-                                target="_blank" rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-white/15 text-white/80 hover:text-white hover:border-white/30 text-xs font-medium transition-colors"
-                              >
-                                <FaGithub className="w-3.5 h-3.5" /> View Code
-                              </a>
-                            )}
-                            {hasDemo && (
-                              <a
-                                href={project.demo}
-                                target="_blank" rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 text-xs font-medium transition-colors"
-                              >
-                                <FaExternalLinkAlt className="w-3 h-3" /> Live Demo
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.article>
-            )
-          })}
+        {/* Header */}
+        <div className="reveal" style={{ marginBottom: '3rem' }}>
+          <p className="eyebrow" style={{ marginBottom: '0.75rem' }}>Selected Work</p>
+          <h2 className="section-head section-head-light">Projects</h2>
         </div>
 
-        <motion.div variants={cardVariants} className="text-center mt-10">
-          <a
-            href="https://github.com/PR-ODINSON"
-            target="_blank" rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-cyan-400 transition-colors font-medium"
-          >
-            <FaGithub className="w-4 h-4" />
-            View all projects on GitHub
+        {/* Work grid — reveal-group for staggered children entrance */}
+        <div className="work-grid reveal-group">
+          {projects.map(p => (
+            <article
+              key={p.title}
+              className="work-card reveal-item"
+              onClick={() => setExpanded(expanded === p.title ? null : p.title)}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{ cursor: 'pointer' }}
+            >
+              {/* Background image */}
+              <div
+                className="wc-media"
+                style={{ backgroundImage: `url(${p.image})` }}
+              />
+              <div className="wc-overlay" />
+              <span className="wc-monogram">{p.monogram}</span>
+              <div className="wc-footer">
+                <div>
+                  <p className="wc-title">{p.title}</p>
+                  <p className="wc-stack">{p.tech.slice(0, 3).join(' · ')}</p>
+                </div>
+                <span className="wc-arrow">↗</span>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* Expanded case study panel */}
+        <AnimatePresence>
+          {expanded && (() => {
+            const p = projects.find(x => x.title === expanded)!
+            return (
+              <motion.div
+                key={expanded}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
+                style={{ overflow: 'hidden', marginTop: 2, background: 'var(--ink)', color: 'var(--paper)' }}
+              >
+                <div style={{ padding: '2.5rem 2rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+                    <div>
+                      <h3 style={{ fontFamily: "'Archivo',sans-serif", fontWeight: 900, fontSize: '1.5rem', letterSpacing: '-0.03em', marginBottom: '0.25rem' }}>
+                        {p.title}
+                      </h3>
+                      <p style={{ color: 'var(--muted-dark)', fontSize: '0.875rem' }}>{p.tagline}</p>
+                    </div>
+                    <button
+                      onClick={() => setExpanded(null)}
+                      style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.8125rem', color: 'var(--muted-dark)', background: 'none', border: '1px solid var(--line)', borderRadius: 4, padding: '0.35rem 0.75rem', cursor: 'pointer' }}
+                    >
+                      Close ×
+                    </button>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                    {[['Problem', p.problem], ['Approach', p.approach], ['Impact', p.impact]].map(([label, text]) => (
+                      <div key={label as string}>
+                        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted-dark)', marginBottom: '0.4rem' }}>{label}</p>
+                        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.875rem', color: '#ccc', lineHeight: 1.65 }}>{text}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
+                    {p.tech.map(t => (
+                      <span key={t} style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.6875rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--muted-dark)', border: '1px solid var(--line)', borderRadius: 4, padding: '0.2rem 0.55rem' }}>{t}</span>
+                    ))}
+                  </div>
+                  {p.github && (
+                    <a href={p.github} target="_blank" rel="noopener noreferrer"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontFamily: "'Inter',sans-serif", fontSize: '0.875rem', fontWeight: 600, color: 'var(--paper)', borderBottom: '1px solid var(--line)', paddingBottom: '0.1rem', textDecoration: 'none' }}>
+                      <FaGithub size={14} /> View on GitHub
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            )
+          })()}
+        </AnimatePresence>
+
+        {/* Footer link */}
+        <div className="reveal" style={{ marginTop: '2rem', textAlign: 'right' }}>
+          <a href="https://github.com/PR-ODINSON" target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.8125rem', fontWeight: 600, color: 'var(--muted)', textDecoration: 'none', borderBottom: '1px solid var(--line-light)', paddingBottom: '0.1rem' }}>
+            All projects on GitHub ↗
           </a>
-        </motion.div>
-      </motion.div>
+        </div>
+
+      </div>
     </section>
   )
 }

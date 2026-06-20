@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prithviraj Verma — AI/ML Engineer</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&family=Inter:wght@400;500;600&display=swap');
+
+:root{
+  --bg-light:#EDEDE4;
+  --bg-dark:#141414;
+  --bg-black:#0A0A0A;
+  --ink:#141414;
+  --paper:#EDEDE4;
+  --muted:#6E6E66;
+  --muted-dark:#8C8C84;
+  --line:#141414;
+  --line-light:rgba(237,237,228,0.18);
+  --accent:#3B6BF5;
+  --display: 'Archivo', sans-serif;
+  --body: 'Inter', sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg-light);
+  color:var(--ink);
+  font-family:var(--body);
+  overflow-x:hidden;
+}
+
+/* ===== LOADER ===== */
+#loader{
+  position:fixed;inset:0;background:var(--bg-black);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9999;
+  transition:opacity .7s cubic-bezier(.65,0,.35,1), visibility .7s;
+}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.loader-mark{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--display);font-weight:800;
+  color:var(--paper);font-size:15px;letter-spacing:.04em;
+  opacity:0;animation:loaderFade 1.6s ease forwards;
+}
+.loader-ring{
+  width:34px;height:34px;border-radius:50%;
+  border:1.4px solid var(--paper);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.loader-ring::before{
+  content:'';position:absolute;inset:-1.4px;
+  border-radius:50%;border:1.4px solid transparent;
+  border-top-color:var(--accent);
+  animation:spin 1s linear infinite;
+}
+.loader-ring span{font-size:11px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes loaderFade{
+  0%{opacity:0;transform:scale(.92);}
+  40%{opacity:1;transform:scale(1);}
+  85%{opacity:1;}
+  100%{opacity:0;transform:scale(1.04);}
+}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 40px;
+  mix-blend-mode:difference;
+}
+.nav-logo{
+  font-family:var(--display);font-weight:800;font-size:14px;
+  letter-spacing:.02em;color:var(--paper);
+  display:flex;align-items:center;gap:6px;
+}
+.nav-logo .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;mix-blend-mode:normal;}
+.nav-links{
+  display:flex;gap:32px;list-style:none;
+}
+.nav-links a{
+  color:var(--paper);text-decoration:none;
+  font-size:12.5px;letter-spacing:.03em;
+  text-transform:uppercase;font-weight:500;
+  position:relative;padding-bottom:3px;
+}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:0;
+  width:0;height:1px;background:var(--paper);
+  transition:width .35s cubic-bezier(.65,0,.35,1);
+}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+  font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;
+  color:var(--paper);text-decoration:none;font-weight:600;
+  border-bottom:1px solid var(--paper);padding-bottom:2px;
+}
+.nav-mobile-toggle{display:none;}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:120px 40px 60px;
+  position:relative;
+}
+.hero-top-row{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:48px;
+  max-width:1400px;margin-left:auto;margin-right:auto;width:100%;
+}
+.hero-tag{
+  font-size:12px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--muted);max-width:220px;line-height:1.5;
+}
+.hero-cta-group{display:flex;flex-direction:column;align-items:flex-end;gap:14px;}
+.hero-sub{
+  font-size:15px;line-height:1.6;color:var(--ink);max-width:340px;
+  text-align:right;
+}
+.hero-sub b{font-weight:600;}
+.hero-sub a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);}
+
+.headline-block{
+  width:100%;
+  max-width:1400px;margin:0 auto;
+  position:relative;
+}
+.headline{
+  font-family:var(--display);
+  font-weight:900;
+  font-size:clamp(48px, 9.5vw, 156px);
+  line-height:.92;
+  letter-spacing:-.02em;
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:0 18px;
+}
+.headline .imgmask{
+  width:clamp(120px,18vw,260px);
+  height:clamp(60px,9.5vw,130px);
+  border-radius:6px;
+  overflow:hidden;
+  display:inline-flex;vertical-align:middle;
+  transform:translateY(4%);
+  flex-shrink:0;
+}
+.headline .imgmask img{width:100%;height:100%;object-fit:cover;}
+.headline-row{display:flex;align-items:center;flex-wrap:wrap;width:100%;}
+
+.hero-stats{
+  max-width:1400px;margin:64px auto 0;width:100%;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);
+}
+.stat{
+  padding:22px 0 0;border-right:1px solid var(--line);
+  padding-right:20px;
+}
+.stat:last-child{border-right:none;}
+.stat-num{
+  font-family:var(--display);font-weight:800;font-size:30px;
+  display:flex;align-items:baseline;gap:4px;
+}
+.stat-num span.accent{color:var(--accent);}
+.stat-label{
+  font-size:11px;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--muted);margin-top:6px;
+}
+
+/* ===== MARQUEE ===== */
+.marquee-wrap{
+  background:var(--ink);color:var(--paper);
+  padding:16px 0;overflow:hidden;white-space:nowrap;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+}
+.marquee{display:inline-flex;animation:scroll 28s linear infinite;}
+.marquee span{
+  font-family:var(--display);font-weight:600;font-size:14px;
+  letter-spacing:.04em;text-transform:uppercase;
+  padding:0 28px;display:inline-flex;align-items:center;gap:28px;
+  color:var(--muted-dark);
+}
+.marquee span::after{content:'/';color:var(--accent);}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ===== SECTION SHARED ===== */
+section{padding:120px 40px;}
+.section-inner{max-width:1400px;margin:0 auto;}
+.eyebrow{
+  font-size:11px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--accent);font-weight:600;margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.eyebrow::before{content:'';width:14px;height:1px;background:var(--accent);}
+.section-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:56px;gap:40px;flex-wrap:wrap;
+}
+.section-title{
+  font-family:var(--display);font-weight:800;
+  font-size:clamp(34px,4.6vw,64px);
+  line-height:1.02;letter-spacing:-.01em;
+  max-width:640px;
+}
+.section-desc{
+  font-size:14.5px;color:var(--muted);max-width:300px;line-height:1.6;
+}
+
+/* ===== SERVICES (dark, accordion) ===== */
+.services{background:var(--ink);color:var(--paper);}
+.services .eyebrow{color:var(--accent);}
+.services .section-desc{color:var(--muted-dark);}
+.accordion-item{
+  border-top:1px solid var(--line-light);
+  padding:30px 0;
+  display:grid;grid-template-columns:60px 1fr auto;align-items:center;
+  gap:24px;cursor:pointer;
+  transition:padding .3s ease;
+}
+.accordion-item:last-child{border-bottom:1px solid var(--line-light);}
+.accordion-num{font-size:13px;color:var(--muted-dark);font-family:var(--display);}
+.accordion-title{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(22px,3vw,36px);
+}
+.accordion-plus{
+  width:30px;height:30px;border:1px solid var(--line-light);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  flex-shrink:0;
+}
+.accordion-plus::before,.accordion-plus::after{
+  content:'';position:absolute;background:var(--paper);
+  transition:transform .3s ease;
+}
+.accordion-plus::before{width:10px;height:1px;}
+.accordion-plus::after{width:1px;height:10px;}
+.accordion-item.open .accordion-plus::after{transform:rotate(90deg);opacity:0;}
+.accordion-body{
+  grid-column:2/3;max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.65,0,.35,1), padding .4s ease;
+  font-size:14.5px;color:var(--muted-dark);line-height:1.7;
+}
+.accordion-item.open .accordion-body{max-height:200px;padding-top:14px;}
+.accordion-item.open{padding-bottom:34px;}
+
+/* ===== WORK / PROJECTS ===== */
+.work{background:var(--bg-light);}
+.work-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:2px;
+  background:var(--line);border:1px solid var(--line);
+}
+.work-card{
+  background:var(--bg-light);position:relative;overflow:hidden;
+  aspect-ratio:4/3;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  text-decoration:none;color:var(--ink);
+}
+.work-card .wc-media{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#1a1a1a,#2c2c2c);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.work-card:hover .wc-media{transform:scale(1.05);}
+.work-card .wc-media-label{
+  font-family:var(--display);font-weight:900;
+  font-size:13vw;color:rgba(237,237,228,0.06);
+  position:absolute;white-space:nowrap;
+}
+.wc-info{
+  position:relative;z-index:2;background:var(--bg-light);
+  padding:18px 22px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.wc-name{font-family:var(--display);font-weight:700;font-size:16px;}
+.wc-stack{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:4px;}
+.wc-arrow{
+  width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  transition:transform .3s ease, background .3s ease, color .3s;
+  flex-shrink:0;
+}
+.work-card:hover .wc-arrow{background:var(--ink);color:var(--paper);transform:rotate(45deg);}
+
+/* ===== PUBLICATIONS ===== */
+.pubs{background:var(--bg-light);}
+.pub-list{border-top:1px solid var(--line);}
+.pub-row{
+  display:grid;grid-template-columns:90px 1fr 160px 100px;
+  align-items:center;gap:24px;
+  padding:26px 0;border-bottom:1px solid var(--line);
+}
+.pub-row .pub-idx{font-family:var(--display);font-size:13px;color:var(--muted);}
+.pub-row .pub-title{font-family:var(--display);font-weight:700;font-size:18px;line-height:1.3;}
+.pub-row .pub-venue{font-size:12.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;}
+.pub-status{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;font-weight:600;
+  padding:6px 12px;border-radius:20px;text-align:center;white-space:nowrap;
+}
+.pub-status.published{background:var(--ink);color:var(--paper);}
+.pub-status.review{background:transparent;border:1px solid var(--muted);color:var(--muted);}
+
+/* ===== CTA / FOOTER ===== */
+.cta-section{
+  background:var(--ink);color:var(--paper);text-align:center;
+  padding:140px 40px;
+}
+.cta-title{
+  font-family:var(--display);font-weight:900;
+  font-size:clamp(40px,8vw,110px);line-height:.95;letter-spacing:-.02em;
+}
+.cta-title .accent{color:var(--accent);}
+.cta-sub{color:var(--muted-dark);margin-top:24px;font-size:15px;}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  margin-top:40px;padding:16px 32px;border-radius:40px;
+  background:var(--accent);color:var(--paper);text-decoration:none;
+  font-size:13px;text-transform:uppercase;letter-spacing:.04em;font-weight:600;
+  transition:transform .3s cubic-bezier(.65,0,.35,1), background .3s;
+}
+.cta-btn:hover{transform:scale(1.05);background:#2a55d4;}
+
+footer{
+  background:var(--ink);color:var(--muted-dark);
+  padding:30px 40px;display:flex;justify-content:space-between;
+  font-size:12px;letter-spacing:.02em;
+  border-top:1px solid var(--line-light);
+}
+footer a{color:var(--paper);text-decoration:none;margin-left:18px;}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+@media (max-width:860px){
+  .nav-links{display:none;}
+  .hero-top-row{flex-direction:column;gap:24px;}
+  .hero-cta-group{align-items:flex-start;}
+  .hero-sub{text-align:left;}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .stat:nth-child(2){border-right:none;}
+  .work-grid{grid-template-columns:1fr;}
+  .pub-row{grid-template-columns:1fr;gap:10px;}
+  .section-head{flex-direction:column;align-items:flex-start;}
+  section{padding:80px 22px;}
+  .hero{padding:110px 22px 40px;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-mark">
+    <div class="loader-ring"><span>PV</span></div>
+    PRITHVIRAJ VERMA
+  </div>
+</div>
+
+<nav>
+  <div class="nav-logo"><span class="dot"></span>PV<span style="color:var(--accent)">*</span></div>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Focus</a></li>
+    <li><a href="#publications">Research</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Resume</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-top-row">
+    <div class="hero-tag">AVAILABLE FOR INTERNSHIPS & RESEARCH COLLABORATIONS — INDORE, IN</div>
+    <div class="hero-cta-group">
+      <div class="hero-sub">I build <b>production ML systems end-to-end</b> — from IEEE-published deep learning to <b>LLM-powered platforms</b> deployed in the real world. <a href="#work">View the work →</a></div>
+    </div>
+  </div>
+
+  <div class="headline-block">
+    <div class="headline">
+      <div class="headline-row">
+        <span>BUILDING</span>
+      </div>
+      <div class="headline-row">
+        <span>RE<span class="imgmask"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300'%3E%3Crect width='600' height='300' fill='%231a2440'/%3E%3Cg stroke='%233B6BF5' stroke-width='1.5' opacity='0.7'%3E%3Cpath d='M0 250 Q60 180 120 220 T240 200 T360 240 T480 190 T600 220' fill='none'/%3E%3Cpath d='M0 100 Q60 60 120 90 T240 70 T360 110 T480 60 T600 95' fill='none' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E" alt="EEG signal waveform"></span>SEARCH</span>
+      </div>
+      <div class="headline-row">
+        <span>—GRADE ML.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num"><span class="accent">3</span></div>
+      <div class="stat-label">IEEE Publications</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span class="accent">7</span></div>
+      <div class="stat-label">Internships</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span class="accent">4+</span></div>
+      <div class="stat-label">Shipped Products</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span class="accent">2×</span></div>
+      <div class="stat-label">Undergrad Research Award</div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>PYTORCH</span><span>VISION TRANSFORMERS</span><span>EXPLAINABLE AI</span><span>NEXT.JS</span><span>NESTJS</span><span>EEG / PPG SIGNAL PROCESSING</span><span>AWS</span><span>DOCKER</span>
+    <span>PYTORCH</span><span>VISION TRANSFORMERS</span><span>EXPLAINABLE AI</span><span>NEXT.JS</span><span>NESTJS</span><span>EEG / PPG SIGNAL PROCESSING</span><span>AWS</span><span>DOCKER</span>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="section-inner">
+    <div class="eyebrow reveal">What I do</div>
+    <div class="section-head reveal">
+      <h2 class="section-title">Research-driven ML, shipped as real software.</h2>
+      <p class="section-desc">Four areas I work across — from clinical signal processing to full-stack AI products.</p>
+    </div>
+
+    <div class="accordion">
+      <div class="accordion-item open">
+        <div class="accordion-num">01</div>
+        <div class="accordion-title">Biomedical Deep Learning</div>
+        <div class="accordion-plus"></div>
+        <div class="accordion-body">EEG/PPG signal processing, sleep stage classification, Vision Transformers — 3 published IEEE papers, 3 under review.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-num">02</div>
+        <div class="accordion-title">Explainable AI</div>
+        <div class="accordion-plus"></div>
+        <div class="accordion-body">Grad-CAM and SHAP-based interpretability so clinicians can audit model decisions before deployment.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-num">03</div>
+        <div class="accordion-title">Full-Stack AI Products</div>
+        <div class="accordion-plus"></div>
+        <div class="accordion-body">LLM-powered SaaS, facial recognition systems, telemedicine infrastructure — React, NestJS, Docker, AWS.</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-num">04</div>
+        <div class="accordion-title">Computer Vision on Edge</div>
+        <div class="accordion-plus"></div>
+        <div class="accordion-body">Drone-based defect detection, Raspberry Pi navigation, model compression for real-time inference.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="section-inner">
+    <div class="eyebrow reveal">Selected work</div>
+    <div class="section-head reveal">
+      <h2 class="section-title">Production systems, not prototypes.</h2>
+      <p class="section-desc">A selection of platforms built and deployed end-to-end.</p>
+    </div>
+
+    <div class="work-grid reveal">
+      <a href="#" class="work-card">
+        <div class="wc-media"><span class="wc-media-label">CB</span></div>
+        <div class="wc-info">
+          <div>
+            <div class="wc-name">CareerBuddy</div>
+            <div class="wc-stack">Next.js · NestJS · MongoDB</div>
+          </div>
+          <div class="wc-arrow">↗</div>
+        </div>
+      </a>
+      <a href="#" class="work-card">
+        <div class="wc-media"><span class="wc-media-label">TM</span></div>
+        <div class="wc-info">
+          <div>
+            <div class="wc-name">TeleMedicine Platform</div>
+            <div class="wc-stack">React · Flask · WebRTC</div>
+          </div>
+          <div class="wc-arrow">↗</div>
+        </div>
+      </a>
+      <a href="#" class="work-card">
+        <div class="wc-media"><span class="wc-media-label">UP</span></div>
+        <div class="wc-info">
+          <div>
+            <div class="wc-name">UrbanPulse</div>
+            <div class="wc-stack">React · Leaflet · Recharts</div>
+          </div>
+          <div class="wc-arrow">↗</div>
+        </div>
+      </a>
+      <a href="#" class="work-card">
+        <div class="wc-media"><span class="wc-media-label">KB</span></div>
+        <div class="wc-info">
+          <div>
+            <div class="wc-name">KhetiBuddy</div>
+            <div class="wc-stack">Python · Scikit-Learn</div>
+          </div>
+          <div class="wc-arrow">↗</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="pubs" id="publications">
+  <div class="section-inner">
+    <div class="eyebrow reveal">Research</div>
+    <div class="section-head reveal">
+      <h2 class="section-title">Published & in-review work.</h2>
+      <p class="section-desc">IEEE Access & conference publications in biomedical signal processing.</p>
+    </div>
+
+    <div class="pub-list reveal">
+      <div class="pub-row">
+        <div class="pub-idx">01</div>
+        <div class="pub-title">Automated Identification of Cyclic Alternating Patterns of Sleep Using Fusion of VGG16 and Vision Transformer</div>
+        <div class="pub-venue">IEEE Access, 2025</div>
+        <div class="pub-status published">Published</div>
+      </div>
+      <div class="pub-row">
+        <div class="pub-idx">02</div>
+        <div class="pub-title">PPG-Based Insomnia Detection Using CNN With Self-Attention and GRU</div>
+        <div class="pub-venue">IEEE Access, 2025</div>
+        <div class="pub-status published">Published</div>
+      </div>
+      <div class="pub-row">
+        <div class="pub-idx">03</div>
+        <div class="pub-title">Automated Sleep Stage Classification Using ML and Signal Processing</div>
+        <div class="pub-venue">IEEE AIMV, 2025</div>
+        <div class="pub-status published">Published</div>
+      </div>
+      <div class="pub-row">
+        <div class="pub-idx">04</div>
+        <div class="pub-title">Explainable Multimodal Framework for K-Complex Detection using EEG</div>
+        <div class="pub-venue">Under Review</div>
+        <div class="pub-status review">In Review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="contact">
+  <div class="eyebrow reveal" style="justify-content:center;">Let's talk</div>
+  <h2 class="cta-title reveal">LET'S BUILD<br>SOMETHING <span class="accent">REAL.</span></h2>
+  <p class="cta-sub reveal">Open to ML research roles, internships, and collaboration.</p>
+  <a href="mailto:prithraj120@gmail.com" class="cta-btn reveal">Get in touch ↗</a>
+</section>
+
+<footer>
+  <div>© 2026 Prithviraj Verma</div>
+  <div>
+    <a href="https://github.com/PR-ODINSON">GitHub</a>
+    <a href="https://linkedin.com/in/prithviraj-verma">LinkedIn</a>
+  </div>
+</footer>
+
+<script>
+// Loader
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+  }, 1400);
+});
+
+// Accordion
+document.querySelectorAll('.accordion-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+    }
+  });
+}, {threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
