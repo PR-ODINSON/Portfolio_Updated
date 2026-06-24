@@ -3,10 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 
 const NAV_ITEMS = [
-  { id: 'projects',   label: 'Work'     },
-  { id: 'focus',      label: 'Focus'    },
-  { id: 'research',   label: 'Research' },
-  { id: 'contact',    label: 'Contact'  },
+  { id: 'projects',    label: 'Work'       },
+  { id: 'research',   label: 'Research'   },
+  { id: 'experience', label: 'Experience' },
 ]
 
 const RESUME_URL = '/Prithviraj_CV.pdf'
@@ -28,12 +27,16 @@ export default function Navbar() {
 
   return (
     <header
+      className={scrolled ? 'nav-scrolled' : ''}
       style={{
         position: 'fixed',
         top: 0, left: 0, right: 0,
         zIndex: 9000,
-        mixBlendMode: 'difference',
+        // Only use difference blend when not scrolled (so the glassmorphic
+        // bg shows correctly once scrolled)
+        mixBlendMode: scrolled ? 'normal' : 'difference',
         pointerEvents: 'none',
+        transition: 'background 0.3s ease, backdrop-filter 0.3s ease',
       }}
     >
       <nav
@@ -61,16 +64,16 @@ export default function Navbar() {
             border: 'none',
             cursor: 'pointer',
             lineHeight: 1,
+            whiteSpace: 'nowrap',   // prevent logo from wrapping on small screens
+            flexShrink: 0,
           }}
           aria-label="Scroll to top"
         >
           PRITHVIRAJ VERMA
         </button>
 
-        {/* Desktop links */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
-          className="hidden lg:flex"
-        >
+        {/* Desktop links — hidden on mobile, visible on lg+ */}
+        <div className="hidden lg:flex lg:items-center" style={{ gap: '0.25rem' }}>
           {NAV_ITEMS.map(item => (
             <button
               key={item.id}

@@ -10,8 +10,14 @@ import { useEffect, useRef } from 'react'
  *    smooth trailing effect with no perceptible input lag.
  *  • Both use CSS `transform: translate3d` so the browser composites them on the
  *    GPU and never triggers layout/paint.
+ *
+ * Touch devices: returns null immediately (no hooks violation) via the inner
+ * CursorImpl component pattern, which is only mounted when isFinePointer is true.
  */
-export default function CustomCursor() {
+
+// Inner implementation — only mounted on fine-pointer devices, so hooks are
+// always called unconditionally within this component.
+function CursorImpl() {
   const dotRef  = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
 
@@ -121,4 +127,19 @@ export default function CustomCursor() {
       />
     </>
   )
+}
+
+/**
+ * Public export — guards against touch/coarse-pointer devices.
+ * Mounting CursorImpl only when isFinePointer is true ensures all hooks
+ * inside CursorImpl are always called unconditionally (no Rules of Hooks violation).
+ */
+export default function CustomCursor() {
+  const isFinePointer =
+    typeof window !== 'undefined'
+      ? window.matchMedia('(pointer: fine)').matches
+      : false
+
+  if (!isFinePointer) return null
+  return <CursorImpl />
 }

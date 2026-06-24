@@ -51,28 +51,33 @@ export default function TechDeepDive() {
           {capabilities.map(cap => {
             const isOpen = openId === cap.id
             return (
-              <div key={cap.id} className={`focus-item reveal-item${isOpen ? ' open' : ''}`}>
-                <button
-                  className="focus-trigger"
-                  onClick={() => toggle(cap.id)}
-                  aria-expanded={isOpen}
-                >
-                  <span>{cap.title}</span>
-                  <svg
-                    className="focus-chevron"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+              // Outer div: only has reveal-item — React never changes this className,
+              // so the imperative `.in` class added by IntersectionObserver is preserved.
+              <div key={cap.id} className="reveal-item">
+                {/* Inner div: carries the open state — React can freely toggle 'open' */}
+                <div className={`focus-item${isOpen ? ' open' : ''}`}>
+                  <button
+                    className="focus-trigger"
+                    onClick={() => toggle(cap.id)}
+                    aria-expanded={isOpen}
                   >
-                    <line x1="12" y1="5" x2="12" y2="19" />
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                  </svg>
-                </button>
-                <div className="focus-body" aria-hidden={!isOpen}>
-                  <p className="focus-body-inner">{cap.body}</p>
+                    <span>{cap.title}</span>
+                    <svg
+                      className="focus-chevron"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                  </button>
+                  <div className="focus-body" aria-hidden={!isOpen}>
+                    <p className="focus-body-inner">{cap.body}</p>
+                  </div>
                 </div>
               </div>
             )

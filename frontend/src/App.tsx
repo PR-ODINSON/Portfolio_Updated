@@ -2,24 +2,19 @@ import './App.css'
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-import Loader      from './components/Loader'
+import Loader       from './components/Loader'
 import CustomCursor from './components/CustomCursor'
-import Navbar      from './components/Navbar'
-import Hero        from './components/Hero'
-import SocialProof from './components/SocialProof'
-import TechDeepDive from './components/TechDeepDive'  // Focus section
-import Projects    from './components/Projects'
-import Research    from './components/Research'
-import Experience  from './components/Experience'
-import Leadership  from './components/Leadership'
+import Navbar       from './components/Navbar'
+import Hero         from './components/Hero'
+import Research     from './components/Research'
+import Projects     from './components/Projects'
+import Experience   from './components/Experience'
 import Achievements from './components/Achievements'
-import Contact     from './components/Contact'
-import Footer      from './components/Footer'
+import Leadership   from './components/Leadership'
+import Contact      from './components/Contact'
+import Footer       from './components/Footer'
 
-// Section order (light/dark alternating):
-// Hero (dark) → Marquee (dark) → Focus (dark) → Projects (light) →
-// Research (light) → Experience (dark) → Leadership (light) →
-// Achievements (dark) → Contact CTA (dark/black) → Footer (black)
+// Section order: Hero → Research → Projects → Experience → Achievements → Leadership → Contact
 
 function useScrollReveal() {
   useEffect(() => {
@@ -68,13 +63,11 @@ function MainLayout() {
             element={
               <>
                 <Hero />
-                <SocialProof />
-                <TechDeepDive />
-                <Projects />
                 <Research />
+                <Projects />
                 <Experience />
-                <Leadership />
                 <Achievements />
+                <Leadership />
                 <Contact />
               </>
             }

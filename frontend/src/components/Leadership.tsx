@@ -1,41 +1,24 @@
 // Leadership.tsx — light section, simple 3-column grid, no neon/glow
+// Detailed positions and descriptions parsed from CV.
 
 const roles = [
   {
-    title: 'Student Coordinator',
+    title: 'Coordinator',
     org: 'Career Development Centre (CDC), IITRAM',
-    period: 'Aug 2023 – Jun 2026',
-    description: 'Coordinating career development activities for students at IITRAM — placement preparation, industry connects, and soft-skills workshops.',
+    period: 'Jul 2025 – Present',
+    description: 'Managing and coordinating a 34-member multidisciplinary team across outreach, operations, content creation, and industry engagement verticals for IITRAM’s central placement and career body.',
   },
   {
-    title: 'Student Coordinator — Alumni Relations',
-    org: 'IITRAM',
-    period: 'Jun 2024 – Present',
-    description: 'Building bridges between current students and the alumni network for mentorship, networking events, and community growth.',
+    title: 'Team Lead',
+    org: 'Alumni Relations, IITRAM',
+    period: 'Jul 2025 – Present',
+    description: 'Leading a team of 50+ student volunteers responsible for planning, coordinating, and executing alumni engagement initiatives for the institute.',
   },
   {
     title: 'AI/ML Team Lead',
     org: 'Tekstra Coding Club, IITRAM',
-    period: 'Aug 2023 – Dec 2025',
-    description: 'Leading the AI/ML vertical — mentoring 50+ students, organising workshops, talks, and hackathons to build a coding and AI culture.',
-  },
-  {
-    title: 'Campus Mantri',
-    org: 'GeeksforGeeks',
-    period: 'Jun 2024 – Dec 2024',
-    description: 'Promoting GfG learning resources, coordinating coding events, and supporting students in technical interview preparation.',
-  },
-  {
-    title: 'Campus Ambassador',
-    org: 'Unstop',
-    period: 'Jun 2024 – Dec 2024',
-    description: 'Organising competitions, hackathons, and quizzes; encouraging student participation in national-level opportunities.',
-  },
-  {
-    title: 'Google Student Ambassador',
-    org: 'Google',
-    period: '2024',
-    description: 'Selected as Google Student Ambassador — promoting Google technologies and organising developer events on campus.',
+    period: 'Jan 2025 – Aug 2025',
+    description: 'Led the AI/ML vertical of IITRAM’s coding community, designing and delivering structured learning tracks covering machine learning fundamentals, deep learning, and applied AI projects.',
   },
 ]
 
@@ -46,8 +29,8 @@ export default function Leadership() {
 
         {/* Header */}
         <div className="reveal" style={{ marginBottom: '3rem' }}>
-          <p className="eyebrow" style={{ marginBottom: '0.75rem' }}>Positions of Responsibility</p>
-          <h2 className="section-head section-head-light">Leadership</h2>
+          <p className="eyebrow" style={{ marginBottom: '0.75rem', color: 'var(--text-light-muted)' }}>Positions of Responsibility</p>
+          <h2 className="section-head" style={{ color: 'var(--text-light-primary)' }}>Leadership</h2>
         </div>
 
         {/* Grid */}
