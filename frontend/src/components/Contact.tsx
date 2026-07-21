@@ -1,89 +1,59 @@
-// Contact.tsx — .cta-section pattern: dark full-bleed, mailto-only CTA
-// No form. Email/phone/location as muted text. GitHub/LinkedIn links below CTA.
-
-import { useEffect, useRef } from 'react'
-import { SiGithub, SiLinkedin } from 'react-icons/si'
-
-function useMagnetic(enabled: boolean = true) {
-  const ref = useRef<HTMLAnchorElement | null>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el || !enabled) return
-
-    const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (matchReduced) return
-
-    const onMouseMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect()
-      const centerX = rect.left + rect.width / 2
-      const centerY = rect.top + rect.height / 2
-      const deltaX = e.clientX - centerX
-      const deltaY = e.clientY - centerY
-
-      const distance = Math.hypot(deltaX, deltaY)
-      const triggerArea = 100
-
-      if (distance < triggerArea) {
-        const factor = (triggerArea - distance) / triggerArea
-        const pullX = deltaX * 0.12 * factor
-        const pullY = deltaY * 0.12 * factor
-        const clampedX = Math.max(-6, Math.min(6, pullX))
-        const clampedY = Math.max(-6, Math.min(6, pullY))
-
-        el.style.transform = `translate3d(${clampedX}px, ${clampedY}px, 0) scale(1.03)`
-        el.style.transition = 'transform 0.08s ease-out'
-      } else {
-        el.style.transform = ''
-        el.style.transition = 'transform 0.3s ease-out'
-      }
-    }
-
-    const onMouseLeave = () => {
-      el.style.transform = ''
-      el.style.transition = 'transform 0.3s ease-out'
-    }
-
-    window.addEventListener('mousemove', onMouseMove)
-    el.addEventListener('mouseleave', onMouseLeave)
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove)
-      el.removeEventListener('mouseleave', onMouseLeave)
-    }
-  }, [enabled])
-
-  return ref
-}
+// Contact.tsx — Spotlight headline + magnetic CTA + Shiny Pill + Stardust bg
+import { SiGithub } from 'react-icons/si'
+import { FaLinkedin as SiLinkedin } from 'react-icons/fa6'
+import { useMagnetic } from './Hero'
+import ShinyPill from './effects/ShinyPill'
+import StardustBackground from './effects/StardustBackground'
 
 export default function Contact() {
-  const emailCtaRef = useMagnetic()
+  const emailCtaRef = useMagnetic(0.35) as React.RefObject<HTMLAnchorElement>
 
   return (
-    <section id="contact" className="cta-section">
-      <div className="section-container">
+    <section id="contact" className="cta-section" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Stardust bg */}
+      <StardustBackground count={160} color="rgba(240,238,232,0.7)" />
+      {/* Cyan glow blob */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 800,
+          height: 500,
+          background: 'radial-gradient(ellipse at center, rgba(34, 211, 238, 0.12), transparent 60%)',
+          pointerEvents: 'none',
+          filter: 'blur(20px)',
+        }}
+      />
 
-        {/* Giant headline */}
+      <div className="section-container" style={{ position: 'relative', zIndex: 2 }}>
+
+        {/* Headline */}
         <div className="reveal" style={{ marginBottom: '3rem' }}>
-          <h2 className="cta-headline">
+          <h2 className="cta-headline" style={{ color: '#F0EEE8' }}>
             LET'S BUILD<br />
-            SOMETHING{' '}
-            <span className="accent">REAL.</span>
+            SOMETHING <span style={{ color: '#22d3ee', textShadow: '0 0 40px rgba(34,211,238,0.5)' }}>REAL.</span>
           </h2>
         </div>
 
-        {/* CTA button */}
-        <div className="reveal" style={{ marginBottom: '2.5rem' }}>
+        {/* Magnetic CTA */}
+        <div className="reveal" style={{ marginBottom: '2rem' }}>
           <a
             ref={emailCtaRef}
             id="contact-email-cta"
+            data-testid="contact-email-cta"
             href="mailto:prithraj120@gmail.com"
             className="cta-btn"
+            style={{ willChange: 'transform' }}
           >
-            Send an Email ↗
+            <ShinyPill textColor="#05070F" shineColor="rgba(255,255,255,0.9)" speed={2.6}>
+              Send an Email ↗
+            </ShinyPill>
           </a>
         </div>
 
-        {/* Muted contact details */}
         <div
           className="reveal"
           style={{
@@ -99,13 +69,13 @@ export default function Contact() {
           <p className="cta-meta">Ahmedabad, Gujarat, India</p>
         </div>
 
-        {/* Social links */}
         <div
           className="reveal"
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2rem' }}
         >
           <a
             id="contact-github-link"
+            data-testid="contact-github-link"
             href="https://github.com/PR-ODINSON"
             target="_blank"
             rel="noopener noreferrer"
@@ -118,15 +88,16 @@ export default function Contact() {
               fontWeight: 600,
               color: 'var(--muted-dark)',
               textDecoration: 'none',
-              transition: 'color 0.15s',
+              transition: 'color 0.2s',
             }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--paper)')}
+            onMouseEnter={e => (e.currentTarget.style.color = '#22d3ee')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted-dark)')}
           >
             <SiGithub size={16} /> GitHub
           </a>
           <a
             id="contact-linkedin-link"
+            data-testid="contact-linkedin-link"
             href="https://www.linkedin.com/in/prithviraj-verma-b58707289/"
             target="_blank"
             rel="noopener noreferrer"
@@ -139,9 +110,9 @@ export default function Contact() {
               fontWeight: 600,
               color: 'var(--muted-dark)',
               textDecoration: 'none',
-              transition: 'color 0.15s',
+              transition: 'color 0.2s',
             }}
-            onMouseEnter={e => (e.currentTarget.style.color = 'var(--paper)')}
+            onMouseEnter={e => (e.currentTarget.style.color = '#22d3ee')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted-dark)')}
           >
             <SiLinkedin size={16} /> LinkedIn

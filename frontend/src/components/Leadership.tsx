@@ -1,5 +1,6 @@
-// Leadership.tsx — light section, simple 3-column grid, no neon/glow
-// Detailed positions and descriptions parsed from CV.
+// Leadership.tsx — Scroll reveal + gradient hover + Character Waves title
+import { useRef } from 'react'
+import CharacterWaves from './effects/CharacterWaves'
 
 const roles = [
   {
@@ -22,26 +23,45 @@ const roles = [
   },
 ]
 
+function LeaderCard({ role, idx }: { role: typeof roles[number]; idx: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    el.style.setProperty('--mx', `${e.clientX - rect.left}px`)
+    el.style.setProperty('--my', `${e.clientY - rect.top}px`)
+  }
+  return (
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      className="leadership-card reveal-item"
+      data-testid={`leadership-card-${idx}`}
+    >
+      <h3 className="leadership-title">{role.title}</h3>
+      <p className="leadership-org">{role.org}</p>
+      <p className="leadership-period">{role.period}</p>
+      <p className="leadership-desc">{role.description}</p>
+    </div>
+  )
+}
+
 export default function Leadership() {
   return (
     <section id="leadership" className="bg-section-light section-padding">
       <div className="section-container">
 
-        {/* Header */}
         <div className="reveal" style={{ marginBottom: '3rem' }}>
-          <p className="eyebrow" style={{ marginBottom: '0.75rem', color: 'var(--text-light-muted)' }}>Positions of Responsibility</p>
-          <h2 className="section-head" style={{ color: 'var(--text-light-primary)' }}>Leadership</h2>
+          <p className="eyebrow" style={{ marginBottom: '0.75rem', color: 'var(--muted)' }}>Positions of Responsibility</p>
+          <h2 className="section-head">
+            <CharacterWaves text="Leadership" />
+          </h2>
         </div>
 
-        {/* Grid */}
         <div className="leadership-grid reveal-group">
-          {roles.map(role => (
-            <div key={role.title + role.org} className="leadership-card reveal-item">
-              <h3 className="leadership-title">{role.title}</h3>
-              <p className="leadership-org">{role.org}</p>
-              <p className="leadership-period">{role.period}</p>
-              <p className="leadership-desc">{role.description}</p>
-            </div>
+          {roles.map((role, i) => (
+            <LeaderCard key={role.title + role.org} role={role} idx={i} />
           ))}
         </div>
 

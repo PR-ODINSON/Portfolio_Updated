@@ -1,6 +1,7 @@
 // Footer.tsx — minimal 2-column dark footer
 
-import { SiGithub, SiLinkedin } from 'react-icons/si'
+import { SiGithub } from 'react-icons/si'
+import { FaLinkedin as SiLinkedin } from 'react-icons/fa6'
 
 export default function Footer() {
   return (

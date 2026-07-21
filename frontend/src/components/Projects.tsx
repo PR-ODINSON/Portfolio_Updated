@@ -1,5 +1,8 @@
-// Projects.tsx — 3 curated projects on dark surface, 3-col grid
-// Live badge (coral pulse) on production deployment
+// Projects.tsx — Premium AI portfolio: Pixel Card + Electric Border + 3D tilt + Direction Hover
+import PixelCard from './effects/PixelCard'
+import ElectricBorder from './effects/ElectricBorder'
+import TiltCard from './effects/TiltCard'
+import DirectionHover from './effects/DirectionHover'
 
 type Project = {
   monogram: string
@@ -9,6 +12,7 @@ type Project = {
   stack: string[]
   github: string
   isLive?: boolean
+  featured?: boolean
 }
 
 const projects: Project[] = [
@@ -20,6 +24,7 @@ const projects: Project[] = [
     stack: ['React', 'Node.js', 'PostgreSQL', 'Docker', 'AWS', 'OpenAI API'],
     github: 'https://github.com/PR-ODINSON',
     isLive: true,
+    featured: true,
   },
   {
     monogram: 'FR',
@@ -29,6 +34,7 @@ const projects: Project[] = [
     stack: ['Python', 'Computer Vision', 'Deep Learning', 'GPS/GIS'],
     github: 'https://github.com/PR-ODINSON',
     isLive: true,
+    featured: true,
   },
   {
     monogram: 'TM',
@@ -48,9 +54,107 @@ const projects: Project[] = [
   },
 ]
 
+function ProjectCard({ p, index }: { p: Project; index: number }) {
+  const accent = p.isLive ? '#22d3ee' : '#67e8f9'
+  const inner = (
+    <div
+      className="project-card reveal-item"
+      data-testid={`project-card-${index}`}
+      style={{
+        borderLeft: p.featured ? `2px solid ${accent}` : '1px solid transparent',
+        background: 'var(--bg-card)',
+        padding: '28px 26px',
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: 16,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.85rem',
+        minHeight: 320,
+      }}
+    >
+      {/* Monogram watermark */}
+      <span className="project-card-monogram" style={{ opacity: 0.14 }}>{p.monogram}</span>
+
+      {/* Badges row */}
+      <div className="project-card-badges">
+        {p.isLive && (
+          <span className="live-badge" style={{ fontSize: 11 }}>
+            <span className="live-dot" style={{ width: 6, height: 6 }} />
+            {p.title === 'Garnet AI Vendor Onboarding' ? 'Enterprise' : 'Live'}
+          </span>
+        )}
+      </div>
+
+      {/* Title — Direction Hover */}
+      <DirectionHover
+        title={p.title}
+        fontSize={18}
+        fontWeight={700}
+        letterSpacing="-0.02em"
+        textColor="#F0EEE8"
+        hoverColor="#22d3ee"
+      />
+
+      {/* Tagline */}
+      <p className="project-card-tagline" style={{ fontSize: 13.5, lineHeight: 1.65 }}>{p.tagline}</p>
+
+      {/* Outcome */}
+      <p className="project-card-outcome" style={{ fontSize: 13, lineHeight: 1.6 }}>{p.outcome}</p>
+
+      {/* Stack chips */}
+      <div className="project-card-stack" style={{ marginTop: 4 }}>
+        {p.stack.map(t => (
+          <span key={t} className="stack-chip" style={{ fontSize: 10.5, padding: '3px 9px' }}>{t}</span>
+        ))}
+      </div>
+
+      {/* GitHub link */}
+      <a
+        href={p.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-testid={`project-github-${index}`}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.4rem',
+          fontFamily: "'Inter',sans-serif",
+          fontSize: 13,
+          fontWeight: 600,
+          color: 'var(--muted-dark)',
+          textDecoration: 'none',
+          marginTop: 'auto',
+          transition: 'color 0.2s, gap 0.2s',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent-cyan)'; e.currentTarget.style.gap = '0.6rem' }}
+        onMouseLeave={e => { e.currentTarget.style.color = 'var(--muted-dark)'; e.currentTarget.style.gap = '0.4rem' }}
+      >
+        View on GitHub <span aria-hidden>↗</span>
+      </a>
+    </div>
+  )
+
+  return (
+    <TiltCard max={4} style={{ height: '100%' }}>
+      {p.featured ? (
+        <ElectricBorder color="rgba(34,211,238,0.5)" glowColor="#22d3ee" speed={0.7} chaos={2.4} thickness={1.1} radius={16} glowIntensity={3} activeOnHover>
+          <PixelCard colors={['#22d3ee', '#67e8f9', '#0ea5e9']} gap={9} pixelSize={2} speed={38} radius={16} style={{ height: '100%' }}>
+            {inner}
+          </PixelCard>
+        </ElectricBorder>
+      ) : (
+        <PixelCard colors={['#22d3ee', '#67e8f9', '#0ea5e9']} gap={9} pixelSize={2} speed={38} radius={16} style={{ height: '100%' }}>
+          {inner}
+        </PixelCard>
+      )}
+    </TiltCard>
+  )
+}
+
 export default function Projects() {
   return (
-    <section id="projects" className="bg-section-dark section-padding">
+    <section id="projects" className="bg-section-dark section-padding" style={{ position: 'relative' }}>
       <div className="section-container">
 
         {/* Header */}
@@ -62,13 +166,14 @@ export default function Projects() {
               href="https://github.com/PR-ODINSON"
               target="_blank"
               rel="noopener noreferrer"
+              data-testid="projects-all-github-link"
               style={{
                 fontFamily: "'Inter',sans-serif",
                 fontSize: 13,
                 fontWeight: 600,
-                color: '#00B4A0',
+                color: '#22d3ee',
                 textDecoration: 'none',
-                borderBottom: '1px solid rgba(0,180,160,0.3)',
+                borderBottom: '1px solid rgba(34,211,238,0.4)',
                 paddingBottom: '0.1rem',
                 marginBottom: '0.5rem',
               }}
@@ -79,75 +184,17 @@ export default function Projects() {
         </div>
 
         {/* 2-col project grid */}
-        <div className="project-cards-grid reveal-group" style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: 20 }}>
-          {projects.map(p => (
-            <article
-              key={p.title}
-              className="project-card reveal-item"
-              style={p.title === 'Facial Recognition Attendance' ? {
-                borderLeft: '2px solid #E8593C',
-                background: '#111420',
-                padding: '24px 24px 24px 22px',
-              } : p.title === 'Garnet AI Vendor Onboarding' ? {
-                borderLeft: '2px solid #00B4A0',
-                background: '#111420',
-                padding: '24px 24px 24px 22px',
-              } : { padding: '24px' }}
-            >
-
-              {/* Monogram watermark */}
-              <span className="project-card-monogram">{p.monogram}</span>
-
-              {/* Badges row */}
-              <div className="project-card-badges">
-                {p.isLive && (
-                  <span className="live-badge" style={{ fontSize: 12 }}>
-                    <span className="live-dot" style={{ width: 6, height: 6 }} />
-                    {p.title === 'Garnet AI Vendor Onboarding' ? 'Enterprise' : 'Live'}
-                  </span>
-                )}
-              </div>
-
-              {/* Title */}
-              <h3 className="project-card-title" style={{ fontSize: 15 }}>{p.title}</h3>
-
-              {/* Tagline */}
-              <p className="project-card-tagline" style={{ fontSize: 13, lineHeight: 1.65 }}>{p.tagline}</p>
-
-              {/* Outcome */}
-              <p className="project-card-outcome" style={{ fontSize: 13, lineHeight: 1.65 }}>{p.outcome}</p>
-
-              {/* Stack chips */}
-              <div className="project-card-stack">
-                {p.stack.map(t => (
-                  <span key={t} className="stack-chip" style={{ fontSize: 11, padding: '3px 9px' }}>{t}</span>
-                ))}
-              </div>
-
-              {/* GitHub link */}
-              <a
-                href={p.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  fontFamily: "'Inter',sans-serif",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: 'var(--muted)',
-                  textDecoration: 'none',
-                  marginTop: 'auto',
-                  transition: 'color 0.15s',
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'var(--paper)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted)')}
-              >
-                GitHub ↗
-              </a>
-
-            </article>
+        <div
+          className="reveal-group"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 24,
+            background: 'transparent',
+          }}
+        >
+          {projects.map((p, i) => (
+            <ProjectCard key={p.title} p={p} index={i} />
           ))}
         </div>
 

@@ -1,7 +1,7 @@
-// Experience.tsx — vertical timeline, top 2 (Insolare & IIT Delhi) expanded by default, rest collapsed with preview
-// High-density, rich detailed bullets parsed from CV. Alternating light bg.
+// Experience.tsx — Timeline that grows on scroll, Text Lift for company names,
+// cards fade+slide upward, dark premium theme.
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type ExpEntry = {
   company: string
@@ -99,10 +99,49 @@ const experiences: ExpEntry[] = [
   },
 ]
 
+// Text-lift on hover — company name lifts smoothly
+function TextLift({ text, active }: { text: string; active: boolean }) {
+  return (
+    <span
+      className="exp-entry-company"
+      style={{
+        display: 'inline-block',
+        transform: active ? 'translateY(-1px)' : 'translateY(0)',
+        transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s',
+        color: active ? '#22d3ee' : 'var(--paper)',
+      }}
+    >
+      {text}
+    </span>
+  )
+}
+
 export default function ExperienceSection() {
   const [openSet, setOpenSet] = useState<Set<number>>(
     () => new Set(experiences.map((e, i) => e.defaultExpanded ? i : -1).filter(i => i !== -1))
   )
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
+
+  // Timeline grows with scroll progress within the timeline element
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = timelineRef.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const viewH = window.innerHeight
+      const start = rect.top - viewH * 0.55
+      const end = rect.bottom - viewH * 0.55
+      const total = end - start
+      const p = 1 - Math.max(0, Math.min(1, end / total))
+      setProgress(Math.max(0, Math.min(1, p)))
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const toggle = (i: number) => {
     setOpenSet(prev => {
@@ -113,14 +152,13 @@ export default function ExperienceSection() {
     })
   }
 
-  // Helper to dynamically style numbers and metrics
   const highlightMetrics = (text: string) => {
     const regex = /(\b\d+(?:\.\d+)?%[+-]?|\b\d+[-+]\w*|\b\d+\b)/g
     const parts = text.split(regex)
     return parts.map((part, i) => {
       if (regex.test(part)) {
         return (
-          <strong key={i} style={{ color: 'var(--text-light-primary)', fontWeight: 500 }}>
+          <strong key={i} style={{ color: '#22d3ee', fontWeight: 600 }}>
             {part}
           </strong>
         )
@@ -133,121 +171,180 @@ export default function ExperienceSection() {
     <section id="experience" className="bg-section-light section-padding">
       <div className="section-container">
 
-        {/* Header */}
         <div className="reveal" style={{ marginBottom: '3rem' }}>
-          <p className="eyebrow" style={{ marginBottom: '0.75rem', color: 'var(--text-light-muted)' }}>Work History</p>
-          <h2 className="section-head" style={{ color: 'var(--text-light-primary)' }}>Experience</h2>
+          <p className="eyebrow" style={{ marginBottom: '0.75rem', color: 'var(--muted)' }}>Work History</p>
+          <h2 className="section-head">Experience</h2>
         </div>
 
-        {/* Vertical timeline */}
-        <div className="exp-timeline reveal-group">
-          {experiences.map((exp, i) => {
-            const isOpen = openSet.has(i)
-            const hasDetail = !!(exp.bullets && exp.bullets.length > 0)
-            return (
-              <div
-                key={exp.company + exp.period}
-                className={`exp-entry reveal-item${isOpen ? ' expanded' : ''}`}
-                style={isOpen ? {
-                  background: 'var(--bg-light-card)',
-                  border: '0.5px solid var(--border-light)',
-                  borderLeft: '2px solid var(--accent-research)',
-                  padding: '24px',
-                  marginBottom: '1.5rem',
-                  borderRadius: '4px',
-                  position: 'relative'
-                } : {
-                  background: 'var(--bg-light-muted)',
-                  border: '0.5px solid var(--border-light)',
-                  padding: '14px',
-                  marginBottom: '1rem',
-                  borderRadius: '4px',
-                  position: 'relative',
-                  cursor: 'pointer'
-                }}
-                onClick={!isOpen ? () => toggle(i) : undefined}
-              >
-                <span className="exp-entry-dot" style={{
-                  width: 8,
-                  height: 8,
-                  background: 'var(--bg-light)',
-                  border: isOpen ? '1.5px solid var(--accent-research)' : '1.5px solid var(--spine-light)',
-                  left: '-2.4rem',
-                  top: isOpen ? '30px' : '20px',
-                  transform: 'translateX(-4px)'
-                }} />
+        {/* Vertical timeline with progress fill */}
+        <div ref={timelineRef} style={{ position: 'relative' }}>
+          {/* Growing timeline line */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              left: '2rem',
+              top: 0,
+              bottom: 0,
+              width: 1,
+              transform: 'translateX(-0.5px)',
+              background: 'var(--line)',
+              zIndex: 0,
+            }}
+          />
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              left: '2rem',
+              top: 0,
+              width: 1,
+              height: `${progress * 100}%`,
+              transform: 'translateX(-0.5px)',
+              background: 'linear-gradient(to bottom, #22d3ee, rgba(34,211,238,0.2))',
+              boxShadow: '0 0 10px rgba(34,211,238,0.6)',
+              transition: 'height 0.15s linear',
+              zIndex: 1,
+            }}
+          />
 
-                {/* Header row */}
+          <div className="reveal-group" style={{ paddingLeft: '4rem', position: 'relative', zIndex: 2 }}>
+            {experiences.map((exp, i) => {
+              const isOpen = openSet.has(i)
+              const hasDetail = !!(exp.bullets && exp.bullets.length > 0)
+              const isHover = hoveredIdx === i
+              return (
                 <div
-                  className="exp-entry-header"
-                  onClick={isOpen ? () => toggle(i) : undefined}
-                  role={hasDetail ? 'button' : undefined}
-                  aria-expanded={hasDetail ? isOpen : undefined}
-                  style={{ cursor: hasDetail ? 'pointer' : 'default', padding: 0 }}
+                  key={exp.company + exp.period}
+                  data-testid={`experience-entry-${i}`}
+                  className={`exp-entry reveal-item${isOpen ? ' expanded' : ''}`}
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  style={{
+                    background: 'var(--bg-card)',
+                    border: `1px solid ${isHover || isOpen ? 'rgba(34,211,238,0.25)' : 'var(--line)'}`,
+                    borderLeft: `2px solid ${isOpen ? '#22d3ee' : 'var(--line-strong)'}`,
+                    padding: isOpen ? 24 : 18,
+                    marginBottom: '1.25rem',
+                    borderRadius: 12,
+                    position: 'relative',
+                    cursor: hasDetail && !isOpen ? 'pointer' : 'default',
+                    transition: 'border-color 0.3s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s',
+                    transform: isHover ? 'translateX(3px)' : 'translateX(0)',
+                    boxShadow: isOpen ? '0 12px 30px rgba(0,0,0,0.35), 0 0 0 1px rgba(34,211,238,0.08)' : 'none',
+                  }}
+                  onClick={!isOpen && hasDetail ? () => toggle(i) : undefined}
                 >
-                  <div className="exp-entry-title-block">
-                    <p className="exp-entry-company" style={{ color: 'var(--text-light-primary)' }}>{exp.company}</p>
-                    <p className="exp-entry-role" style={{ color: isOpen ? 'var(--text-light-secondary)' : 'var(--text-light-muted)' }}>{exp.role}</p>
-                    {!isOpen && (
-                      <p className="exp-entry-preview" style={{ fontSize: 12, color: 'var(--text-light-muted)', padding: '6px 0 0', margin: 0 }}>{exp.preview}</p>
-                    )}
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem', flexShrink: 0 }}>
-                    <span className="exp-entry-period" style={{ color: 'var(--text-light-muted)' }}>{exp.period}</span>
-                    {hasDetail && (
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        style={{
-                          width: 14,
-                          height: 14,
-                          color: 'var(--text-light-muted)',
-                          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                          transition: 'transform 0.3s cubic-bezier(.65,0,.35,1)',
-                        }}
+                  {/* Dot on timeline */}
+                  <span
+                    aria-hidden
+                    style={{
+                      position: 'absolute',
+                      left: -34,
+                      top: isOpen ? 32 : 22,
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      background: isOpen ? '#22d3ee' : 'var(--bg-dark)',
+                      border: `1.5px solid ${isOpen ? '#22d3ee' : 'var(--line-strong)'}`,
+                      boxShadow: isOpen ? '0 0 12px rgba(34,211,238,0.7)' : 'none',
+                      transition: 'all 0.3s',
+                      zIndex: 2,
+                    }}
+                  />
+
+                  <div
+                    className="exp-entry-header"
+                    onClick={isOpen ? () => toggle(i) : undefined}
+                    role={hasDetail ? 'button' : undefined}
+                    aria-expanded={hasDetail ? isOpen : undefined}
+                    style={{ cursor: hasDetail ? 'pointer' : 'default', padding: 0, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem' }}
+                  >
+                    <div>
+                      <TextLift text={exp.company} active={isHover || isOpen} />
+                      <p className="exp-entry-role" style={{ color: 'var(--muted-dark)' }}>{exp.role}</p>
+                      {!isOpen && (
+                        <p style={{ fontSize: 12.5, color: 'var(--muted)', marginTop: '0.5rem', lineHeight: 1.55 }}>{exp.preview}</p>
+                      )}
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.4rem', flexShrink: 0 }}>
+                      <span
+                        className="exp-entry-period"
+                        style={{ color: 'var(--muted)', fontFamily: "'JetBrains Mono', monospace", fontSize: 11.5, letterSpacing: '0.02em' }}
                       >
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    )}
+                        {exp.period}
+                      </span>
+                      {hasDetail && (
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          style={{
+                            width: 14,
+                            height: 14,
+                            color: isHover ? '#22d3ee' : 'var(--muted)',
+                            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.3s cubic-bezier(.65,0,.35,1), color 0.2s',
+                          }}
+                        >
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Expandable body */}
-                {hasDetail && isOpen && (
-                  <div className="exp-entry-body" style={{ maxHeight: 'none', overflow: 'visible' }}>
-                    <ul className="exp-entry-bullets" style={{ margin: '1rem 0 0', paddingLeft: '1.2rem', listStyleType: 'disc' }}>
-                      {exp.bullets!.map((b, j) => (
-                        <li key={j} className="exp-entry-bullet" style={{ fontSize: 13, lineHeight: 1.7, color: 'var(--text-light-secondary)', marginBottom: '0.5rem' }}>
-                          {highlightMetrics(b)}
-                        </li>
-                      ))}
-                    </ul>
-                    {exp.tech && (
-                      <div className="exp-entry-tech" style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                        {exp.tech.map(t => (
-                          <span key={t} className="stack-chip" style={{ background: 'var(--bg-light-muted)', border: '1px solid var(--border-light)', color: 'var(--text-light-secondary)' }}>{t}</span>
+                  {hasDetail && isOpen && (
+                    <div style={{ overflow: 'visible', marginTop: '0.75rem' }}>
+                      <ul style={{ margin: '0.75rem 0 0', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        {exp.bullets!.map((b, j) => (
+                          <li
+                            key={j}
+                            style={{
+                              display: 'flex',
+                              gap: 10,
+                              alignItems: 'flex-start',
+                              fontFamily: "'Inter', sans-serif",
+                              fontSize: 13.5,
+                              lineHeight: 1.65,
+                              color: 'var(--muted-dark)',
+                            }}
+                          >
+                            <span
+                              aria-hidden
+                              style={{
+                                width: 4, height: 4, borderRadius: 4,
+                                background: '#22d3ee', flexShrink: 0, marginTop: 8,
+                                boxShadow: '0 0 6px rgba(34,211,238,0.7)',
+                              }}
+                            />
+                            <span>{highlightMetrics(b)}</span>
+                          </li>
                         ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+                      </ul>
+                      {exp.tech && (
+                        <div style={{ marginTop: '1rem', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                          {exp.tech.map(t => (
+                            <span key={t} className="stack-chip" style={{ fontSize: 10.5 }}>{t}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
-                {/* Tech for collapsed entries */}
-                {!isOpen && exp.tech && (
-                  <div className="exp-entry-tech" style={{ marginTop: '0.75rem', display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
-                    {exp.tech.map(t => (
-                      <span key={t} className="stack-chip" style={{ background: 'var(--bg-light-muted)', border: '1px solid var(--border-light)', color: 'var(--text-light-secondary)' }}>{t}</span>
-                    ))}
-                  </div>
-                )}
-
-              </div>
-            )
-          })}
+                  {!isOpen && exp.tech && (
+                    <div style={{ marginTop: '0.85rem', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                      {exp.tech.map(t => (
+                        <span key={t} className="stack-chip" style={{ fontSize: 10.5 }}>{t}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
         </div>
 
       </div>

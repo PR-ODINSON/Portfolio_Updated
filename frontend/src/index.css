@@ -6,31 +6,35 @@
    DESIGN TOKENS
 ───────────────────────────────────────────── */
 :root {
-  /* ── New Design System ── */
+  /* ── Premium Dark AI Theme ── */
   --bg-dark:    #05070F;
-  --bg-card:    #0D0F1A;
-  --bg-black:   #020408;
+  --bg-card:    #0B0D18;
+  --bg-black:   #030510;
+  --bg-elev:    #0F1220;
   --paper:      #F0EEE8;
-  --muted:      #6B6965;
-  --muted-dark: #8A8680;
-  --line:       #1E2028;
-  --accent-research:   #00B4A0;
+  --muted:      #7A7B87;
+  --muted-dark: #9CA0AF;
+  --line:       #1A1D2A;
+  --line-strong:#242938;
+  --accent-research:   #22d3ee;
+  --accent-cyan:       #22d3ee;
+  --accent-cyan-soft:  #67e8f9;
   --accent-production: #E8593C;
 
-  /* Legacy / light-section compat */
-  --bg-light:           #F0EDE4;
-  --bg-light-card:      #FFFFFF;
-  --bg-light-muted:     #E8E4DC;
-  --text-light-primary: #1A1A1A;
-  --text-light-secondary:#5C5850;
-  --text-light-muted:   #8C8880;
-  --border-light:       #D8D4C8;
-  --spine-light:        #C8C4BC;
+  /* Legacy compat — remap to dark equivalents so light sections read as dark */
+  --bg-light:           #05070F;
+  --bg-light-card:      #0B0D18;
+  --bg-light-muted:     #0F1220;
+  --text-light-primary: #F0EEE8;
+  --text-light-secondary:#B7BAC5;
+  --text-light-muted:   #7A7B87;
+  --border-light:       #1A1D2A;
+  --spine-light:        #242938;
 
   --ink:        #F0EEE8;
-  --line-light: #1E2028;
-  --accent:     #00B4A0;
-  --brand-primary: #00B4A0;
+  --line-light: #1A1D2A;
+  --accent:     #22d3ee;
+  --brand-primary: #22d3ee;
   --brand-accent:  #E8593C;
   --brand-dark:    #05070F;
 }
@@ -59,7 +63,7 @@ body {
    SECTION BACKGROUNDS
 ───────────────────────────────────────────── */
 .bg-section-dark  { background: var(--bg-dark);  color: var(--paper); }
-.bg-section-light { background: var(--bg-light); color: var(--text-light-primary); }
+.bg-section-light { background: var(--bg-dark); color: var(--paper); }
 .bg-section-black { background: var(--bg-black); color: var(--paper); }
 
 /* ─────────────────────────────────────────────
@@ -915,7 +919,7 @@ body {
   padding: 2rem 1.75rem;
   transition: background 0.2s;
 }
-.leadership-card:hover { background: #fdfdfb; }
+.leadership-card:hover { background: #101423; }
 .leadership-title {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
@@ -1237,3 +1241,176 @@ body {
 .glass         { background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); }
 .body-base     { font-size: 0.9375rem; line-height: 1.7; }
 .body-lg       { font-size: 1.0625rem; line-height: 1.7; }
+
+/* ─────────────────────────────────────────────
+   PREMIUM DARK OVERRIDES
+───────────────────────────────────────────── */
+
+/* Paper cards → dark elevated cards */
+.paper-card {
+  background: rgba(11, 13, 24, 0.6);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent-cyan);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 12px;
+  transition: opacity 0.5s cubic-bezier(.65,0,.35,1), transform 0.5s cubic-bezier(.65,0,.35,1), border-color 0.3s, box-shadow 0.3s, translate 0.3s;
+}
+.paper-card:hover {
+  border-color: var(--line-strong);
+  border-left-color: var(--accent-cyan);
+  box-shadow: 0 10px 30px rgba(34, 211, 238, 0.08), 0 0 0 1px rgba(34,211,238,0.1);
+  translate: 0 -3px;
+}
+.paper-card.review-paper { border-left-color: var(--line-strong); }
+.paper-card-title { color: var(--paper); }
+.paper-card-desc  { color: var(--muted-dark); }
+
+/* IEEE badge tuned for dark */
+.ieee-badge {
+  background: rgba(34, 211, 238, 0.10);
+  color: var(--accent-cyan);
+  border: 1px solid rgba(34, 211, 238, 0.30);
+}
+.ieee-badge:hover { background: rgba(34, 211, 238, 0.18); }
+.under-review-badge {
+  background: rgba(240,238,232,0.05);
+  color: var(--muted-dark);
+  border: 1px solid var(--line);
+}
+
+/* Research focus card dark */
+.research-focus-card {
+  background: rgba(11, 13, 24, 0.6);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.research-focus-title { color: var(--muted); }
+.research-focus-item  { color: var(--paper); border-bottom-color: var(--line); }
+
+/* Leadership dark cards */
+.leadership-grid { background: var(--line); }
+.leadership-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  transition: background 0.25s, transform 0.35s cubic-bezier(0.22,1,0.36,1), border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.leadership-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(34, 211, 238, 0.10), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.leadership-card:hover::before { opacity: 1; }
+.leadership-card:hover { border-color: rgba(34, 211, 238, 0.25); }
+.leadership-title { color: var(--paper); }
+.leadership-org, .leadership-desc { color: var(--muted-dark); }
+.leadership-period { color: var(--accent-cyan); }
+
+/* Experience timeline dark */
+.exp-timeline::before {
+  background: linear-gradient(to bottom, var(--accent-cyan) 0%, var(--line) 40%);
+  opacity: 0.6;
+  width: 1px;
+}
+.exp-entry-dot {
+  background: var(--bg-dark) !important;
+  border: 1.5px solid var(--line) !important;
+}
+.exp-entry.expanded .exp-entry-dot,
+.exp-entry .exp-entry-dot[style*="accent"] {
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 0 12px rgba(34,211,238,0.6);
+}
+
+/* Achievements */
+.achievements-grid, .certs-grid { background: var(--line); }
+.achievement-card, .cert-card {
+  background: var(--bg-card);
+  transition: background 0.25s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.achievement-card:hover { background: #101423; }
+.cert-card:hover { background: #101423; }
+.cert-issuer { color: var(--accent-cyan); }
+
+/* Project cards refined dark */
+.project-cards-grid { background: var(--line); }
+.project-card {
+  background: var(--bg-card);
+  transition: background 0.25s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.project-card:hover {
+  background: #101324;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(34,211,238,0.15);
+}
+.project-card-outcome { color: var(--accent-cyan); }
+
+/* Stack chip refined */
+.stack-chip {
+  background: rgba(34, 211, 238, 0.06);
+  border: 1px solid rgba(34,211,238,0.18);
+  color: var(--muted-dark);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.stack-chip:hover {
+  background: rgba(34, 211, 238, 0.14);
+  color: var(--accent-cyan);
+  border-color: rgba(34,211,238,0.4);
+}
+
+/* CTA button — pill with cyan glow */
+.cta-btn {
+  background: linear-gradient(90deg, #22d3ee 0%, #67e8f9 100%);
+  color: #05070F;
+  box-shadow: 0 10px 40px rgba(34, 211, 238, 0.25), inset 0 0 0 1px rgba(255,255,255,0.15);
+  transition: transform 0.25s, box-shadow 0.25s, filter 0.25s;
+}
+.cta-btn:hover {
+  background: linear-gradient(90deg, #22d3ee 0%, #67e8f9 100%);
+  color: #05070F;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 50px rgba(34, 211, 238, 0.5), inset 0 0 0 1px rgba(255,255,255,0.3);
+  filter: brightness(1.05);
+}
+
+/* live badge cyan variant */
+.live-badge {
+  background: rgba(34, 211, 238, 0.10);
+  color: var(--accent-cyan);
+  border-color: rgba(34, 211, 238, 0.30);
+}
+.live-dot { background: var(--accent-cyan); box-shadow: 0 0 10px rgba(34,211,238,0.8); }
+
+/* Section head remove color inheritance in light bg mode */
+.section-head { color: var(--paper); }
+
+/* Contact CTA meta color */
+.cta-meta { color: var(--muted-dark); }
+
+/* Selection */
+::selection { background: rgba(34, 211, 238, 0.28); color: var(--paper); }
+
+/* Scrollbar */
+::-webkit-scrollbar-thumb       { background: var(--line-strong); }
+::-webkit-scrollbar-thumb:hover { background: rgba(34,211,238,0.35); }
+
+/* fadeIn utility for tooltips */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Constrain achievements grid layout */
+@media (min-width: 1024px) {
+  .achievements-grid, section#achievements .reveal-group > div:first-child {
+    /* no-op — Achievements uses inline styles */
+  }
+}

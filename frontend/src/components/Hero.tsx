@@ -1,4 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
+import ReactiveGrid from './effects/ReactiveGrid'
+import ParticleSphere from './effects/ParticleSphere'
+import ScrambleText from './effects/ScrambleText'
+import MouseSpotlight from './effects/MouseSpotlight'
 
 const RESUME_URL = '/Prithviraj_CV.pdf'
 
@@ -66,18 +70,18 @@ function AnimatingEegGraphic() {
       <polyline
         points={points || "0,18 120,18"}
         fill="none"
-        stroke="#00B4A0"
+        stroke="#22d3ee"
         strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        style={{ filter: 'drop-shadow(0 0 3px rgba(0,180,160,0.6))' }}
+        style={{ filter: 'drop-shadow(0 0 6px rgba(34,211,238,0.7))' }}
       />
     </svg>
   )
 }
 
 // Stat Counter
-function StatCounter({ value, duration = 750 }: { value: string; duration?: number }) {
+function StatCounter({ value, duration = 1400 }: { value: string; duration?: number }) {
   const [displayVal, setDisplayVal] = useState('0')
   const ref = useRef<HTMLSpanElement>(null)
   const animated = useRef(false)
@@ -98,7 +102,7 @@ function StatCounter({ value, duration = 750 }: { value: string; duration?: numb
         const startTime = performance.now()
         const step = (now: number) => {
           const progress = Math.min((now - startTime) / duration, 1)
-          const easeProgress = progress * (2 - progress)
+          const easeProgress = 1 - Math.pow(1 - progress, 3)
           const current = easeProgress * target
           if (Number.isInteger(target)) {
             setDisplayVal(Math.floor(current) + suffix)
@@ -119,14 +123,18 @@ function StatCounter({ value, duration = 750 }: { value: string; duration?: numb
   return <span ref={ref}>{displayVal}</span>
 }
 
-// Magnetic hover hook
-export function useMagnetic(enabled: boolean = true) {
+// Magnetic hover hook — smooth spring pull toward cursor when close
+export function useMagnetic(strength: number = 0.35) {
   const ref = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null)
   useEffect(() => {
     const el = ref.current
-    if (!el || !enabled) return
+    if (!el) return
     const matchReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (matchReduced) return
+
+    let currentX = 0, currentY = 0
+    let targetX = 0, targetY = 0
+    let raf: number | null = null
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect()
@@ -135,29 +143,31 @@ export function useMagnetic(enabled: boolean = true) {
       const deltaX = e.clientX - centerX
       const deltaY = e.clientY - centerY
       const distance = Math.hypot(deltaX, deltaY)
-      const triggerArea = 100
+      const triggerArea = 140
       if (distance < triggerArea) {
-        const factor = (triggerArea - distance) / triggerArea
-        const pullX = Math.max(-6, Math.min(6, deltaX * 0.12 * factor))
-        const pullY = Math.max(-6, Math.min(6, deltaY * 0.12 * factor))
-        el.style.transform = `translate3d(${pullX}px, ${pullY}px, 0) scale(1.03)`
-        el.style.transition = 'transform 0.08s ease-out'
+        targetX = deltaX * strength
+        targetY = deltaY * strength
       } else {
-        el.style.transform = ''
-        el.style.transition = 'transform 0.3s ease-out'
+        targetX = 0
+        targetY = 0
       }
     }
-    const onMouseLeave = () => {
-      el.style.transform = ''
-      el.style.transition = 'transform 0.3s ease-out'
+    const tick = () => {
+      currentX += (targetX - currentX) * 0.18
+      currentY += (targetY - currentY) * 0.18
+      el.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`
+      raf = requestAnimationFrame(tick)
     }
+    const onLeave = () => { targetX = 0; targetY = 0 }
     window.addEventListener('mousemove', onMouseMove)
-    el.addEventListener('mouseleave', onMouseLeave)
+    el.addEventListener('mouseleave', onLeave)
+    raf = requestAnimationFrame(tick)
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
-      el.removeEventListener('mouseleave', onMouseLeave)
+      el.removeEventListener('mouseleave', onLeave)
+      if (raf) cancelAnimationFrame(raf)
     }
-  }, [enabled])
+  }, [strength])
   return ref
 }
 
@@ -187,18 +197,62 @@ export default function Hero() {
         overflow: 'hidden',
       }}
     >
-      <div className="section-container" style={{ width: '100%', paddingTop: '160px' }}>
+      {/* Reactive Grid backdrop */}
+      <ReactiveGrid
+        particleColor="rgba(34, 211, 238, 0.42)"
+        maxSize={3.2}
+        minSize={0.5}
+        gap={26}
+        influence={240}
+      />
+
+      {/* Particle Sphere behind hero content — right side */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          right: '-8%',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          width: 'min(680px, 60vw)',
+          height: 'min(680px, 60vw)',
+          opacity: 0.55,
+          pointerEvents: 'none',
+          zIndex: 1,
+          filter: 'blur(0.3px)',
+        }}
+      >
+        <ParticleSphere color="rgba(34, 211, 238, 0.7)" count={780} radius={200} />
+      </div>
+
+      {/* Global mouse spotlight glow */}
+      <MouseSpotlight color="rgba(34, 211, 238, 0.12)" size={620} />
+
+      {/* Gradient vignette to keep text legible */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'radial-gradient(1200px 600px at 20% 40%, rgba(5,7,15,0) 0%, rgba(5,7,15,0.6) 60%, rgba(5,7,15,0.95) 100%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+        }}
+      />
+
+      <div className="section-container" style={{ width: '100%', paddingTop: '160px', position: 'relative', zIndex: 3 }}>
 
         {/* Eyebrow */}
         <div
           className="hero-stagger-1"
           style={{
-            fontFamily: "'Inter', sans-serif",
+            fontFamily: "'JetBrains Mono', ui-monospace, monospace",
             fontSize: 'clamp(0.6875rem, 1.5vw, 0.75rem)',
-            fontWeight: 700,
+            fontWeight: 600,
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'var(--muted)',
+            color: 'rgba(240, 238, 232, 0.55)',
             marginBottom: '1.5rem',
             display: 'flex',
             alignItems: 'center',
@@ -206,22 +260,39 @@ export default function Hero() {
             flexWrap: 'wrap',
           }}
         >
-          <span style={{ color: 'var(--paper)' }}>PRITHVIRAJ VERMA</span>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              padding: '0.3rem 0.7rem',
+              border: '1px solid rgba(34,211,238,0.25)',
+              background: 'rgba(34,211,238,0.06)',
+              color: '#22d3ee',
+              borderRadius: 999,
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22d3ee', boxShadow: '0 0 10px rgba(34,211,238,0.8)' }} />
+            AI/ML ENGINEER · IITRAM
+          </span>
           <span style={{ width: 12, height: 1, background: 'var(--line)', display: 'inline-block' }} />
-          <span>AI/ML ENGINEER &amp; RESEARCHER · IITRAM</span>
+          <span>PRITHVIRAJ VERMA</span>
         </div>
 
-        {/* Giant headline */}
-        <h1 className="hero-headline hero-stagger-2" style={{ margin: '0 0 1.5rem' }}>
+        {/* Giant headline — Bright base text with subtle spotlight follow */}
+        <h1 className="hero-headline hero-stagger-2" style={{ margin: '0 0 1.5rem', position: 'relative' }}>
           <span style={{ display: 'block' }}>
-            <span className="accent-teal">Re</span><AnimatingEegGraphic /><span className="accent-teal">search</span> that
+            <span className="accent-teal" style={{ color: '#22d3ee' }}>Re</span>
+            <AnimatingEegGraphic />
+            <span className="accent-teal" style={{ color: '#22d3ee' }}>search</span>{' '}
+            <span style={{ color: '#F0EEE8' }}>that</span>
           </span>
-          <span style={{ display: 'block' }}>
+          <span style={{ display: 'block', color: '#F0EEE8' }}>
             runs in the real world.
           </span>
         </h1>
 
-        {/* Positioning subline */}
+        {/* Subtitle: scramble text */}
         <p
           className="hero-stagger-3"
           style={{
@@ -229,11 +300,15 @@ export default function Hero() {
             fontSize: 'clamp(0.9375rem, 1.8vw, 1.0625rem)',
             color: 'var(--muted-dark)',
             lineHeight: 1.65,
-            maxWidth: 560,
+            maxWidth: 620,
             marginBottom: '3rem',
           }}
         >
-          3 IEEE papers in biomedical AI. Production ML at Insolare &amp; Garnet AI. Pre-final year at IITRAM.
+          <ScrambleText
+            text="3 IEEE papers in biomedical AI. Production ML at Insolare & Garnet AI. Pre-final year at IITRAM."
+            duration={1600}
+            trigger="immediate"
+          />
         </p>
 
         {/* Stats row — differential sizing */}
@@ -245,6 +320,9 @@ export default function Hero() {
             borderTop: '1px solid var(--line)',
             borderLeft: '1px solid var(--line)',
             marginBottom: '2.5rem',
+            background: 'rgba(13, 15, 26, 0.4)',
+            backdropFilter: 'blur(6px)',
+            WebkitBackdropFilter: 'blur(6px)',
           }}
         >
           {stats.map((s) => (
@@ -268,11 +346,12 @@ export default function Hero() {
                       : 'clamp(1.5rem, 3vw, 2.25rem)',
                   letterSpacing: '-0.03em',
                   color: s.primary
-                    ? 'var(--accent-research)'
+                    ? '#22d3ee'
                     : s.muted
                       ? 'var(--muted)'
                       : 'var(--paper)',
                   lineHeight: 1,
+                  textShadow: s.primary ? '0 0 30px rgba(34,211,238,0.35)' : 'none',
                 }}
               >
                 <StatCounter value={s.value} />
@@ -284,7 +363,7 @@ export default function Hero() {
                   fontWeight: 600,
                   letterSpacing: '0.1em',
                   textTransform: 'uppercase',
-                  color: s.primary ? 'var(--accent-research)' : 'var(--muted)',
+                  color: s.primary ? '#22d3ee' : 'var(--muted)',
                   marginTop: '0.35rem',
                   opacity: s.muted ? 0.7 : 1,
                 }}
@@ -307,6 +386,7 @@ export default function Hero() {
         >
           <a
             ref={researchRef}
+            data-testid="hero-view-research-btn"
             href="#research"
             onClick={e => { e.preventDefault(); document.getElementById('research')?.scrollIntoView({ behavior: 'smooth' }) }}
             style={{
@@ -315,22 +395,26 @@ export default function Hero() {
               gap: '0.5rem',
               fontFamily: "'Inter', sans-serif",
               fontWeight: 600,
-              fontSize: '0.875rem',
+              fontSize: '0.9375rem',
               letterSpacing: '-0.01em',
               color: 'var(--bg-dark)',
-              background: 'var(--accent-research)',
-              padding: '0.75rem 1.75rem',
+              background: 'linear-gradient(90deg, #22d3ee 0%, #67e8f9 100%)',
+              padding: '0.85rem 1.9rem',
               borderRadius: '999px',
               textDecoration: 'none',
-              transition: 'opacity 0.2s, filter 0.2s',
+              transition: 'box-shadow 0.25s ease, filter 0.25s ease',
+              boxShadow: '0 8px 30px rgba(34,211,238,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)',
+              willChange: 'transform',
             }}
-            onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
-            onMouseLeave={e => (e.currentTarget.style.filter = '')}
+            onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 14px 40px rgba(34,211,238,0.45), inset 0 0 0 1px rgba(255,255,255,0.25)')}
+            onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 8px 30px rgba(34,211,238,0.25), inset 0 0 0 1px rgba(255,255,255,0.15)')}
           >
-            View Research →
+            View Research
+            <span aria-hidden style={{ display: 'inline-block', transition: 'transform 0.25s' }}>→</span>
           </a>
           <a
             ref={resumeRef}
+            data-testid="hero-download-cv-btn"
             href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
@@ -340,14 +424,20 @@ export default function Hero() {
               gap: '0.5rem',
               fontFamily: "'Inter', sans-serif",
               fontWeight: 600,
-              fontSize: '0.875rem',
+              fontSize: '0.9375rem',
               letterSpacing: '-0.01em',
-              color: 'var(--muted-dark)',
-              background: 'none',
-              padding: '0.75rem 0',
+              color: 'var(--paper)',
+              background: 'rgba(240,238,232,0.04)',
+              padding: '0.85rem 1.75rem',
+              borderRadius: 999,
               textDecoration: 'none',
-              borderBottom: '1px solid var(--line)',
+              border: '1px solid rgba(240,238,232,0.14)',
+              backdropFilter: 'blur(6px)',
+              transition: 'background 0.2s, border-color 0.2s',
+              willChange: 'transform',
             }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(240,238,232,0.08)'; e.currentTarget.style.borderColor = 'rgba(34,211,238,0.35)' }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(240,238,232,0.04)'; e.currentTarget.style.borderColor = 'rgba(240,238,232,0.14)' }}
           >
             Download CV ↗
           </a>
