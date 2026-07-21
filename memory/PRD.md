@@ -59,10 +59,17 @@ Hero → Research → Projects → Experience → Achievements → Leadership �
 - Replaced deprecated `react-icons/si` `SiLinkedin` with `react-icons/fa6` `FaLinkedin`
 
 ## Next / Backlog
-- P1: Optional page transitions between routes (single route today)
-- P2: Add real Link Preview using microlink.io API for external DOI links
-- P2: Prefer-reduced-motion polish audit
-- P3: Ligher-weight canvas alternative for very old devices
+- P2: Add explicit sub-routes if the user later wants /work, /research, /about, etc.
+- P3: Lighter-weight canvas alternative for very old devices
+- P3: Add cache warming: pre-fetch microlink screenshots on section-in-view rather than hover-in
+
+## Recently Shipped (2026-01-21 · session 2)
+- P1 ✅ Skills.tsx icon imports migrated (`SiCss3→SiCss`, `SiCanva→SiCanvas`,
+  `SiAdobephotoshop→FaPaintBrush`) — `yarn build` now succeeds cleanly (~275 kB JS gzipped ~86 kB).
+- P2 ✅ Real Link Preview using microlink.io wired into DOI badges in Research
+  (new `effects/LinkPreview.tsx` with shimmer loading state, cyan tooltip label).
+- P2 ✅ Subtle page fade + lift transition wrapping Routes via `PageTransition.tsx`
+  (Framer Motion `AnimatePresence`, 0.35s cubic-bezier, ready for future routes).
 
 ## Enhancement idea (portfolio conversion booster)
 Consider adding a floating "Available for hire" pill in Navbar (Shiny Pill style, cyan)

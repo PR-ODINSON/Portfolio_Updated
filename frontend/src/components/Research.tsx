@@ -4,6 +4,7 @@
 import React, { useEffect, useRef } from 'react'
 import PixelCard from './effects/PixelCard'
 import ElectricBorder from './effects/ElectricBorder'
+import LinkPreview from './effects/LinkPreview'
 
 type Paper = {
   title: string
@@ -65,15 +66,10 @@ const focusAreas = [
 
 function DOIShort(doi: string) { return doi.replace('https://doi.org/', '') }
 
-// Link preview on hover for DOI badges
+// Link preview on hover for DOI badges (microlink.io)
 function LinkPreviewBadge({ href, children }: { href: string; children: React.ReactNode }) {
-  const [hover, setHover] = React.useState(false)
   return (
-    <span
-      style={{ position: 'relative', display: 'inline-block' }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-    >
+    <LinkPreview href={href} width={340} height={200} label="IEEE Xplore">
       <a
         href={href}
         target="_blank"
@@ -83,35 +79,7 @@ function LinkPreviewBadge({ href, children }: { href: string; children: React.Re
       >
         {children}
       </a>
-      {hover && (
-        <span
-          role="tooltip"
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            marginTop: 8,
-            padding: '10px 12px',
-            background: 'rgba(11, 13, 24, 0.95)',
-            border: '1px solid rgba(34,211,238,0.3)',
-            borderRadius: 10,
-            boxShadow: '0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(34,211,238,0.1)',
-            backdropFilter: 'blur(12px)',
-            zIndex: 20,
-            width: 260,
-            pointerEvents: 'none',
-            animation: 'fadeIn 0.2s ease-out',
-          }}
-        >
-          <span style={{ display: 'block', fontSize: 11, color: '#22d3ee', fontFamily: "'JetBrains Mono', monospace", marginBottom: 4 }}>
-            IEEE Xplore
-          </span>
-          <span style={{ display: 'block', fontSize: 12, color: '#F0EEE8', lineHeight: 1.4 }}>
-            Open peer-reviewed paper on IEEE Xplore ↗
-          </span>
-        </span>
-      )}
-    </span>
+    </LinkPreview>
   )
 }
 

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { SiHtml5, SiCss3, SiJavascript, SiReact, SiNextdotjs, SiNodedotjs, SiExpress, SiMongodb, SiMysql, SiCplusplus, SiFigma, SiCanva, SiAdobephotoshop } from 'react-icons/si'
+import { SiHtml5, SiCss as SiCss3, SiJavascript, SiReact, SiNextdotjs, SiNodedotjs, SiExpress, SiMongodb, SiMysql, SiCplusplus, SiFigma, SiCanvas as SiCanva } from 'react-icons/si'
+import { FaPaintBrush as SiAdobephotoshop } from 'react-icons/fa'
 
 const skillNodes = [
   {

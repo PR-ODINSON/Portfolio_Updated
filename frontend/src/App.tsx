@@ -13,6 +13,7 @@ import Achievements from './components/Achievements'
 import Leadership   from './components/Leadership'
 import Contact      from './components/Contact'
 import Footer       from './components/Footer'
+import PageTransition from './components/PageTransition'
 
 // Section order: Hero → Research → Projects → Experience → Achievements → Leadership → Contact
 
@@ -61,7 +62,7 @@ function MainLayout() {
           <Route
             path="/*"
             element={
-              <>
+              <PageTransition>
                 <Hero />
                 <Research />
                 <Projects />
@@ -69,7 +70,7 @@ function MainLayout() {
                 <Achievements />
                 <Leadership />
                 <Contact />
-              </>
+              </PageTransition>
             }
           />
         </Routes>
