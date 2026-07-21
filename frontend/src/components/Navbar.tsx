@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useMagnetic } from './Hero'
 
 const NAV_ITEMS = [
-  { id: 'projects',    label: 'Work'       },
-  { id: 'research',    label: 'Research'   },
-  { id: 'experience',  label: 'Experience' },
-  { id: 'achievements',label: 'Achievements' },
-  { id: 'contact',     label: 'Contact'    },
+  { id: 'projects',    route: '/work',     hash: 'projects',    label: 'Work'         },
+  { id: 'research',    route: '/research', hash: 'research',    label: 'Research'     },
+  { id: 'experience',  route: '/about',    hash: 'experience',  label: 'Experience'   },
+  { id: 'achievements',route: '/about',    hash: 'achievements',label: 'Achievements' },
+  { id: 'contact',     route: '/contact',  hash: 'contact',     label: 'Contact'      },
 ]
 
 const RESUME_URL = '/Prithviraj_CV.pdf'
@@ -20,12 +21,14 @@ export default function Navbar() {
   const [activeId, setActiveId] = useState<string>('home')
   const lastY = useRef(0)
   const resumeRef = useMagnetic(0.3) as React.RefObject<HTMLAnchorElement>
+  const location = useLocation()
+  const navigate = useNavigate()
+  const onHome = location.pathname === '/'
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY
       setScrolled(y > 40)
-      // Hide on scroll down, reveal on scroll up
       if (y > 120 && y > lastY.current + 4) setHidden(true)
       else if (y < lastY.current - 4) setHidden(false)
       lastY.current = y
@@ -34,8 +37,19 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Active section detection via IntersectionObserver
+  // Active-section detection only meaningful on home
   useEffect(() => {
+    if (!onHome) {
+      // On sub-routes, derive active from pathname
+      const pathMap: Record<string, string> = {
+        '/work': 'projects',
+        '/research': 'research',
+        '/about': 'experience',
+        '/contact': 'contact',
+      }
+      setActiveId(pathMap[location.pathname] || '')
+      return
+    }
     const ids = ['home', ...NAV_ITEMS.map(i => i.id)]
     const els = ids.map(id => document.getElementById(id)).filter(Boolean) as HTMLElement[]
     const obs = new IntersectionObserver(
@@ -49,11 +63,18 @@ export default function Navbar() {
     )
     els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
-  }, [])
+  }, [location.pathname, onHome])
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  const goTo = (item: typeof NAV_ITEMS[number]) => {
     setOpen(false)
+    navigate(item.route)
+  }
+
+  const goHome = () => {
+    setOpen(false)
+    navigate('/')
+    // On repeat click at home, ensure we scroll to top
+    if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
@@ -87,7 +108,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          onClick={goHome}
           data-testid="nav-logo-btn"
           style={{
             fontFamily: "'Space Grotesk', sans-serif",
@@ -136,7 +157,7 @@ export default function Navbar() {
             return (
               <button
                 key={item.id}
-                onClick={() => scrollTo(item.id)}
+                onClick={() => goTo(item)}
                 data-testid={`nav-link-${item.id}`}
                 className="nav-link-underline"
                 style={{
@@ -239,7 +260,7 @@ export default function Navbar() {
                 <button
                   key={item.id}
                   data-testid={`nav-mobile-link-${item.id}`}
-                  onClick={() => scrollTo(item.id)}
+                  onClick={() => goTo(item)}
                   style={{
                     display: 'block',
                     width: '100%',

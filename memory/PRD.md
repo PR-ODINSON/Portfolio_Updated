@@ -59,13 +59,30 @@ Hero → Research → Projects → Experience → Achievements → Leadership �
 - Replaced deprecated `react-icons/si` `SiLinkedin` with `react-icons/fa6` `FaLinkedin`
 
 ## Next / Backlog
-- P2: Add explicit sub-routes if the user later wants /work, /research, /about, etc.
+- P3: Cache-warm microlink previews on section-in-view for zero-latency previews
+- P3: Add breadcrumbs / prev+next section navigation on focus pages
 - P3: Lighter-weight canvas alternative for very old devices
-- P3: Add cache warming: pre-fetch microlink screenshots on section-in-view rather than hover-in
+
+## Recently Shipped (2026-01-21 · session 3)
+- P3 ✅ Real sub-routes shipped: `/`, `/work`, `/research`, `/about`, `/contact`
+  - New `FocusPage.tsx` — banner + "Back to home" pill + soft cyan wash
+  - New `RoutePages.tsx` — `WorkRoute`, `ResearchRoute`, `AboutRoute`, `ContactRoute`
+    that reuse the existing section components so content stays authored in one place
+  - Home `/` still renders the full single-page scroll flow (hero + all sections)
+  - `App.tsx` restructured with `PageTransition` wrapping `<Routes>` — fade + 8 px
+    lift transitions play on every route switch (including back-home)
+  - `ScrollToTop` component resets scroll on route change so each focus view opens
+    at its banner
+  - `useScrollReveal` re-scans on `location.pathname` change with a 60 ms setup delay
+    (waits for AnimatePresence commit) plus a 900 ms fallback that force-reveals
+    any straggling `.reveal` / `.reveal-item` elements — prevents "empty card"
+    state after route transitions
+  - `Navbar.tsx` — every nav item now uses `useNavigate` to route (`Work → /work`,
+    etc.), active state also derived from pathname on sub-routes
 
 ## Recently Shipped (2026-01-21 · session 2)
 - P1 ✅ Skills.tsx icon imports migrated (`SiCss3→SiCss`, `SiCanva→SiCanvas`,
-  `SiAdobephotoshop→FaPaintBrush`) — `yarn build` now succeeds cleanly (~275 kB JS gzipped ~86 kB).
+  `SiAdobephotoshop→FaPaintBrush`) — `yarn build` now succeeds cleanly (~279 kB JS gzipped ~86 kB).
 - P2 ✅ Real Link Preview using microlink.io wired into DOI badges in Research
   (new `effects/LinkPreview.tsx` with shimmer loading state, cyan tooltip label).
 - P2 ✅ Subtle page fade + lift transition wrapping Routes via `PageTransition.tsx`
