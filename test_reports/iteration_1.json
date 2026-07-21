@@ -1,0 +1,25 @@
+{
+  "summary": "Verified Netlify build bug fix for react-icons SiCss. Frontend-only test scope. Ran the exact Netlify build command (`yarn install --frozen-lockfile && yarn build`) — exit code 0, no TS errors, dist/ produced. Confirmed package-lock.json is removed, only yarn.lock present. Verified netlify.toml command line 9 uses yarn. Smoke-tested UI: home page loads with hero title 'Research that runs in the real world.', 4 animated stat counters, 'View Research' and 'Download CV' buttons. All 4 nav-link testids route correctly (/work, /research, /about, /contact) and each focus page shows the [data-testid=focus-back-home-link] pill that returns to /.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Hero subtitle", "issues": ["During text-scramble animation the subtitle briefly renders garbled characters (* =~0%<0 >|?  1~%<~<*!_ ^~#< &? ^?#@~1~) before resolving. Cosmetic only, not a bug per se — reported for awareness."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Skills.tsx: the entire component body returns an empty <section> with a comment 'Skills section removed'. All the skillNodes/routeConnections arrays and icon imports are unused dead code (~140 lines). If Skills is intentionally disabled, delete the file (and its route from App.tsx) or strip the unused imports and data — reduces bundle size and eliminates future react-icons named-export surface (which was the exact class of bug just fixed).",
+    "Navbar.tsx contains 309 lines of mostly inline style objects — consider extracting into a style module or Tailwind classes for maintainability."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "100%"},
+  "test_credentials": "N/A - static site, no auth",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Static Vite/React site. Preview URL: https://655539c1-4fd8-4fef-b1d9-d071ebab366d.preview.emergentagent.com. Frontend runs via supervisor (vite --host 0.0.0.0 --port 3000). No backend. Nav testids: nav-link-projects->/work, nav-link-research->/research, nav-link-experience->/about, nav-link-contact->/contact. Focus pages have data-testid=focus-back-home-link. When automating, use wait_until='domcontentloaded' + explicit wait_for_timeout(2000) — 'networkidle' can miss the React hydration and cause clicks to no-op.",
+  "rca_of_the_issue": "Original Netlify failure was caused by Netlify's default `npm ci && npm run build` picking up a stale package-lock.json that pinned an older react-icons where `SiCss3` was the export. Local yarn.lock pins react-icons ^5.5.0 which renamed to `SiCss`. Fix applied by main agent: (1) deleted package-lock.json, (2) updated netlify.toml build command (line 9) to `yarn install --frozen-lockfile && yarn build`. Both verified. `yarn build` runs `tsc -b && vite build` with 0 TS errors and produces dist/ (index.html + assets/index-*.js + css bundles)."
+}
