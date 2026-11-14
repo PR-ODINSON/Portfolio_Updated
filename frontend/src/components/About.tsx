@@ -12,10 +12,9 @@ type Tab = (typeof tabs)[number]
 
 const showcaseStats = [
   { value: '6',    label: 'IEEE Publications',   sub: '3 published / 3 in review', colorFrom: '#8b5cf6', colorTo: '#7c3aed' },
-  { value: '99.2%',label: 'Model Accuracy',      sub: 'EEG/ECG sleep staging',    colorFrom: '#06b6d4', colorTo: '#3b82f6' },
+  { value: '1',    label: 'Indian Patent Granted', sub: 'ML sleep disorder detection', colorFrom: '#06b6d4', colorTo: '#3b82f6' },
   { value: '50+',  label: 'Students Mentored',   sub: 'IITRAM Tekstra Club',       colorFrom: '#10b981', colorTo: '#059669' },
-  // CONFLICT: CV says "60%" workflow reduction (Garnet AI); About section previously showed "60%" — consistent
-  { value: '60%',  label: 'Workflow Reduction',  sub: 'Garnet AI automation',      colorFrom: '#f59e0b', colorTo: '#d97706' },
+  { value: '40%',  label: 'Workflow Reduction',  sub: 'Garnet AI automation',      colorFrom: '#f59e0b', colorTo: '#d97706' },
 ]
 
 const expertise = [
@@ -146,7 +145,7 @@ export default function About() {
               <span className="text-cyan-400 font-medium">
                 LLM agents, agentic workflows, RAG systems, and scalable MLOps
               </span>{' '}
-              for production environments. Open to AI/ML engineering and applied research roles.
+              for production environments. Open to AI/ML engineering, applied research roles, and PhD opportunities.
             </motion.p>
           </motion.div>
 
@@ -165,7 +164,7 @@ export default function About() {
             <p className="body-base text-gray-300">
               I'm an{' '}
               <span className="text-cyan-400 font-semibold">AI/ML Engineer</span> focused on building intelligent systems that move from research to real-world deployment. My work combines{' '}
-              <span className="text-cyan-400 font-semibold">applied machine learning</span>, product development, and research-driven problem solving — currently in my pre-final year at{' '}
+              <span className="text-cyan-400 font-semibold">applied machine learning</span>, product development, and research-driven problem solving — currently in my final year at{' '}
               <span className="text-cyan-300 font-semibold">IITRAM, Ahmedabad</span>.
             </p>
 
@@ -176,8 +175,7 @@ export default function About() {
               </h4>
               <p className="text-xs text-gray-300 leading-relaxed">
                 Published research in{' '}
-                <span className="text-blue-400 font-medium">IEEE Access</span> on automated sleep staging and insomnia detection. Developed EEG/PPG signal processing models achieving up to{' '}
-                <span className="text-green-400 font-semibold">99.58% accuracy</span> using CNNs and Vision Transformers.
+                <span className="text-blue-400 font-medium">IEEE Access</span> on automated sleep staging and insomnia detection, and hold a granted Indian patent for ML-based sleep disorder detection from PPG signals. My work spans EEG/PPG signal processing with CNNs, Vision Transformers, and Mamba/state-space architectures.
               </p>
             </div>
 

@@ -15,8 +15,21 @@ type ExpEntry = {
 
 const experiences: ExpEntry[] = [
   {
+    company: 'Indian Institute of Technology Indore',
+    role: 'Research Intern',
+    period: 'Jun 2026 – Present',
+    preview: 'Mamba/state-space architecture benchmark for 3D brain tumor segmentation.',
+    bullets: [
+      'Benchmarking 16+ model configurations across 5 architecture families (CNN, transformer/hybrid, Mamba/state-space, diffusion, self-supervised) for 3D brain tumor segmentation on BraTS 2020, with additional experiments on Promise12 prostate segmentation.',
+      'Comparing how architecture choices, including state-space block placement, affect segmentation accuracy and efficiency, under Prof. Surya Prakash.',
+      'Running the full pipeline from data preparation and model development to experimentation and evaluation on neuroimaging datasets.',
+    ],
+    tech: ['Python', 'PyTorch', 'Mamba', 'Medical Imaging', 'BraTS 2020'],
+    defaultExpanded: true,
+  },
+  {
     company: 'Insolare Pvt. Ltd.',
-    role: 'Machine Learning Engineer Intern',
+    role: 'Software Development Engineer Intern',
     period: 'Apr 2025 – Present',
     preview: 'Passive facial recognition (98%+) and drone defect detection deployed to production.',
     bullets: [
@@ -33,10 +46,10 @@ const experiences: ExpEntry[] = [
     company: 'Indian Institute of Technology Delhi',
     role: 'Research Intern (Remote)',
     period: 'Jan 2025 – Jun 2025',
-    preview: 'Clinical sleep AI research — 99.58% K-complex and 98.08% spindle classification.',
+    preview: 'Clinical sleep AI research — K-complex and sleep spindle detection with explainable AI.',
     bullets: [
-      'Designed a separable convolutional neural network for automated sleep spindle detection in overnight EEG recordings, achieving 98.08% detection accuracy on benchmark polysomnographic datasets with significantly reduced computational cost versus standard CNN baselines.',
-      'Developed an explainable multimodal deep learning framework for K-complex detection achieving 99.58% classification accuracy, integrating Grad-CAM and SHAP visualisations to produce clinician-readable saliency maps for model audit and clinical validation.',
+      'Designed a separable convolutional neural network for automated sleep spindle detection in overnight EEG recordings, with significantly reduced computational cost versus standard CNN baselines.',
+      'Developed an explainable multimodal deep learning framework for K-complex detection, integrating Grad-CAM and SHAP visualisations to produce clinician-readable saliency maps for model audit and clinical validation.',
       'Applied gradient-based and perturbation-based explainability methods (Grad-CAM, SHAP) to produce interpretable visualisations of EEG feature importance, directly supporting neurologist review of automated sleep scoring outputs.',
       'Designed and implemented an attention-gated denoising network for diffusion-weighted MRI, improving SNR in low-quality clinical scan acquisitions while preserving diagnostically relevant tensor features.',
       'Managed complete ML pipelines from raw EEG/PPG signal preprocessing (bandpass filtering, epoch segmentation, artefact rejection) through model training, hyperparameter tuning, and cross-validation on clinical datasets.',
@@ -52,7 +65,7 @@ const experiences: ExpEntry[] = [
     preview: 'Enterprise SaaS onboarding platform with GPT automation — 40% faster onboarding.',
     bullets: [
       'Led full-stack development of a SaaS vendor onboarding platform for enterprise B2B clients, reducing onboarding time by 40% through automated document workflows and self-serve vendor portals.',
-      'Integrated GPT-powered automation pipelines for compliance documentation generation, regulatory requirement extraction, and vendor verification, cutting manual processing workload by 60%.',
+      'Integrated GPT-powered automation pipelines for compliance documentation generation, regulatory requirement extraction, and vendor verification.',
       'Built and maintained secure REST APIs using Node.js and PostgreSQL with JWT-based authentication, role-based access control, and audit logging for enterprise clients.',
       'Established CI/CD pipelines using Docker, GitHub Actions, and AWS (EC2 + S3), enabling zero-downtime deployments and automated testing across staging and production environments.',
       'Collaborated with a cross-functional remote team across product, design, and backend engineering to ship features on a 2-week sprint cycle.'
@@ -62,7 +75,7 @@ const experiences: ExpEntry[] = [
   {
     company: 'MarkX AI Labs',
     role: 'Machine Learning Intern (Remote)',
-    period: 'Nov 2024 – Dec 2024',
+    period: 'Jan 2025 – Mar 2025',
     preview: 'LSTM market trend prediction and Telegram-based automated assistant.',
     bullets: [
       'Developed LSTM and gradient-boosted ML models for short-term market trend prediction using historical OHLCV data and technical indicators.',
@@ -74,7 +87,7 @@ const experiences: ExpEntry[] = [
   {
     company: 'Blix Education',
     role: 'AI Developer Intern (Remote)',
-    period: 'Sep 2024 – Nov 2024',
+    period: 'Jan 2025 – Mar 2025',
     preview: 'Autonomous vehicle prototype on Raspberry Pi with CV lane detection.',
     bullets: [
       'Developed an autonomous navigation prototype on Raspberry Pi integrating a camera-based perception stack with lane detection, obstacle recognition, and PID-based steering control for real-time vehicle movement.',
@@ -87,7 +100,7 @@ const experiences: ExpEntry[] = [
   {
     company: 'Yads Technology Pvt. Ltd.',
     role: 'Data Science Intern (Remote)',
-    period: 'Jun 2024 – Jul 2024',
+    period: 'Jun 2024 – Aug 2024',
     preview: 'Automated web scraping pipelines and exploratory data analysis dashboards.',
     bullets: [
       'Built automated web scraping pipelines using Python, BeautifulSoup, and Scrapy to systematically collect structured datasets from multiple online sources at scale.',

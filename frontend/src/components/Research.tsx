@@ -61,6 +61,8 @@ const focusAreas = [
   'EEG / PPG Analysis',
   'Explainable AI (Grad-CAM, SHAP)',
   'Vision Transformers',
+  'Mamba / State-Space Models',
+  'Brain Tumor Segmentation',
   'Clinical Deep Learning',
 ]
 
@@ -195,6 +197,11 @@ export default function Research() {
                     </div>
                   ))}
                   <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--line)' }}>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+                      Granted Indian Patent No. 600973 (Aug 2026) — ML-based sleep disorder detection from PPG signals.
+                    </p>
+                  </div>
+                  <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--line)' }}>
                     <p style={{ fontFamily: "'Inter',sans-serif", fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.6 }}>
                       All published work peer-reviewed and indexed in IEEE Xplore.
                     </p>

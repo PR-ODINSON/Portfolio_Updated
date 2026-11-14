@@ -176,7 +176,7 @@ const stats = [
   { value: '3',   label: 'IEEE Publications', primary: true  },
   { value: '2×',  label: 'Research Award',    primary: false },
   { value: '5+',  label: 'Production Deployments', primary: false },
-  { value: '7+',  label: 'Internships',       primary: false, muted: true },
+  { value: '1',   label: 'Indian Patent',       primary: false },
 ]
 
 export default function Hero() {
@@ -305,7 +305,7 @@ export default function Hero() {
           }}
         >
           <ScrambleText
-            text="3 IEEE papers in biomedical AI. Production ML at Insolare & Garnet AI. Pre-final year at IITRAM."
+            text="Granted Indian patent. 3 IEEE papers. Production ML at Insolare & Garnet AI. Final year at IITRAM."
             duration={1600}
             trigger="immediate"
           />

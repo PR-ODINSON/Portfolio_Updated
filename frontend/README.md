@@ -1,7 +1,7 @@
 # Prithviraj Verma
 
 **AI/ML Engineer · Full-Stack Developer · Research Scientist**  
-Pre-final year at **IITRAM, Ahmedabad** · Available for opportunities
+Final year at **IITRAM, Ahmedabad** · Available for opportunities
 
 ---
 
@@ -15,20 +15,20 @@ Three peer-reviewed publications in **IEEE Access** (Impact Factor: 3.4), all fo
 - *PPG-Based Accurate Insomnia Detection System Using CNN with Self-Attention and GRU* — IEEE Access, 2025
 - *Automated Sleep Stage Classification Using Biorthogonal Wavelet Decomposition and ML Techniques* — IEEE AIMV Conference, 2025
 
-Best result: **99.2% accuracy** on EEG/ECG sleep staging using a Vision Transformer-based architecture.
+Granted Indian Patent No. 600973 (Aug 2026) for ML-based sleep disorder detection from PPG signals.
 
 ## Experience
 
 | Company | Role | Period |
 |---|---|---|
-| Insolare Pvt. Ltd., Ahmedabad | Machine Learning Engineer Intern | Apr 2025 – Present |
-| Garnet AI, Dublin, Ireland | Full-Stack ML Engineer | May – Aug 2025 |
+| Insolare Pvt. Ltd., Ahmedabad | Software Development Engineer Intern | Apr 2025 – Present |
+| Garnet AI, Dublin, Ireland | Software Development Engineer Intern | May – Jul 2025 |
 | IIT Delhi | Research Intern | Jan – Jun 2025 |
 | MarkX AI Labs, Ahmedabad | AI/ML Intern | Jan – Mar 2025 |
 | BLix Education | AI Researcher | Jan – Mar 2025 |
 | Yads Technology Pvt. Ltd. | Data Science Intern | Jun – Aug 2024 |
 
-Highlights: architected an LLM-powered vendor onboarding platform that cut onboarding time by **60%**, built a real-time facial recognition attendance system with **>98% accuracy**, and co-authored research that was published in **IEEE Access**.
+Highlights: architected an LLM-powered vendor onboarding platform that cut onboarding time by **40%**, built a real-time facial recognition attendance system with **>98% accuracy**, and co-authored research that was published in **IEEE Access**.
 
 ## Skills
 

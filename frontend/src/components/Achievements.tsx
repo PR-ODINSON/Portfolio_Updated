@@ -8,6 +8,12 @@ type Ach = { label: string; sub: string; year: string; accent?: boolean; count?:
 
 const achievements: Ach[] = [
   {
+    label: 'Granted Indian Patent',
+    sub: 'Indian Patent No. 600973 for ML-based sleep disorder detection from PPG signals.',
+    year: '2026',
+    accent: true,
+  },
+  {
     label: 'Undergraduate Research Award × 2',
     sub: 'Awarded twice by IITRAM for outstanding AI/ML research contributions and 3 IEEE publications.',
     year: '2024 & 2025',
@@ -16,7 +22,7 @@ const achievements: Ach[] = [
   },
   {
     label: 'IEEE Publications as Undergrad',
-    sub: 'First pre-final year student in cohort to publish 3 peer-reviewed papers in IEEE Access and IEEE AIMV.',
+    sub: 'First final-year student in cohort to publish 3 peer-reviewed papers in IEEE Access and IEEE AIMV.',
     year: '2025',
     accent: true,
     count: { target: 3, suffix: '' },

@@ -153,9 +153,9 @@ frontend/
 ## 🌟 Key Highlights
 
 ### About Prithviraj Verma
-- 🎓 **Pre-final year student** with production experience
+- 🎓 **Final-year student** with production experience
 - 🧠 **AI/ML Engineer** with published research in biomedical signal processing
-- 💼 **Currently building** LLM-powered automation systems at Garnet AI
+- 💼 **SDE Intern at Insolare Energy** and **Research Intern at IIT Indore**
 - 📊 **Impact**: Reducing manual workflow time by 28% across 1000s enterprise clients
 - 📝 **Research**: Co-authored IEEE Access paper with 98.34% accuracy improvement
 - 👨‍🏫 **Leadership**: Mentored 50+ students, increased ML adoption by 65%

@@ -17,10 +17,20 @@ type Project = {
 
 const projects: Project[] = [
   {
+    monogram: 'SX',
+    title: 'StartupX — Autonomous Startup Validator',
+    tagline: 'Six-agent LLM system that researches, validates, and scores startup ideas end to end.',
+    outcome: 'Autonomous research, market, investor, PM, pitch, and validation agents with structured JSON handoffs and citation-backed reports.',
+    stack: ['TypeScript', 'NestJS', 'LangChain.js', 'Groq', 'Supabase', 'Tavily'],
+    github: 'https://github.com/PR-ODINSON',
+    isLive: true,
+    featured: true,
+  },
+  {
     monogram: 'GA',
     title: 'Garnet AI Vendor Onboarding',
     tagline: 'LLM-powered compliance & onboarding platform serving enterprise B2B clients.',
-    outcome: 'Processed 200+ enterprise clients monthly, reducing onboarding time by 60% with a 95% accurate RAG compliance assistant.',
+    outcome: 'Vendor onboarding platform serving enterprise B2B clients, reducing onboarding time by 40% with an LLM-based RAG compliance assistant.',
     stack: ['React', 'Node.js', 'PostgreSQL', 'Docker', 'AWS', 'OpenAI API'],
     github: 'https://github.com/PR-ODINSON',
     isLive: true,
@@ -48,7 +58,7 @@ const projects: Project[] = [
     monogram: 'MR',
     title: 'Multimodal DWI MRI Denoising',
     tagline: 'Hybrid deep learning framework (Swin Transformer + Restormer) leveraging spatial and wavelet features to suppress Rician noise.',
-    outcome: 'Achieved 32.69 dB PSNR and 0.8113 SSIM. Research paper submitted to MICCAI 2026.',
+    outcome: 'Denoising for low-SNR clinical acquisitions while preserving diagnostically relevant diffusion tensor features. Research paper submitted to MICCAI 2026.',
     stack: ['PyTorch', 'Swin Transformer', 'Restormer', 'Wavelets', 'Medical Imaging'],
     github: 'https://github.com/PR-ODINSON/DWI_Denoising',
   },
